@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://send.sms.liming.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://entity.send.sms.liming.com" targetNamespace="http://send.sms.liming.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://send.sms.liming.com">
+      <xsd:element name="getStatus">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="getStatusResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns1:StatusDO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getBalance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getBalanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in3" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in4" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in5" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sendResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPackageFormat">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPackageFormatResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send3">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in3" nillable="true" type="ns1:ArrayOfMessageDO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send3Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send2">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="ns1:ArrayOfMessageDO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send2Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sendSmsByUC">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="ns1:ArrayOfMessageUcDO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sendSmsByUCResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send4">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="ns1:ArrayOfMessageDO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="send4Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://entity.send.sms.liming.com">
+      <xsd:complexType name="StatusDO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="falseCount" type="xsd:int" />
+          <xsd:element minOccurs="0" name="falseIDs" nillable="true" type="tns:ArrayOfString" />
+          <xsd:element minOccurs="0" name="successCount" type="xsd:int" />
+          <xsd:element minOccurs="0" name="successIDs" nillable="true" type="tns:ArrayOfString" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessageDO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MessageDO" nillable="true" type="ns1:MessageDO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MessageDO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="batchID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="content" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="mobile" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="remoteID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="subUserID" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessageUcDO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MessageUcDO" nillable="true" type="ns1:MessageUcDO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MessageUcDO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="batchID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="content" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="mobile" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="remoteID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="subUserID" nillable="true" type="xsd:string" />
+          <xsd:element minOccurs="0" name="ucCode" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="sendRequest">
+    <wsdl:part name="parameters" element="tns:send" />
+  </wsdl:message>
+  <wsdl:message name="getBalanceRequest">
+    <wsdl:part name="parameters" element="tns:getBalance" />
+  </wsdl:message>
+  <wsdl:message name="send3Response">
+    <wsdl:part name="parameters" element="tns:send3Response" />
+  </wsdl:message>
+  <wsdl:message name="sendSmsByUCResponse">
+    <wsdl:part name="parameters" element="tns:sendSmsByUCResponse" />
+  </wsdl:message>
+  <wsdl:message name="send4Request">
+    <wsdl:part name="parameters" element="tns:send4" />
+  </wsdl:message>
+  <wsdl:message name="sendSmsByUCRequest">
+    <wsdl:part name="parameters" element="tns:sendSmsByUC" />
+  </wsdl:message>
+  <wsdl:message name="send2Request">
+    <wsdl:part name="parameters" element="tns:send2" />
+  </wsdl:message>
+  <wsdl:message name="getBalanceResponse">
+    <wsdl:part name="parameters" element="tns:getBalanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPackageFormatRequest">
+    <wsdl:part name="parameters" element="tns:getPackageFormat" />
+  </wsdl:message>
+  <wsdl:message name="send4Response">
+    <wsdl:part name="parameters" element="tns:send4Response" />
+  </wsdl:message>
+  <wsdl:message name="getPackageFormatResponse">
+    <wsdl:part name="parameters" element="tns:getPackageFormatResponse" />
+  </wsdl:message>
+  <wsdl:message name="getStatusRequest">
+    <wsdl:part name="parameters" element="tns:getStatus" />
+  </wsdl:message>
+  <wsdl:message name="getStatusResponse">
+    <wsdl:part name="parameters" element="tns:getStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="sendResponse">
+    <wsdl:part name="parameters" element="tns:sendResponse" />
+  </wsdl:message>
+  <wsdl:message name="send3Request">
+    <wsdl:part name="parameters" element="tns:send3" />
+  </wsdl:message>
+  <wsdl:message name="send2Response">
+    <wsdl:part name="parameters" element="tns:send2Response" />
+  </wsdl:message>
+  <wsdl:portType name="SmsServicePortType">
+    <wsdl:operation name="getStatus">
+      <wsdl:input name="getStatusRequest" message="tns:getStatusRequest" />
+      <wsdl:output name="getStatusResponse" message="tns:getStatusResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getBalance">
+      <wsdl:input name="getBalanceRequest" message="tns:getBalanceRequest" />
+      <wsdl:output name="getBalanceResponse" message="tns:getBalanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="send">
+      <wsdl:input name="sendRequest" message="tns:sendRequest" />
+      <wsdl:output name="sendResponse" message="tns:sendResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPackageFormat">
+      <wsdl:input name="getPackageFormatRequest" message="tns:getPackageFormatRequest" />
+      <wsdl:output name="getPackageFormatResponse" message="tns:getPackageFormatResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="send3">
+      <wsdl:input name="send3Request" message="tns:send3Request" />
+      <wsdl:output name="send3Response" message="tns:send3Response" />
+    </wsdl:operation>
+    <wsdl:operation name="send2">
+      <wsdl:input name="send2Request" message="tns:send2Request" />
+      <wsdl:output name="send2Response" message="tns:send2Response" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSmsByUC">
+      <wsdl:input name="sendSmsByUCRequest" message="tns:sendSmsByUCRequest" />
+      <wsdl:output name="sendSmsByUCResponse" message="tns:sendSmsByUCResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="send4">
+      <wsdl:input name="send4Request" message="tns:send4Request" />
+      <wsdl:output name="send4Response" message="tns:send4Response" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SmsServiceHttpBinding" type="tns:SmsServicePortType">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getStatus">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getStatusRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getStatusResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getBalance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getBalanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getBalanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="send">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="sendRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="sendResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPackageFormat">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getPackageFormatRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPackageFormatResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="send3">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="send3Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="send3Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="send2">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="send2Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="send2Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSmsByUC">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="sendSmsByUCRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="sendSmsByUCResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="send4">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="send4Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="send4Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SmsService">
+    <wsdl:port name="SmsServiceHttpPort" binding="tns:SmsServiceHttpBinding">
+      <wsdlsoap:address location="http://www.bizapp.com/WebServiceServer/services/SmsService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

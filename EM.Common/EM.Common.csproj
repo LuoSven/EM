@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B3FCB199-48A0-4AAA-8539-548111BD8B43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Topuc22Top.Common</RootNamespace>
+    <AssemblyName>Topuc22Top.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\Test\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\Dependencies\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeChat">
+      <HintPath>..\Dependencies\WeChat.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayConvertor.cs" />
+    <Compile Include="CompressFile.cs" />
+    <Compile Include="CookieHelper.cs" />
+    <Compile Include="EnumDB.cs" />
+    <Compile Include="ExtensionHelper.cs" />
+    <Compile Include="ImportHelper.cs" />
+    <Compile Include="IOHelper.cs" />
+    <Compile Include="Json\Original.cs" />
+    <Compile Include="Json\ReturnObj.cs" />
+    <Compile Include="Json\JsonHelper.cs" />
+    <Compile Include="Pinyin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PageHelper.cs" />
+    <Compile Include="RandomCode.cs" />
+    <Compile Include="Service References\SmsServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Sitemap\ChangeFreq.cs" />
+    <Compile Include="Sitemap\SiteMap.cs" />
+    <Compile Include="Sitemap\SiteMapHelper.cs" />
+    <Compile Include="Sitemap\OurUrl.cs" />
+    <Compile Include="SmsHelper.cs" />
+    <Compile Include="ThirdLogOnHelper.cs" />
+    <Compile Include="TopucDate.cs" />
+    <Compile Include="UpLoadHelper.cs" />
+    <Compile Include="ResourceHelper.cs" />
+    <Compile Include="ValidateCode.cs" />
+    <Compile Include="ValidationResult.cs" />
+    <Compile Include="WarterMarkHelper.cs" />
+    <Compile Include="WeChatHelper\WeChatHelper.cs" />
+    <Compile Include="WeChatHelper\WeChatMessages.cs" />
+    <Compile Include="WeChatHelper\WeChatNotifyHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetDimension.Weibo\NetDimension.Weibo.csproj">
+      <Project>{54e79004-8f60-46e2-be5c-cf824a3fc461}</Project>
+      <Name>NetDimension.Weibo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QConnectSDK\QConnectSDK.csproj">
+      <Project>{780c452e-4832-46ca-91a0-efc62d92e882}</Project>
+      <Name>QConnectSDK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Renren.API.SDK\Renren.API.SDK.csproj">
+      <Project>{4a7ff62e-e498-467c-90d6-805bfb723002}</Project>
+      <Name>Renren.API.SDK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Topuc.Framework.Cache\Topuc.Framework.Cache.csproj">
+      <Project>{EB4F7A70-A793-45A3-A795-7856DF08707C}</Project>
+      <Name>Topuc.Framework.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Topuc.Framework.Logger\Topuc.Framework.Logger.csproj">
+      <Project>{CFB0B83A-DB95-4E8D-810A-724FB32FC0B7}</Project>
+      <Name>Topuc.Framework.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Topuc22Top.Utils\Topuc22Top.Utils.csproj">
+      <Project>{C407761F-4214-4DA7-99DA-6C9F1FC44A4C}</Project>
+      <Name>Topuc22Top.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\SmsServiceReference\SmsService1.wsdl" />
+    <None Include="Service References\SmsServiceReference\Topuc22Top.Common.SmsServiceReference.StatusDO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\SmsServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SmsServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SmsServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SmsServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

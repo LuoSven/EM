@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Topuc22Top.Data.Infrastructure;
+using Topuc22Top.Data.ResultModel;
+using Topuc22Top.Model.Entities;
+
+namespace Topuc22Top.Data.Repositories
+{
+    public class UserActivityRepo : RepositoryBase<UserActivity>, IUserActivityRepo
+    {
+        public UserActivityRepo(IDatabaseFactory databaseFactory)
+            : base(databaseFactory)
+        {
+        }
+       
+
+
+    }
+    public interface IUserActivityRepo : IRepository<UserActivity>
+    {
+        
+    }
+}
