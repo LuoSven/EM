@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Topuc22Top.Model.Entities;
+using EM.Model.Entities;
 
-namespace Topuc22Top.Data.Infrastructure
+namespace EM.Data.Infrastructure
 {
     public class DatabaseFactory : Disposable, IDatabaseFactory
     {
-        private TopucDB dataContext;
-        public TopucDB Get()
+        private EMDB dataContext;
+        public EMDB Get()
         {
-            return dataContext ?? (dataContext = new TopucDB());
+            return dataContext ?? (dataContext = new EMDB());
         }
         protected override void DisposeCore()
         {

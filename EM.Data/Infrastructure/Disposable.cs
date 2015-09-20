@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Topuc22Top.Data.Infrastructure
+namespace EM.Data.Infrastructure
 {
     public class Disposable : IDisposable
     {

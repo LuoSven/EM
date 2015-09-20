@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Topuc22Top.Data.Infrastructure;
-using Topuc22Top.Model.Entities;
+using EM.Data.Infrastructure;
+using EM.Model.Entities;
 
-namespace Topuc22Top.Data.Repositories
+namespace EM.Data.Repositories
 {
-    public class WeChatPushRepo : RepositoryBase<WeChatPush>, IWeChatPushRepo
+    public class UserAccountRepo : RepositoryBase<EM_User_Account>, IUserAccountRepo
     {
-        public WeChatPushRepo(IDatabaseFactory databaseFactory)
+        public UserAccountRepo(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
         {
         }
 
     }
-    public interface IWeChatPushRepo : IRepository<WeChatPush>
+    public interface IUserAccountRepo : IRepository<EM_User_Account>
     {
     }
 }

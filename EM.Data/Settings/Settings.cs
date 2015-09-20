@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Topuc22Top.Data
+namespace EM.Data
 {
     public static class Settings
     {

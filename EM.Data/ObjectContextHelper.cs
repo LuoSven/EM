@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Topuc22Top.Model.Entities;
+using EM.Model.Entities;
 
-namespace Topuc22Top.Data
+namespace EM.Data
 {
     /// <summary>
     /// ObjectContextHelper classes. 
@@ -12,7 +12,7 @@ namespace Topuc22Top.Data
     public class ObjectContextHelper
     {
         #region Private  Object Context Properties
-        private static ObjectContextManager<TopucDB> TopUObjectContextManager
+        private static ObjectContextManager<EMDB> TopUObjectContextManager
         {
             get;
             set;
@@ -24,7 +24,7 @@ namespace Topuc22Top.Data
 
         private static void InstantiateTopUObjectContextManger()
         {
-            TopUObjectContextManager = new AspNetObjectContextManager<TopucDB>();
+            TopUObjectContextManager = new AspNetObjectContextManager<EMDB>();
         }
 
         #endregion
@@ -33,7 +33,7 @@ namespace Topuc22Top.Data
         /// <summary>
         /// Gets an object context
         /// </summary>
-        public static TopucDB TopUObjectContext
+        public static EMDB TopUObjectContext
         {
             get
             {

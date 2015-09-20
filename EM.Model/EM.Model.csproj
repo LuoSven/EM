@@ -50,15 +50,51 @@
   <ItemGroup>
     <Compile Include="ActionPermission.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Entities\EMDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EMDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EMDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_User_Account.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_User_Right.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="Entities\EMDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EMDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\EMDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMDB.edmx</DependentUpon>
+      <LastGenOutput>EMDB.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Entities\EMDB.edmx.diagram">
+      <DependentUpon>EMDB.edmx</DependentUpon>
+    </None>
+    <None Include="Entities\EMDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMDB.edmx</DependentUpon>
+      <LastGenOutput>EMDB.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

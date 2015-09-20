@@ -90,7 +90,6 @@
     <Compile Include="Sitemap\SiteMapHelper.cs" />
     <Compile Include="Sitemap\OurUrl.cs" />
     <Compile Include="SmsHelper.cs" />
-    <Compile Include="ThirdLogOnHelper.cs" />
     <Compile Include="TopucDate.cs" />
     <Compile Include="UpLoadHelper.cs" />
     <Compile Include="ResourceHelper.cs" />

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Topuc22Top.Model.Entities;
+using EM.Model.Entities;
 
-namespace Topuc22Top.Data.Infrastructure
+namespace EM.Data.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IDatabaseFactory databaseFactory;
-        private TopucDB dataContext;
+        private EMDB dataContext;
 
         public event EventHandler<SavedEventArgs> Saved;
 
@@ -19,7 +19,7 @@ namespace Topuc22Top.Data.Infrastructure
             this.databaseFactory = databaseFactory;
         }
 
-        protected TopucDB DataContext
+        protected EMDB DataContext
         {
             get { return dataContext ?? (dataContext = databaseFactory.Get()); }
         }

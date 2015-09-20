@@ -5,7 +5,6 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Reflection;
-using Topuc.Framework.Cache.CacheProvider;
 using System.Web.UI;
 namespace EMTop.Common
 {
@@ -18,11 +17,12 @@ namespace EMTop.Common
         /// <returns></returns>
         public static string GetEnumDescription(this object e)
         {
-            object objDesc = DataCache.GetCache(e.ToString());
-            if (objDesc != null)
-            {
-                return objDesc.ToString();//获得缓存
-            }
+            
+            //object objDesc = DataCache.GetCache(e.ToString());
+            //if (objDesc != null)
+            //{
+            //    return objDesc.ToString();//获得缓存
+            //}
             //获取字段信息
             FieldInfo[] ms = e.GetType().GetFields();
 
@@ -39,7 +39,7 @@ namespace EMTop.Common
                     DescriptionAttribute dscript = attr as DescriptionAttribute;
                     if (dscript != null)
                     {
-                        DataCache.SetCache(e.ToString(), dscript.Description);//设置缓存
+                        //DataCache.SetCache(e.ToString(), dscript.Description);//设置缓存
                         return dscript.Description;
                     }
                 }

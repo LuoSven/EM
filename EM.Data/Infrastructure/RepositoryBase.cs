@@ -5,14 +5,14 @@ using System.Text;
 using System.Data.Entity;
 using System.Data;
 using System.Linq.Expressions;
-using Topuc22Top.Data;
-using Topuc22Top.Model.Entities;
+using EM.Data;
+using EM.Model.Entities;
 using System.Threading.Tasks;
-namespace Topuc22Top.Data.Infrastructure
+namespace EM.Data.Infrastructure
 {
     public abstract class RepositoryBase<T> where T : class
     {
-        private TopucDB dataContext;
+        private EMDB dataContext;
         private readonly DbSet<T> dbset;
 
         protected RepositoryBase(IDatabaseFactory databaseFactory)
@@ -27,7 +27,7 @@ namespace Topuc22Top.Data.Infrastructure
             private set;
         }
 
-        protected TopucDB DataContext
+        protected EMDB DataContext
         {
             get { return dataContext ?? (dataContext = DatabaseFactory.Get()); }
         }

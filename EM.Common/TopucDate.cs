@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
-using EMTop.Utils;
 
 namespace EMTop.Common
 {
@@ -192,30 +191,6 @@ namespace EMTop.Common
             }
         }
 
-        /// <summary>
-        /// 初始化月份选择列表
-        /// </summary>
-        /// <param name="ddl">选择列表</param>
-        /// <param name="item">默认初始文本</param>
-        /// <param name="value">默认初始值</param>
-        /// <param name="selectValue">选中值</param>
-        public static void BindMonth(DropDownList ddl, string value, string defaultValue)
-        {
-
-            ListItem li0 = new ListItem(defaultValue, value);
-            ddl.Items.Add(li0);
-            string mon = string.Empty;
-            for (int i = 0; i < 12; i++)
-            {
-                mon = StringUtil.FillMon(i + 1);
-                ListItem li = new ListItem((i + 1).ToString(), mon);
-                ddl.Items.Add(li);
-                if (mon == defaultValue)
-                {
-                    ddl.SelectedIndex = i;
-                }
-            }
-        }
 
         public static string BuildDateDiff(DateTime startDate, DateTime endDate)
         {

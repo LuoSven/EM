@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace Topuc22Top.Data.HttpModules
+namespace EM.Data.HttpModules
 {
     /// <summary>
     /// Disposes an ObjectContext created by an AspNetObjectContextManager instance.

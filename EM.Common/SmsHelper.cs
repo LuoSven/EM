@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Topuc.Framework.Logger;
 
 namespace EMTop.Common
 {
@@ -49,7 +48,6 @@ namespace EMTop.Common
                         alertMsg = "发送失败，返回代码：104";
                         break;
                 }
-                AppLogger.Info("发送短信到" + mobile + " 内容：" + content64 + " 结果：" + alertMsg);
                 return ret;
             }
 
@@ -93,7 +91,6 @@ namespace EMTop.Common
                         alertMsg = "发送失败，返回代码：104";
                         break;
                 }
-                AppLogger.Info("发送短信到" + mobile + " 内容：" + content64 + " 结果：" + alertMsg);
                 return ret;
             }
 
@@ -162,8 +159,6 @@ namespace EMTop.Common
                 {
                     System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
                     var responseJson = sr.ReadToEnd();
-
-                    AppLogger.Info("发送短信到" + mobile + " 内容：" + text + " 结果：" + responseJson);
                 }
                 return "";
             }

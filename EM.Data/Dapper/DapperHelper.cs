@@ -8,7 +8,7 @@ using System;
 using System.Data;
 using System.Text;
 
-namespace Topuc22Top.Data.Dapper
+namespace EM.Data.Dapper
 {
     public static class DapperHelper
     {

@@ -6,7 +6,7 @@ using System.Web;
 using System.Diagnostics;
 using System.Data.Entity;
 
-namespace Topuc22Top.Data
+namespace EM.Data
 {
     public sealed class AspNetObjectContextManager<T> : ObjectContextManager<T> where T : DbContext, new()
     {

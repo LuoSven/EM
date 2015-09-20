@@ -10,7 +10,6 @@ namespace EM.Web.Controllers
     {
         //
         // GET: /Account/
-
         public ActionResult Index()
         {
             return View();

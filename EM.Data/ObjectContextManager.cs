@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 
-namespace Topuc22Top.Data
+namespace EM.Data
 {
     public abstract class ObjectContextManager<T> where T : DbContext, new()
     {

@@ -4,11 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Topuc22Top.Data.Infrastructure;
+using EM.Data.Infrastructure;
 using Dapper;
-using Topuc22Top.Data;
+using EM.Data;
 
-namespace Topuc22Top.Data.Dapper
+namespace EM.Data.Dapper
 {
     public static class MyDapperExtensions
     {
