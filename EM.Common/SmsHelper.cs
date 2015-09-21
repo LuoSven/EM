@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     public class SmsHelper
     {

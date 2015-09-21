@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Security;
 using WeChat;
 
-namespace EMTop.Common.WeChatHelper
+namespace EM.Common.WeChatHelper
 {
     public class WeChatHelper
     {

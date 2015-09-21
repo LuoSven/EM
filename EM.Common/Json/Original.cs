@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EMTop.Common.Json
+namespace EM.Common.Json
 {
     public class Original
     {

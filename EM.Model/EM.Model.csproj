@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EMDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EM_System_Program.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\EM_User_Account.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>

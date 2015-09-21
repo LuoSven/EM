@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     /// <summary>
     /// Topuc日期相关方法

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EMTop.Common.WeChatHelper
+namespace EM.Common.WeChatHelper
 {
     public abstract class WeChatContentBase
     {

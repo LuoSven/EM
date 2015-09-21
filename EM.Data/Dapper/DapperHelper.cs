@@ -31,7 +31,7 @@ namespace EM.Data.Dapper
             return connection;
         }
 
-        public static SqlConnection Get22Connection()
+        public static SqlConnection GetConnection()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DapperConnection"].ConnectionString;
             var connection = new SqlConnection(connectionString);
@@ -40,18 +40,18 @@ namespace EM.Data.Dapper
         }
 
         #region 查询方法
-        public static async Task<IEnumerable<T>> SqlQuery22Async<T>(string Sql, object param = null)
+        public static async Task<IEnumerable<T>> SqlQueryAsync<T>(string Sql, object param = null)
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 string sql = Sql;
                 var list = await conn.QueryAsync<T>(sql, param);
                 return list;
             }
         }
-        public static IEnumerable<T> SqlQuery22<T>(string Sql, object param = null)
+        public static IEnumerable<T> SqlQuery<T>(string Sql, object param = null)
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 string sql = Sql;
                 var list = conn.Query<T>(sql, param);
@@ -63,9 +63,9 @@ namespace EM.Data.Dapper
         #region 执行方法
 
         #region 同步
-        public static int SqlExecute22(string Sql, object param = null)
+        public static int SqlExecute(string Sql, object param = null)
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 string sql = Sql;
                 var result = conn.Execute(sql, param);
@@ -79,10 +79,10 @@ namespace EM.Data.Dapper
         /// <param name="Sqls"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static int[] SqlExecute22WithTransaction(List<Tuple<string, object>> Sqls)//string Sql, object param = null
+        public static int[] SqlExecuteWithTransaction(List<Tuple<string, object>> Sqls)//string Sql, object param = null
         {
             if (Sqls.Count != 0)
-                using (var conn = DapperHelper.Get22Connection())
+                using (var conn = DapperHelper.GetConnection())
                 {
                     var trans = conn.BeginTransaction();
                     var FirstSql = Sqls[0].Item1;
@@ -107,7 +107,7 @@ namespace EM.Data.Dapper
         public static bool Update<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
             where T : class
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 var result = conn.Update(entityToUpdate, transaction, commandTimeout);
                 return result;
@@ -119,7 +119,7 @@ namespace EM.Data.Dapper
         public static int Inert<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
             where T : class
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 var result = conn.Insert(entityToUpdate, transaction, commandTimeout);
                 return (int)result;
@@ -130,9 +130,9 @@ namespace EM.Data.Dapper
 
         #region 异步
 
-        public static async Task<int> SqlExecute22Async(string Sql, object param = null)
+        public static async Task<int> SqlExecuteAsync(string Sql, object param = null)
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 string sql = Sql;
                 var result = await conn.ExecuteAsync(sql, param);
@@ -144,7 +144,7 @@ namespace EM.Data.Dapper
         public static async Task<int> InsertAsync<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
     where T : class
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 var result = await conn.InsertAsync(entityToUpdate, transaction, commandTimeout);
                 return (int)result;
@@ -154,7 +154,7 @@ namespace EM.Data.Dapper
         public static   async Task<bool> UpdateAsync<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
      where T : class
         {
-            using (var conn = DapperHelper.Get22Connection())
+            using (var conn = DapperHelper.GetConnection())
             {
                 var result =await conn.UpdateAsync(entityToUpdate, transaction, commandTimeout);
                 return result;
@@ -166,10 +166,10 @@ namespace EM.Data.Dapper
         /// <param name="Sqls"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static async Task<int[]> SqlExecute22AsyncWithTransaction(List<Tuple<string, object>> Sqls)//string Sql, object param = null
+        public static async Task<int[]> SqlExecuteAsyncWithTransaction(List<Tuple<string, object>> Sqls)//string Sql, object param = null
         {
             if (Sqls.Count != 0)
-                using (var conn = DapperHelper.Get22Connection())
+                using (var conn = DapperHelper.GetConnection())
                 {
                     var trans = conn.BeginTransaction();
                     var FirstSql = Sqls[0].Item1;

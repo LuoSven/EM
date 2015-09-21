@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EMTop.Common.SmsServiceReference {
+namespace EM.Common.SmsServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -26,13 +26,13 @@ namespace EMTop.Common.SmsServiceReference {
         private int falseCountField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private EMTop.Common.SmsServiceReference.ArrayOfString falseIDsField;
+        private EM.Common.SmsServiceReference.ArrayOfString falseIDsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int successCountField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private EMTop.Common.SmsServiceReference.ArrayOfString successIDsField;
+        private EM.Common.SmsServiceReference.ArrayOfString successIDsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -58,7 +58,7 @@ namespace EMTop.Common.SmsServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public EMTop.Common.SmsServiceReference.ArrayOfString falseIDs {
+        public EM.Common.SmsServiceReference.ArrayOfString falseIDs {
             get {
                 return this.falseIDsField;
             }
@@ -84,7 +84,7 @@ namespace EMTop.Common.SmsServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public EMTop.Common.SmsServiceReference.ArrayOfString successIDs {
+        public EM.Common.SmsServiceReference.ArrayOfString successIDs {
             get {
                 return this.successIDsField;
             }
@@ -353,11 +353,11 @@ namespace EMTop.Common.SmsServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        EMTop.Common.SmsServiceReference.StatusDO getStatus(string in0, string in1);
+        EM.Common.SmsServiceReference.StatusDO getStatus(string in0, string in1);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        System.Threading.Tasks.Task<EMTop.Common.SmsServiceReference.StatusDO> getStatusAsync(string in0, string in1);
+        System.Threading.Tasks.Task<EM.Common.SmsServiceReference.StatusDO> getStatusAsync(string in0, string in1);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
@@ -385,44 +385,44 @@ namespace EMTop.Common.SmsServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        string send3(string in0, string in1, string in2, EMTop.Common.SmsServiceReference.MessageDO[] in3);
+        string send3(string in0, string in1, string in2, EM.Common.SmsServiceReference.MessageDO[] in3);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        System.Threading.Tasks.Task<string> send3Async(string in0, string in1, string in2, EMTop.Common.SmsServiceReference.MessageDO[] in3);
+        System.Threading.Tasks.Task<string> send3Async(string in0, string in1, string in2, EM.Common.SmsServiceReference.MessageDO[] in3);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        string send2(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2);
+        string send2(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        System.Threading.Tasks.Task<string> send2Async(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2);
+        System.Threading.Tasks.Task<string> send2Async(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        string sendSmsByUC(string in0, string in1, EMTop.Common.SmsServiceReference.MessageUcDO[] in2);
+        string sendSmsByUC(string in0, string in1, EM.Common.SmsServiceReference.MessageUcDO[] in2);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        System.Threading.Tasks.Task<string> sendSmsByUCAsync(string in0, string in1, EMTop.Common.SmsServiceReference.MessageUcDO[] in2);
+        System.Threading.Tasks.Task<string> sendSmsByUCAsync(string in0, string in1, EM.Common.SmsServiceReference.MessageUcDO[] in2);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        string send4(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2);
+        string send4(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="out")]
-        System.Threading.Tasks.Task<string> send4Async(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2);
+        System.Threading.Tasks.Task<string> send4Async(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface SmsServicePortTypeChannel : EMTop.Common.SmsServiceReference.SmsServicePortType, System.ServiceModel.IClientChannel {
+    public interface SmsServicePortTypeChannel : EM.Common.SmsServiceReference.SmsServicePortType, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class SmsServicePortTypeClient : System.ServiceModel.ClientBase<EMTop.Common.SmsServiceReference.SmsServicePortType>, EMTop.Common.SmsServiceReference.SmsServicePortType {
+    public partial class SmsServicePortTypeClient : System.ServiceModel.ClientBase<EM.Common.SmsServiceReference.SmsServicePortType>, EM.Common.SmsServiceReference.SmsServicePortType {
         
         public SmsServicePortTypeClient() {
         }
@@ -443,11 +443,11 @@ namespace EMTop.Common.SmsServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public EMTop.Common.SmsServiceReference.StatusDO getStatus(string in0, string in1) {
+        public EM.Common.SmsServiceReference.StatusDO getStatus(string in0, string in1) {
             return base.Channel.getStatus(in0, in1);
         }
         
-        public System.Threading.Tasks.Task<EMTop.Common.SmsServiceReference.StatusDO> getStatusAsync(string in0, string in1) {
+        public System.Threading.Tasks.Task<EM.Common.SmsServiceReference.StatusDO> getStatusAsync(string in0, string in1) {
             return base.Channel.getStatusAsync(in0, in1);
         }
         
@@ -475,35 +475,35 @@ namespace EMTop.Common.SmsServiceReference {
             return base.Channel.getPackageFormatAsync(in0, in1);
         }
         
-        public string send3(string in0, string in1, string in2, EMTop.Common.SmsServiceReference.MessageDO[] in3) {
+        public string send3(string in0, string in1, string in2, EM.Common.SmsServiceReference.MessageDO[] in3) {
             return base.Channel.send3(in0, in1, in2, in3);
         }
         
-        public System.Threading.Tasks.Task<string> send3Async(string in0, string in1, string in2, EMTop.Common.SmsServiceReference.MessageDO[] in3) {
+        public System.Threading.Tasks.Task<string> send3Async(string in0, string in1, string in2, EM.Common.SmsServiceReference.MessageDO[] in3) {
             return base.Channel.send3Async(in0, in1, in2, in3);
         }
         
-        public string send2(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2) {
+        public string send2(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2) {
             return base.Channel.send2(in0, in1, in2);
         }
         
-        public System.Threading.Tasks.Task<string> send2Async(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2) {
+        public System.Threading.Tasks.Task<string> send2Async(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2) {
             return base.Channel.send2Async(in0, in1, in2);
         }
         
-        public string sendSmsByUC(string in0, string in1, EMTop.Common.SmsServiceReference.MessageUcDO[] in2) {
+        public string sendSmsByUC(string in0, string in1, EM.Common.SmsServiceReference.MessageUcDO[] in2) {
             return base.Channel.sendSmsByUC(in0, in1, in2);
         }
         
-        public System.Threading.Tasks.Task<string> sendSmsByUCAsync(string in0, string in1, EMTop.Common.SmsServiceReference.MessageUcDO[] in2) {
+        public System.Threading.Tasks.Task<string> sendSmsByUCAsync(string in0, string in1, EM.Common.SmsServiceReference.MessageUcDO[] in2) {
             return base.Channel.sendSmsByUCAsync(in0, in1, in2);
         }
         
-        public string send4(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2) {
+        public string send4(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2) {
             return base.Channel.send4(in0, in1, in2);
         }
         
-        public System.Threading.Tasks.Task<string> send4Async(string in0, string in1, EMTop.Common.SmsServiceReference.MessageDO[] in2) {
+        public System.Threading.Tasks.Task<string> send4Async(string in0, string in1, EM.Common.SmsServiceReference.MessageDO[] in2) {
             return base.Channel.send4Async(in0, in1, in2);
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     public class CookieHelper
     {
@@ -13,59 +13,9 @@ namespace EMTop.Common
         {
             //
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p_CookieName"></param>
-        /// <param name="p_CookieObject"></param>
-        /// <param name="p_Expires"></param>
-        public static void SetObjectCookie(string p_CookieName, Object p_CookieObject, DateTime? p_Expires)
-        {
-            HttpCookie cookie;
-            if (HttpContext.Current.Request.Cookies[p_CookieName] != null)
-            {
-                cookie = HttpContext.Current.Request.Cookies[p_CookieName];
-            }
-            else
-            {
-                cookie = new HttpCookie(p_CookieName);
-            }
-            string cookieValue = Utils.ObjectStrConvert.ObjectToBase64Str(p_CookieObject);
-            cookie.Values.Add("ObjectKey", cookieValue);
-            if (p_Expires.HasValue)
-            {
-                cookie.Expires = p_Expires.Value;
-            }
-            else
-            {
-                cookie.Expires = DateTime.MaxValue;
-            }
-            if (HttpContext.Current.Request.Cookies[p_CookieName] != null)
-            {
-                HttpContext.Current.Response.Cookies.Set(cookie);
-            }
-            else
-            {
-                HttpContext.Current.Response.Cookies.Add(cookie);
-            }
-        }
 
-        /// <summary>
-        /// 得到指定Cookie项中保存的对象列表
-        /// </summary>
-        /// <param name="p_CookieName">Cookie项名字</param>
-        /// <param name="ItemObjType">子项对象类型</param>
-        /// <returns></returns>
-        public static T GetObjectFromCookie<T>(string p_CookieName)
-        {
-            HttpCookie cookie;
-            if (HttpContext.Current.Request.Cookies[p_CookieName] != null)
-            {
-                cookie = HttpContext.Current.Request.Cookies[p_CookieName];
-                return (T)Utils.ObjectStrConvert.Base64StrToObject(cookie.Values["ObjectKey"], typeof(T));
-            }
-            return default(T);
-        }
+        public const string AccountKey = "asd";
+ 
 
         /// <summary>
         /// 清除指定Cookie的所有子项

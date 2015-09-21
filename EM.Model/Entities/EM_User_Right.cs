@@ -16,16 +16,12 @@ namespace EM.Model.Entities
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public string ControllerName { get; set; }
-        public string ActionName { get; set; }
-        public Nullable<bool> HasInfluence { get; set; }
-        public int RightType { get; set; }
-        public string ControllerDescription { get; set; }
-        public string ActionDescription { get; set; }
-        public int ParentId { get; set; }
+        public bool Permit { get; set; }
         public System.DateTime ModifeTime { get; set; }
         public System.DateTime CreateTime { get; set; }
+        public int ProgramId { get; set; }
     
         public virtual EM_User_Account EM_User_Account { get; set; }
+        public virtual EM_System_Program EM_System_Program { get; set; }
     }
 }

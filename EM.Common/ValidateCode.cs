@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     /// <summary>     
     /// From http://blog.csdn.net/dcrenl/article/details/7232760  

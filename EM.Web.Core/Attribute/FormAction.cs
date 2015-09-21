@@ -10,9 +10,9 @@ using System.Security.Principal;
 namespace EM.Web.Core.Attribute
 {
     /// <summary>
-    /// 表示Action是页面
+    /// 表示Action是动作，比如添加，删除，修改记录，提交表单的接口
     /// </summary>
-    public class ViewActionAttribute : System.Attribute
+    public class FormAction : System.Attribute
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web.UI;
-namespace EMTop.Common
+namespace EM.Common
 {
     public static class ExtensionHelper
     {

@@ -4,7 +4,22 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EMDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EMDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EM_System_Program">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ControllerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActionName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActionDescription" Type="nvarchar" MaxLength="500" />
+          <Property Name="ControllerDescription" Type="nvarchar" MaxLength="500" />
+          <Property Name="RightType" Type="int" Nullable="false" />
+          <Property Name="SystemType" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="ModifeTime" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreateTime" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="EM_User_Account">
           <Key>
             <PropertyRef Name="UserId" />
@@ -25,18 +40,29 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="ControllerName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ActionName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="HasInfluence" Type="bit" />
-          <Property Name="RightType" Type="int" Nullable="false" />
-          <Property Name="ControllerDescription" Type="nvarchar" MaxLength="500" />
-          <Property Name="ActionDescription" Type="nvarchar" MaxLength="500" />
-          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="ProgramId" Type="int" Nullable="false" />
+          <Property Name="Permit" Type="bit" Nullable="false" />
           <Property Name="ModifeTime" Type="datetime" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_EM_System_Program_EM_User_Right">
+          <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EM_System_Program">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EM_User_Right">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
-          <End Role="EM_User_Account" Type="Self.EM_User_Account" Multiplicity="1" />
+          <End Role="EM_User_Account" Type="Self.EM_User_Account" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EM_User_Account">
@@ -48,15 +74,19 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EMDBModelStoreContainer">
+          <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
+            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
+            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
+          </AssociationSet>
           <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
             <End Role="EM_User_Account" EntitySet="EM_User_Account" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EMDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -81,16 +111,12 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="ControllerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ActionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HasInfluence" Type="Boolean" />
-          <Property Name="RightType" Type="Int32" Nullable="false" />
-          <Property Name="ControllerDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ActionDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Permit" Type="Boolean" Nullable="false" />
           <Property Name="ModifeTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="EM_User_Account" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Right" ToRole="EM_User_Account" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EM_System_Program" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_User_Right" ToRole="EM_System_Program" />
         </EntityType>
         <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
           <End Role="EM_User_Account" Type="Self.EM_User_Account" Multiplicity="1" />
@@ -111,7 +137,42 @@
             <End Role="EM_User_Account" EntitySet="EM_User_Account" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
+          <EntitySet Name="EM_System_Program" EntityType="EMDBModel.EM_System_Program" />
+          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="EMDBModel.FK_EM_System_Program_EM_User_Right">
+            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
+            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="EM_System_Program">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ControllerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ActionDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RightType" Type="Int32" Nullable="false" />
+          <Property Name="SystemType" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="ModifeTime" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EM_User_Right" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_System_Program" ToRole="EM_User_Right" />
+        </EntityType>
+        <Association Name="FK_EM_System_Program_EM_User_Right">
+          <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EMDBModel.EM_User_Right" Role="EM_User_Right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EM_System_Program">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EM_User_Right">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -136,17 +197,28 @@
           <EntitySetMapping Name="EM_User_Right">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Right">
               <MappingFragment StoreEntitySet="EM_User_Right">
+                <ScalarProperty Name="Permit" ColumnName="Permit" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="HasInfluence" ColumnName="HasInfluence" />
+                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_System_Program">
+            <EntityTypeMapping TypeName="EMDBModel.EM_System_Program">
+              <MappingFragment StoreEntitySet="EM_System_Program">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="SystemType" ColumnName="SystemType" />
                 <ScalarProperty Name="RightType" ColumnName="RightType" />
                 <ScalarProperty Name="ControllerDescription" ColumnName="ControllerDescription" />
                 <ScalarProperty Name="ActionDescription" ColumnName="ActionDescription" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

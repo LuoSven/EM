@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using System.Web;
 using System.IO;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     public class UpLoadHelper
     {

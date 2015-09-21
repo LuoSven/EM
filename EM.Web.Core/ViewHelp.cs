@@ -1,4 +1,5 @@
-﻿using EM.Model;
+﻿using EM.Data.Repositories;
+using EM.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using EM.Data.Infrastructure;
+using EM.Common;
+using Topuc22Top.Common;
 
 namespace EM.Web.Core
 {
@@ -43,6 +47,22 @@ namespace EM.Web.Core
                  }
              }
              return result;
+         }
+
+         public static int GetUserId()
+         {
+             var accountId = CookieHelper.GetCookie(CookieHelper.AccountKey);
+             accountId = Util.Decrypt(accountId);
+             int Id = 0;
+             int.TryParse(accountId, out Id);
+             return Id;
+         }
+
+         public static bool HasRight(string ControllerName, string ActionName)
+         {
+             IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
+             var Id=GetUserId();
+             return userRightRepo.HasRight(Id, ControllerName, ActionName);
          }
     }
 }

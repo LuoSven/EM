@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="EMDBModel.EM_User_Account" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="EMDBModel.EM_User_Right" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="EMDBModel.FK_EM_UserAccount_EM_UserRight_UserId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EMDBModel.EM_System_Program" Width="1.5" PointX="0.75" PointY="5.375" />
+        <AssociationConnector Association="EMDBModel.FK_EM_System_Program_EM_User_Right" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

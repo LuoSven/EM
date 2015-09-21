@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     /// <summary>压缩简历RAR
     /// 

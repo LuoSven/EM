@@ -105,7 +105,8 @@
     <Compile Include="ObjectContextHelper.cs" />
     <Compile Include="ObjectContextManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\WeChatPushRepo.cs" />
+    <Compile Include="Repositories\UserRightRepo.cs" />
+    <Compile Include="Repositories\UserAccountRepo.cs" />
     <Compile Include="Settings\Settings.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
 
-namespace EMTop.Common.Json
+namespace EM.Common.Json
 {
     /// <summary>
     ///Json数据与对象的转换

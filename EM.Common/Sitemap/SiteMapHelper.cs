@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     public static class SiteMapHelper
     {

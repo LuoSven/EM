@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     public static class PageHelper
     {

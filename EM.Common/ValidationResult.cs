@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EMTop.Common
+namespace EM.Common
 {
     /// <summary>
     /// Describes the result of a validation of a potential change through a business service.
