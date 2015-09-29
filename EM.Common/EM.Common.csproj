@@ -102,32 +102,6 @@
     <Compile Include="WeChatHelper\WeChatNotifyHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetDimension.Weibo\NetDimension.Weibo.csproj">
-      <Project>{54e79004-8f60-46e2-be5c-cf824a3fc461}</Project>
-      <Name>NetDimension.Weibo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QConnectSDK\QConnectSDK.csproj">
-      <Project>{780c452e-4832-46ca-91a0-efc62d92e882}</Project>
-      <Name>QConnectSDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Renren.API.SDK\Renren.API.SDK.csproj">
-      <Project>{4a7ff62e-e498-467c-90d6-805bfb723002}</Project>
-      <Name>Renren.API.SDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Topuc.Framework.Cache\Topuc.Framework.Cache.csproj">
-      <Project>{EB4F7A70-A793-45A3-A795-7856DF08707C}</Project>
-      <Name>Topuc.Framework.Cache</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Topuc.Framework.Logger\Topuc.Framework.Logger.csproj">
-      <Project>{CFB0B83A-DB95-4E8D-810A-724FB32FC0B7}</Project>
-      <Name>Topuc.Framework.Logger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Topuc22Top.Utils\Topuc22Top.Utils.csproj">
-      <Project>{C407761F-4214-4DA7-99DA-6C9F1FC44A4C}</Project>
-      <Name>Topuc22Top.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>

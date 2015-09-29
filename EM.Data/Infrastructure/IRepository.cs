@@ -23,5 +23,7 @@ namespace EM.Data.Infrastructure
         IEnumerable<T> GetAll();
         IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
         IEnumerable<T> GetAllLazy();
+
+        int SaveChanges();
     }
 }

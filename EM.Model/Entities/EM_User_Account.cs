@@ -24,7 +24,6 @@ namespace EM.Model.Entities
         public string LoginEmaill { get; set; }
         public string Password { get; set; }
         public string Mobile { get; set; }
-        public string LoginInfo { get; set; }
         public int Status { get; set; }
         public System.DateTime CreateTime { get; set; }
         public System.DateTime ModifyTime { get; set; }

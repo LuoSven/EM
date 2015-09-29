@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using EM.Data;
 using EM.Model.Entities;
 using System.Threading.Tasks;
+using System.Data.Entity.Validation;
 namespace EM.Data.Infrastructure
 {
     public abstract class RepositoryBase<T> where T : class
@@ -34,6 +35,7 @@ namespace EM.Data.Infrastructure
         public virtual void Add(T entity)
         {
             dbset.Add(entity);
+          
         }
         //新增方法
         public virtual void AddAll(IEnumerable<T> entities)
@@ -102,6 +104,20 @@ namespace EM.Data.Infrastructure
         public virtual IEnumerable<T> GetAllLazy()
         {
             return dbset;
+        }
+
+        public virtual int SaveChanges()
+        {
+            try
+            {
+                return dataContext.SaveChanges();
+                // 写数据库
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                throw dbEx;
+            }
+
         }
 
 

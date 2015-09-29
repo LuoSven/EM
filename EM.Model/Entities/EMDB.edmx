@@ -29,10 +29,20 @@
           <Property Name="LoginEmaill" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="20" />
-          <Property Name="LoginInfo" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="ModifyTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_User_Login_Record">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="LoginTime" Type="datetime" />
+          <Property Name="LoginInfo" Type="nvarchar" MaxLength="512" />
+          <Property Name="IsLogin" Type="bit" />
+          <Property Name="ErrorInfo" Type="nvarchar" MaxLength="512" />
         </EntityType>
         <EntityType Name="EM_User_Right">
           <Key>
@@ -76,6 +86,7 @@
         <EntityContainer Name="EMDBModelStoreContainer">
           <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
@@ -99,7 +110,6 @@
           <Property Name="LoginEmaill" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="LoginInfo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -142,6 +152,11 @@
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
+          <EntitySet Name="EM_User_Login_Record" EntityType="EMDBModel.EM_User_Login_Record" />
+          <AssociationSet Name="FK_EM_User_Login_Record_EM_User_Login_Record" Association="EMDBModel.FK_EM_User_Login_Record_EM_User_Login_Record">
+            <End Role="EM_User_Login_Record" EntitySet="EM_User_Login_Record" />
+            <End Role="EM_User_Login_Record1" EntitySet="EM_User_Login_Record" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -173,6 +188,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EM_User_Login_Record">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+          <Property Name="LoginInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="IsLogin" Type="Boolean" />
+          <Property Name="ErrorInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_EM_User_Login_Record_EM_User_Login_Record">
+          <End Type="EMDBModel.EM_User_Login_Record" Role="EM_User_Login_Record" Multiplicity="1" />
+          <End Type="EMDBModel.EM_User_Login_Record" Role="EM_User_Login_Record1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EM_User_Login_Record">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EM_User_Login_Record1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -187,7 +225,6 @@
                 <ScalarProperty Name="LoginEmaill" ColumnName="LoginEmaill" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="LoginInfo" ColumnName="LoginInfo" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
@@ -219,6 +256,18 @@
                 <ScalarProperty Name="ActionName" ColumnName="ActionName" />
                 <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_User_Login_Record">
+            <EntityTypeMapping TypeName="EMDBModel.EM_User_Login_Record">
+              <MappingFragment StoreEntitySet="EM_User_Login_Record">
+                <ScalarProperty Name="ErrorInfo" ColumnName="ErrorInfo" />
+                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
+                <ScalarProperty Name="LoginInfo" ColumnName="LoginInfo" />
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -28,5 +28,6 @@ namespace EM.Model.Entities
         public virtual DbSet<EM_User_Account> EM_User_Account { get; set; }
         public virtual DbSet<EM_User_Right> EM_User_Right { get; set; }
         public virtual DbSet<EM_System_Program> EM_System_Program { get; set; }
+        public virtual DbSet<EM_User_Login_Record> EM_User_Login_Record { get; set; }
     }
 }

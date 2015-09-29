@@ -10,16 +10,22 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using EM.Web.Filters;
 using EM.Web.Models;
+using EM.Common;
+using EM.Web.Core.Base
+using EM.Data.Repositories;
 
 namespace EM.Web.Controllers
 {
-    [Authorize]
-    [InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //
         // GET: /Account/Login
+        private readonly IUserAccountRepo userAccountRepo;
 
+        public AccountController(IUserAccountRepo userAccountRepo)
+        {
+            this.userAccountRepo=userAccountRepo;
+        }
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -35,8 +41,12 @@ namespace EM.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+
+
+            if (ModelState.IsValid )
             {
+                
+
                 return RedirectToLocal(returnUrl);
             }
 

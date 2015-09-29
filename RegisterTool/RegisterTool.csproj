@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7F7B1A38-F0ED-4F4F-8EA2-BD34A760F5F3}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{AB1F7353-BB6E-498B-84BE-F31AA91B6F59}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EM.Model</RootNamespace>
-    <AssemblyName>EM.Model</AssemblyName>
+    <RootNamespace>RegisterTool</RootNamespace>
+    <AssemblyName>RegisterTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,78 +36,73 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionPermission.cs" />
-    <Compile Include="Class1.cs" />
-    <Compile Include="Entities\EMDB.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.Context.tt</DependentUpon>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Entities\EMDB.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.tt</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Entities\EMDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_System_Program.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_User_Account.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_User_Login_Record.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_User_Right.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VMs\AccountVMs.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Entities\EMDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EMDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Entities\EMDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EMDB.edmx</DependentUpon>
-      <LastGenOutput>EMDB.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Entities\EMDB.edmx.diagram">
-      <DependentUpon>EMDB.edmx</DependentUpon>
-    </None>
-    <None Include="Entities\EMDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EMDB.edmx</DependentUpon>
-      <LastGenOutput>EMDB.cs</LastGenOutput>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <ProjectReference Include="..\EM.Common\EM.Common.csproj">
+      <Project>{b3fcb199-48a0-4aaa-8539-548111bd8b43}</Project>
+      <Name>EM.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EM.Data\EM.Data.csproj">
+      <Project>{832ab184-ac43-4b01-84bf-64bcfdd055f2}</Project>
+      <Name>EM.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EM.Model\EM.Model.csproj">
+      <Project>{7f7b1a38-f0ed-4f4f-8ea2-bd34a760f5f3}</Project>
+      <Name>EM.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EM.Utils\EM.Utils.csproj">
+      <Project>{ca1d21bd-aa64-4045-8ef1-1791220bf0a0}</Project>
+      <Name>EM.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿@model EM.Web.Models.LoginModel
+﻿@model EM.Models.VMs.AccountLoginVM
 
 @{
     ViewBag.Title = "登录";
@@ -9,13 +9,12 @@
 </hgroup>
 
 <section id="loginForm">
-<h2>使用本地帐户登录。</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary(true) 
 
     <fieldset>
-        <legend>“登录”表单</legend>
+        <legend>“登录”</legend>
         <ol>
             <li>
                 @Html.LabelFor(m => m.UserName)
@@ -34,15 +33,7 @@
         </ol>
         <input type="submit" value="登录" />
     </fieldset>
-    <p>
-        @Html.ActionLink("注册", "Register") 如果你没有帐户。
-    </p>
 }
-</section>
-
-<section class="social" id="socialLoginForm">
-    <h2>使用其他服务登录。</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
 </section>
 
 @section Scripts {

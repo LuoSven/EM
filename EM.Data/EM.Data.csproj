@@ -52,11 +52,13 @@
     <Reference Include="Dapper.Rainbow">
       <HintPath>..\packages\Dapper.Rainbow.0.1.2\lib\net40\Dapper.Rainbow.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="LinqKit">
       <HintPath>..\Dependencies\LinqKit.dll</HintPath>
@@ -110,12 +112,17 @@
     <Compile Include="Settings\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EM.Model\EM.Model.csproj">
       <Project>{7f7b1a38-f0ed-4f4f-8ea2-bd34a760f5f3}</Project>
       <Name>EM.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EM.Utils\EM.Utils.csproj">
+      <Project>{ca1d21bd-aa64-4045-8ef1-1791220bf0a0}</Project>
+      <Name>EM.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Topuc.Framework.Cache\Topuc.Framework.Cache.csproj">
       <Project>{eb4f7a70-a793-45a3-a795-7856df08707c}</Project>
