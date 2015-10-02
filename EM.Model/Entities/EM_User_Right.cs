@@ -15,13 +15,13 @@ namespace EM.Model.Entities
     public partial class EM_User_Right
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public int RoleId { get; set; }
+        public int ProgramId { get; set; }
         public bool Permit { get; set; }
         public System.DateTime ModifeTime { get; set; }
         public System.DateTime CreateTime { get; set; }
-        public int ProgramId { get; set; }
     
-        public virtual EM_User_Account EM_User_Account { get; set; }
         public virtual EM_System_Program EM_System_Program { get; set; }
+        public virtual EM_User_Role EM_User_Role { get; set; }
     }
 }

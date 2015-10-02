@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EM.Common;
+using EM.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -63,8 +65,29 @@ namespace EM.Models.VMs
     }
 
 
-    public class LoginResult
+    public class AccountVm
     {
+        public AccountVm()
+        {
+
+        }
+        public AccountVm(string CookieValue)
+        {
+            if (CookieValue == "")
+                UserId = 0;
+            else
+            {
+
+                CookieValue = DESEncrypt.Decrypt(CookieValue);
+                var account = CookieValue.Split(StaticKey.SplitChar);
+                UserId = Convert.ToInt32(account[0]);
+                UserName = account[1];
+                Mobile = account[2];
+            }
+
+
+              
+        }
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string Mobile { get; set; }

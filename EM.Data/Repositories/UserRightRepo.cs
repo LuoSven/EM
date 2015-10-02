@@ -20,6 +20,7 @@ namespace EM.Data.Repositories
         {
             var result = DapperHelper.SqlQuery<EM_User_Right>(@"select * from EM_User_Right a 
 join EM_System_Program b on a.ProgramId =b.Id 
+join EM_System_Program c on a.ProgramId =b.Id 
 where b.ActionName=@ActionName and b.ControllerName =@ControllerName and a.UserId=@UserId", new { ActionName = ActionName.ToLower(), ControllerName = ControllerName.ToLower(), UserId=UserId });
             return result == null ? false : true;
         }

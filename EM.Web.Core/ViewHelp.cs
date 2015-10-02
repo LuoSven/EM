@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using EM.Data.Infrastructure;
 using EM.Common;
-using Topuc22Top.Common;
+using EM.Utils;
+using EM.Models.VMs;
 
 namespace EM.Web.Core
 {
@@ -48,14 +49,15 @@ namespace EM.Web.Core
              }
              return result;
          }
+         private static AccountVm GetAccountInfoFromCookie()
+         {
+             var accountCookie = CookieHelper.GetCookie(StaticKey.CookieAccountKey);
+             return new AccountVm(accountCookie);
 
+         }
          public static int GetUserId()
          {
-             var accountId = CookieHelper.GetCookie(CookieHelper.AccountKey);
-             accountId = Util.Decrypt(accountId);
-             int Id = 0;
-             int.TryParse(accountId, out Id);
-             return Id;
+             return GetAccountInfoFromCookie().UserId;
          }
 
          public static bool HasRight(string ControllerName, string ActionName)

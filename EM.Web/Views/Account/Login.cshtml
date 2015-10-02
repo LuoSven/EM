@@ -2,40 +2,59 @@
 
 @{
     ViewBag.Title = "登录";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
 
-<section id="loginForm">
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true) 
 
-    <fieldset>
-        <legend>“登录”</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ol>
-        <input type="submit" value="登录" />
-    </fieldset>
-}
-</section>
+    <div class="loginContent pAbs p10  taC pt30 ">
+        <div class="loginForm">
+               
+                    <form action="@Url.Action("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl })" method="post"   class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <div class="form-group">
+                            <div class="col-sm-12  ">
+                                <span class="size26">NY报销系统</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="UserName" class="col-sm-2 control-label">账号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="UserName" id="UserName" placeholder="账号">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" name="Password" id="Password" placeholder="密码">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox col-sm-offset-2 col-sm-8 taL">
+                                <label>
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    记住我
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <button type="submit" class="form-control btn btn-default">登录</button>
+                            </div>
+                        </div>
+                    </form>
+        </div>
+   
+
+</div>
+
+
+
+
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
 }

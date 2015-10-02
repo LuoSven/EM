@@ -8,11 +8,13 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using EM.Web.Filters;
-using EM.Web.Models;
 using EM.Common;
-using EM.Web.Core.Base
+using EM.Web.Core.Base;
+using EM.Models.VMs;
 using EM.Data.Repositories;
+using EM.Utils;
+using EM.Web.Core;
+using EM.Data.Infrastructure;
 
 namespace EM.Web.Controllers
 {
@@ -20,15 +22,16 @@ namespace EM.Web.Controllers
     {
         //
         // GET: /Account/Login
-        private readonly IUserAccountRepo userAccountRepo;
+        private readonly IUserAccountRepo userAccountRepo = new UserAccountRepo(new DatabaseFactory());
 
-        public AccountController(IUserAccountRepo userAccountRepo)
+        public AccountController()
         {
-            this.userAccountRepo=userAccountRepo;
         }
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if(ViewHelp.GetUserId()!=0)
+                return RedirectToLocal(returnUrl);
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -39,19 +42,24 @@ namespace EM.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(AccountLoginVM model, string returnUrl)
         {
-
 
             if (ModelState.IsValid )
             {
-                
+                 var result = userAccountRepo.Login(model);
+                 if (string.IsNullOrEmpty(result.Message))
+                 {
+                     string[] acconutCookie={result.UserId.ToString(),result.UserName,result.Mobile};
+                     var acconutCookieE=DESEncrypt.Encrypt(string.Join(StaticKey.Split,acconutCookie));
+                     CookieHelper.WriteCookie(StaticKey.CookieAccountKey, acconutCookieE, model.RememberMe);
+                     return RedirectToLocal(returnUrl);
+                 }
 
-                return RedirectToLocal(returnUrl);
+                 ModelState.AddModelError("", result.Message);
             }
 
             // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            ModelState.AddModelError("", "提供的用户名或密码不正确。");
             return View(model);
         }
 
@@ -147,68 +155,6 @@ namespace EM.Web.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Manage
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Manage(LocalPasswordModel model)
-        {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.HasLocalPassword = hasLocalAccount;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalAccount)
-            {
-                if (ModelState.IsValid)
-                {
-                    // 在某些出错情况下，ChangePassword 将引发异常，而不是返回 false。
-                    bool changePasswordSucceeded;
-                    try
-                    {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    }
-                    catch (Exception)
-                    {
-                        changePasswordSucceeded = false;
-                    }
-
-                    if (changePasswordSucceeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "当前密码不正确或新密码无效。");
-                    }
-                }
-            }
-            else
-            {
-                // 用户没有本地密码，因此将删除由于缺少
-                // OldPassword 字段而导致的所有验证错误
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("", String.Format("无法创建本地帐户。可能已存在名为“{0}”的帐户。", User.Identity.Name));
-                    }
-                }
-            }
-
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
-        }
 
         //
         // POST: /Account/ExternalLogin
@@ -224,81 +170,8 @@ namespace EM.Web.Controllers
         //
         // GET: /Account/ExternalLoginCallback
 
-        [AllowAnonymous]
-        public ActionResult ExternalLoginCallback(string returnUrl)
-        {
-            AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-            if (!result.IsSuccessful)
-            {
-                return RedirectToAction("ExternalLoginFailure");
-            }
 
-            if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
-            {
-                return RedirectToLocal(returnUrl);
-            }
-
-            if (User.Identity.IsAuthenticated)
-            {
-                // 如果当前用户已登录，则添加新帐户
-                OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
-                return RedirectToLocal(returnUrl);
-            }
-            else
-            {
-                // 该用户是新用户，因此将要求该用户提供所需的成员名称
-                string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
-                ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
-                ViewBag.ReturnUrl = returnUrl;
-                return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
-            }
-        }
-
-        //
-        // POST: /Account/ExternalLoginConfirmation
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl)
-        {
-            string provider = null;
-            string providerUserId = null;
-
-            if (User.Identity.IsAuthenticated || !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId))
-            {
-                return RedirectToAction("Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // 将新用户插入到数据库
-                using (UsersContext db = new UsersContext())
-                {
-                    UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
-                    // 检查用户是否已存在
-                    if (user == null)
-                    {
-                        // 将名称插入到配置文件表
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
-                        db.SaveChanges();
-
-                        OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-                        OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-                        return RedirectToLocal(returnUrl);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("UserName", "用户名已存在。请输入其他用户名。");
-                    }
-                }
-            }
-
-            ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
+     
 
         //
         // GET: /Account/ExternalLoginFailure
@@ -317,26 +190,6 @@ namespace EM.Web.Controllers
             return PartialView("_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData);
         }
 
-        [ChildActionOnly]
-        public ActionResult RemoveExternalLogins()
-        {
-            ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
-            List<ExternalLogin> externalLogins = new List<ExternalLogin>();
-            foreach (OAuthAccount account in accounts)
-            {
-                AuthenticationClientData clientData = OAuthWebSecurity.GetOAuthClientData(account.Provider);
-
-                externalLogins.Add(new ExternalLogin
-                {
-                    Provider = account.Provider,
-                    ProviderDisplayName = clientData.DisplayName,
-                    ProviderUserId = account.ProviderUserId,
-                });
-            }
-
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            return PartialView("_RemoveExternalLoginsPartial", externalLogins);
-        }
 
         #region 帮助程序
         private ActionResult RedirectToLocal(string returnUrl)

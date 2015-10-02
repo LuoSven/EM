@@ -14,8 +14,6 @@ namespace EM.Common
             //
         }
 
-        public const string AccountKey = "asd";
- 
 
         /// <summary>
         /// 清除指定Cookie的所有子项
@@ -42,24 +40,9 @@ namespace EM.Common
             //删除旧的同名Cookie
             HttpContext.Current.Response.Cookies.Remove(cookieName);
             var cookie = new HttpCookie(cookieName);
-
-            string ConfigVersion = ConfigurationManager.AppSettings["ConfigVersion"];
-            if (ConfigVersion == "Release") {
-                cookie.Domain = ".zheyibu.com";
+                cookie.Domain = HttpContext.Current.Request.Url.Host;
                 cookie.Secure = false;
-            }
-            else if (ConfigVersion == "Debug")
-            {
-                cookie.Domain = ".test.com";
-                cookie.Secure = false;
-            }
-            else if (ConfigVersion == "Test")
-            {
-                cookie.Domain = ".beta.com";
-                cookie.Secure = false;
-            }
-
-            cookie.Value = HttpUtility.UrlEncode(cookieValue, Encoding.GetEncoding("UTF-8"));
+                cookie.Value = cookieValue;
             if (rememberMe)
             {
                 if (expiresDays == 0)
@@ -78,7 +61,7 @@ namespace EM.Common
         {
             if (HttpContext.Current.Request.Cookies != null && HttpContext.Current.Request.Cookies[cookieName] != null)
             {
-                return HttpUtility.UrlDecode(HttpContext.Current.Request.Cookies[cookieName].Value.ToString(), Encoding.GetEncoding("UTF-8"));
+                return HttpContext.Current.Request.Cookies[cookieName].Value.ToString();
             }
             return string.Empty;
         }

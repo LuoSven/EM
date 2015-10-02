@@ -37,7 +37,7 @@ namespace EM.Web.Core.Attribute
             }
 
              if(ViewHelp.GetUserId()==0)
-                 filterContext.RequestContext.HttpContext.Response.Redirect("/account/login");
+                 filterContext.RequestContext.HttpContext.Response.Redirect("/account/login?returnUrl=" + filterContext.HttpContext.Request.CurrentExecutionFilePath);
 
 
 

@@ -14,11 +14,6 @@ namespace EM.Model.Entities
     
     public partial class EM_User_Account
     {
-        public EM_User_Account()
-        {
-            this.EM_User_Right = new HashSet<EM_User_Right>();
-        }
-    
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string LoginEmaill { get; set; }
@@ -27,7 +22,5 @@ namespace EM.Model.Entities
         public int Status { get; set; }
         public System.DateTime CreateTime { get; set; }
         public System.DateTime ModifyTime { get; set; }
-    
-        public virtual ICollection<EM_User_Right> EM_User_Right { get; set; }
     }
 }

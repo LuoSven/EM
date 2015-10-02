@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="@Url.Content("~/Css/Third/bootstrap/bootstrap.min.css")" type="text/css" />
+        <link rel="stylesheet" href="@Url.Content("~/Css/Third/bootstrap/bootstrap-theme.min.css")" type="text/css" />
+        <link rel="stylesheet" href="@Url.Content("~/Css/Login.css")" type="text/css" />
+        <link rel="stylesheet" href="@Url.Content("~/Css/base.css")" type="text/css" />
+
+
+    </head>
+    <body>
+        <div class="header">
+            <a>NY报销系统</a>
+        </div>
+        <div class="content">
+            @RenderSection("featured", required: false)
+                @RenderBody()
+        </div>
+      <div class="footer">
+
+          <p>&copy; 2015 - 老婆的报销系统</p>
+      </div>
+
+        <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="@Url.Content("~/Js/Third/bootstrap/bootstrap.min.js")"></script>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>

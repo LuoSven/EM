@@ -79,11 +79,16 @@
     <Compile Include="Entities\EM_User_Right.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EM_User_Role.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VMs\AccountVMs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="Entities\EMDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EMDB.Designer.cs</LastGenOutput>
@@ -103,7 +108,16 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EM.Common\EM.Common.csproj">
+      <Project>{b3fcb199-48a0-4aaa-8539-548111bd8b43}</Project>
+      <Name>EM.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EM.Utils\EM.Utils.csproj">
+      <Project>{ca1d21bd-aa64-4045-8ef1-1791220bf0a0}</Project>
+      <Name>EM.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

@@ -7,7 +7,7 @@ using EM.Data.Infrastructure;
 using EM.Model.Entities;
 using EM.Models.VMs;
 using EM.Utils;
-
+using EM.Common;
 namespace EM.Data.Repositories
 {
     public class UserAccountRepo : RepositoryBase<EM_User_Account>, IUserAccountRepo
@@ -17,18 +17,19 @@ namespace EM.Data.Repositories
         {
         }
 
-        public LoginResult Login(AccountLoginVM accountVM,string LoginInfo)
+        public AccountVm Login(AccountLoginVM accountVM)
         {
-            var result = new LoginResult() { Message = "" };
+            var result = new AccountVm() { Message = "" };
+            string[] LoginInfo={BrowserHelper.GetIP(), BrowserHelper.GetOSVersion(),BrowserHelper.GetBrowser()};
             var LoginRecord = new EM_User_Login_Record()
             {
-                LoginInfo = LoginInfo,
-                LoginTime = DateTime.Now
+                LoginTime = DateTime.Now,
+                LoginInfo = string.Join(StaticKey.Split,LoginInfo)
             };
             var account = DataContext.EM_User_Account.Where(o => o.LoginEmaill == accountVM.UserName).FirstOrDefault();
             if (account == null)
                 result.Message = "输入的用户不存在";
-            if (account.Password != DESEncrypt.Encrypt(accountVM.Password))
+            else if (account.Password != DESEncrypt.Encrypt(accountVM.Password))
                 result.Message = "账号密码错误";
 
             if (result.Message!=string.Empty)
@@ -71,7 +72,7 @@ namespace EM.Data.Repositories
     {
 
 
-        LoginResult Login(AccountLoginVM accountVM, string LoginInfo);
+        AccountVm Login(AccountLoginVM accountVM);
 
         Tuple<bool, string> IsRepeat(EM_User_Account model);
     }

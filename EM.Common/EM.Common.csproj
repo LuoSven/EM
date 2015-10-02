@@ -69,7 +69,8 @@
     <Compile Include="ArrayConvertor.cs" />
     <Compile Include="CompressFile.cs" />
     <Compile Include="CookieHelper.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="BrowserHelper.cs" />
+    <Compile Include="StaticKey.cs" />
     <Compile Include="EnumDB.cs" />
     <Compile Include="ExtensionHelper.cs" />
     <Compile Include="ImportHelper.cs" />

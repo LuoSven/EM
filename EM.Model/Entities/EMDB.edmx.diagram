@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4da213d1e5f24966844dd5b322f5581f" Name="Diagram1">
-        <EntityTypeShape EntityType="EMDBModel.EM_User_Account" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EMDBModel.EM_User_Right" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="ed29ce632f6f4b7e92a958e5f8431c8b" Name="Diagram1">
+        <EntityTypeShape EntityType="EMDBModel.EM_System_Program" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMDBModel.EM_User_Account" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMDBModel.EM_User_Login_Record" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMDBModel.EM_User_Right" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMDBModel.EM_User_Role" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <AssociationConnector Association="EMDBModel.FK_EM_System_Program_EM_User_Right" ManuallyRouted="false" />
         <AssociationConnector Association="EMDBModel.FK_EM_UserAccount_EM_UserRight_UserId" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EMDBModel.EM_System_Program" Width="1.5" PointX="0.75" PointY="5.375" />
-        <AssociationConnector Association="EMDBModel.FK_EM_System_Program_EM_User_Right" />
-        <EntityTypeShape EntityType="EMDBModel.EM_User_Login_Record" Width="4.625" PointX="4.375" PointY="5.125" />
-        <AssociationConnector Association="EMDBModel.FK_EM_User_Login_Record_EM_User_Login_Record" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

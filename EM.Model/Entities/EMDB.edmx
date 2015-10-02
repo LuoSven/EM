@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EMDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="EMDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="EM_System_Program">
           <Key>
             <PropertyRef Name="Id" />
@@ -37,7 +37,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="LoginTime" Type="datetime" />
           <Property Name="LoginInfo" Type="nvarchar" MaxLength="512" />
@@ -49,11 +49,19 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="ProgramId" Type="int" Nullable="false" />
           <Property Name="Permit" Type="bit" Nullable="false" />
           <Property Name="ModifeTime" Type="datetime" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_User_Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="512" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
@@ -70,16 +78,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
-          <End Role="EM_User_Account" Type="Self.EM_User_Account" Multiplicity="1">
+          <End Role="EM_User_Role" Type="Self.EM_User_Role" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="EM_User_Account">
-              <PropertyRef Name="UserId" />
+            <Principal Role="EM_User_Role">
+              <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="EM_User_Right">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -88,19 +96,37 @@
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_User_Role" EntityType="Self.EM_User_Role" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
           <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
-            <End Role="EM_User_Account" EntitySet="EM_User_Account" />
+            <End Role="EM_User_Role" EntitySet="EM_User_Role" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EMDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EM_System_Program">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ControllerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ActionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ActionDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RightType" Type="Int32" Nullable="false" />
+          <Property Name="SystemType" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="ModifeTime" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreateTime" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="EM_User_Right" Relationship="Self.FK_EM_System_Program_EM_User_Right" FromRole="EM_System_Program" ToRole="EM_User_Right" />
+        </EntityType>
         <EntityType Name="EM_User_Account">
           <Key>
             <PropertyRef Name="UserId" />
@@ -113,72 +139,45 @@
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="EM_User_Right" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Account" ToRole="EM_User_Right" />
+        </EntityType>
+        <EntityType Name="EM_User_Login_Record">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="LoginTime" Type="DateTime" Precision="3" />
+          <Property Name="LoginInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="IsLogin" Type="Boolean" />
+          <Property Name="ErrorInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EM_User_Right">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
           <Property Name="Permit" Type="Boolean" Nullable="false" />
           <Property Name="ModifeTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="EM_User_Account" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Right" ToRole="EM_User_Account" />
-          <Property Name="ProgramId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="EM_System_Program" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_User_Right" ToRole="EM_System_Program" />
+          <NavigationProperty Name="EM_System_Program" Relationship="Self.FK_EM_System_Program_EM_User_Right" FromRole="EM_User_Right" ToRole="EM_System_Program" />
+          <NavigationProperty Name="EM_User_Role" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Right" ToRole="EM_User_Role" />
         </EntityType>
-        <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
-          <End Role="EM_User_Account" Type="Self.EM_User_Account" Multiplicity="1" />
-          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EM_User_Account">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="EM_User_Right">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="EMDB" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" />
-          <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" />
-          <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
-            <End Role="EM_User_Account" EntitySet="EM_User_Account" />
-            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
-          </AssociationSet>
-          <EntitySet Name="EM_System_Program" EntityType="EMDBModel.EM_System_Program" />
-          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="EMDBModel.FK_EM_System_Program_EM_User_Right">
-            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
-            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
-          </AssociationSet>
-          <EntitySet Name="EM_User_Login_Record" EntityType="EMDBModel.EM_User_Login_Record" />
-          <AssociationSet Name="FK_EM_User_Login_Record_EM_User_Login_Record" Association="EMDBModel.FK_EM_User_Login_Record_EM_User_Login_Record">
-            <End Role="EM_User_Login_Record" EntitySet="EM_User_Login_Record" />
-            <End Role="EM_User_Login_Record1" EntitySet="EM_User_Login_Record" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="EM_System_Program">
+        <EntityType Name="EM_User_Role">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ControllerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ActionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ActionDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ControllerDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RightType" Type="Int32" Nullable="false" />
-          <Property Name="SystemType" Type="Int32" Nullable="false" />
-          <Property Name="ParentId" Type="Int32" Nullable="false" />
-          <Property Name="ModifeTime" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="EM_User_Right" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_System_Program" ToRole="EM_User_Right" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EM_User_Right" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Role" ToRole="EM_User_Right" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
-          <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
+          <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="EMDBModel.EM_User_Right" Role="EM_User_Right" Multiplicity="*" />
+          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EM_System_Program">
               <PropertyRef Name="Id" />
@@ -188,35 +187,57 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="EM_User_Login_Record">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="LoginTime" Type="DateTime" Precision="3" />
-          <Property Name="LoginInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="IsLogin" Type="Boolean" />
-          <Property Name="ErrorInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_EM_User_Login_Record_EM_User_Login_Record">
-          <End Type="EMDBModel.EM_User_Login_Record" Role="EM_User_Login_Record" Multiplicity="1" />
-          <End Type="EMDBModel.EM_User_Login_Record" Role="EM_User_Login_Record1" Multiplicity="0..1" />
+        <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
+          <End Role="EM_User_Role" Type="Self.EM_User_Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="EM_User_Login_Record">
+            <Principal Role="EM_User_Role">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="EM_User_Login_Record1">
-              <PropertyRef Name="id" />
+            <Dependent Role="EM_User_Right">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="EMDB" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" />
+          <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" />
+          <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" />
+          <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" />
+          <EntitySet Name="EM_User_Role" EntityType="Self.EM_User_Role" />
+          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
+            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
+            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
+            <End Role="EM_User_Role" EntitySet="EM_User_Role" />
+            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="EMDBModelStoreContainer" CdmEntityContainer="EMDB">
+          <EntitySetMapping Name="EM_System_Program">
+            <EntityTypeMapping TypeName="EMDBModel.EM_System_Program">
+              <MappingFragment StoreEntitySet="EM_System_Program">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ActionDescription" ColumnName="ActionDescription" />
+                <ScalarProperty Name="ControllerDescription" ColumnName="ControllerDescription" />
+                <ScalarProperty Name="RightType" ColumnName="RightType" />
+                <ScalarProperty Name="SystemType" ColumnName="SystemType" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EM_User_Account">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Account">
               <MappingFragment StoreEntitySet="EM_User_Account">
@@ -231,43 +252,36 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EM_User_Right">
-            <EntityTypeMapping TypeName="EMDBModel.EM_User_Right">
-              <MappingFragment StoreEntitySet="EM_User_Right">
-                <ScalarProperty Name="Permit" ColumnName="Permit" />
-                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EM_System_Program">
-            <EntityTypeMapping TypeName="EMDBModel.EM_System_Program">
-              <MappingFragment StoreEntitySet="EM_System_Program">
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="SystemType" ColumnName="SystemType" />
-                <ScalarProperty Name="RightType" ColumnName="RightType" />
-                <ScalarProperty Name="ControllerDescription" ColumnName="ControllerDescription" />
-                <ScalarProperty Name="ActionDescription" ColumnName="ActionDescription" />
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EM_User_Login_Record">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Login_Record">
               <MappingFragment StoreEntitySet="EM_User_Login_Record">
-                <ScalarProperty Name="ErrorInfo" ColumnName="ErrorInfo" />
-                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
-                <ScalarProperty Name="LoginInfo" ColumnName="LoginInfo" />
-                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LoginTime" ColumnName="LoginTime" />
+                <ScalarProperty Name="LoginInfo" ColumnName="LoginInfo" />
+                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
+                <ScalarProperty Name="ErrorInfo" ColumnName="ErrorInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_User_Right">
+            <EntityTypeMapping TypeName="EMDBModel.EM_User_Right">
+              <MappingFragment StoreEntitySet="EM_User_Right">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="Permit" ColumnName="Permit" />
+                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_User_Role">
+            <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
+              <MappingFragment StoreEntitySet="EM_User_Role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
