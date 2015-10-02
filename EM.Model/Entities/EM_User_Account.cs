@@ -22,5 +22,6 @@ namespace EM.Model.Entities
         public int Status { get; set; }
         public System.DateTime CreateTime { get; set; }
         public System.DateTime ModifyTime { get; set; }
+        public Nullable<int> RoleId { get; set; }
     }
 }

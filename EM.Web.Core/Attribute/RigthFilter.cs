@@ -8,7 +8,7 @@ using System.Web;
 using System.Security.Principal;
 using EM.Common;
 
-namespace EM.Web.Core.Attribute
+namespace EM.Web.Core
 {
     /// <summary>
     /// 权限拦截
@@ -23,8 +23,8 @@ namespace EM.Web.Core.Attribute
                 throw new ArgumentNullException("filterContext");
             }
             var path = filterContext.HttpContext.Request.Path.ToLower();
-            if (path == "/" || path == "/Account/Login".ToLower() || path == "/Account/Logout".ToLower())
-                return;//忽略对Login登录页的权限判定
+            if (path.Contains("home"))
+                return;//忽略对home页的权限判定
             AuthorizeCore(filterContext);
 
         }

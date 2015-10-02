@@ -66,13 +66,11 @@ namespace EM.Web.Controllers
         //
         // POST: /Account/LogOff
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
-
-            return RedirectToAction("Index", "Home");
+            userAccountRepo.LogOff(ViewHelp.GetUserId());
+            CookieHelper.DeleteCookie(StaticKey.CookieAccountKey);
+            return RedirectToAction("Login");
         }
 
         //

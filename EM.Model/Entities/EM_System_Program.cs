@@ -26,9 +26,9 @@ namespace EM.Model.Entities
         public string ControllerDescription { get; set; }
         public int RightType { get; set; }
         public int SystemType { get; set; }
-        public int ParentId { get; set; }
-        public string ModifeTime { get; set; }
-        public string CreateTime { get; set; }
+        public string ParentAction { get; set; }
+        public System.DateTime ModifeTime { get; set; }
+        public System.DateTime CreateTime { get; set; }
     
         public virtual ICollection<EM_User_Right> EM_User_Right { get; set; }
     }

@@ -66,6 +66,20 @@ namespace EM.Data.Repositories
                 return new Tuple<bool, string>(false, "登陆邮箱重复，请重新输入"); 
             return new Tuple<bool, string>(true, ""); ;
         }
+        public void LogOff(int UserId)
+        {
+            var LoginRecord = new EM_User_Login_Record()
+            {
+                UserId=UserId,
+                LoginTime = DateTime.Now,
+                LoginInfo ="",
+                IsLogin=false,
+                ErrorInfo="用户退出了系统"
+                
+            };
+            DataContext.EM_User_Login_Record.Add(LoginRecord);
+            DataContext.SaveChanges();
+        }
 
     }
     public interface IUserAccountRepo : IRepository<EM_User_Account>
@@ -73,6 +87,13 @@ namespace EM.Data.Repositories
 
 
         AccountVm Login(AccountLoginVM accountVM);
+
+        /// <summary>
+        /// 记录下登出时间
+        /// </summary>
+        /// <param name="UserId"></param>
+        void LogOff(int UserId);
+
 
         Tuple<bool, string> IsRepeat(EM_User_Account model);
     }

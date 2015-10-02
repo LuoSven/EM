@@ -9,7 +9,7 @@
     background: #31ABFF;
     border-radius: 10px;
     left: 30%;
-    top: 30%;
+    top: 25%;
     height: 300px;
     width: 600px;
     color: #fff;
@@ -21,5 +21,13 @@
 }
 .footer
 {
+    position: absolute;
 
+    bottom: 0pc;
+}
+.validation-summary-errors
+{
+    color: rgb(242, 255, 0);
+    
+    font-size: 20px;
 }

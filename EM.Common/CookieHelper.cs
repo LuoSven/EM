@@ -77,24 +77,8 @@ namespace EM.Common
                 HttpCookie cookie = HttpContext.Current.Request.Cookies[strName];
                 cookie.Values.Clear();
                 cookie.Expires = DateTime.Now.AddDays(-1);
-
-                string ConfigVersion = ConfigurationManager.AppSettings["ConfigVersion"];
-                if (ConfigVersion == "Release")
-                {
-                    cookie.Domain = ".zheyibu.com";
-                    cookie.Secure = false;
-                }
-                if (ConfigVersion == "Debug")
-                {
-                    cookie.Domain = ".test.com";
-                    cookie.Secure = false;
-                }
-                if (ConfigVersion == "Test")
-                {
-                    cookie.Domain = ".beta.com";
-                    cookie.Secure = false;
-                }
-
+                cookie.Domain = HttpContext.Current.Request.Url.Host;
+                cookie.Secure = false;
                 HttpContext.Current.Response.Cookies.Set(cookie);
             }
         }
