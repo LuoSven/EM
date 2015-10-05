@@ -50,10 +50,17 @@ namespace EM.Web.Controllers
                  var result = userAccountRepo.Login(model);
                  if (string.IsNullOrEmpty(result.Message))
                  {
-                     string[] acconutCookie={result.UserId.ToString(),result.UserName,result.Mobile};
-                     var acconutCookieE=DESEncrypt.Encrypt(string.Join(StaticKey.Split,acconutCookie));
+                     string[] acconutCookie = { result.UserId.ToString(), result.UserName, result.Mobile ,string.Join(",",result.SystemIds)};
+                     var acconutCookieE = DESEncrypt.Encrypt(string.Join(StaticKey.Split, acconutCookie));
                      CookieHelper.WriteCookie(StaticKey.CookieAccountKey, acconutCookieE, model.RememberMe);
-                     return RedirectToLocal(returnUrl);
+                     if(result.SystemIds==null||result.SystemIds.Count==0)
+                         return RedirectToAction("INDEX/ZJ","Home");
+                     if (result.SystemIds.Count > 1)
+                         return RedirectToAction("INDEX/ZJ", "Home");
+                     if (result.SystemIds[0] == 1)
+                         return RedirectToAction("INDEX/ZJ", "Home");
+                     if (result.SystemIds[0] == 2)
+                         return RedirectToAction("INDEX/YJ", "Home");
                  }
 
                  ModelState.AddModelError("", result.Message);

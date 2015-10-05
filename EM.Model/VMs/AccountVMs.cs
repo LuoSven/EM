@@ -83,6 +83,12 @@ namespace EM.Models.VMs
                 UserId = Convert.ToInt32(account[0]);
                 UserName = account[1];
                 Mobile = account[2];
+                var Ids=account[3].Split(',');
+                SystemIds=new List<int>();
+                foreach (var item in Ids)
+                {
+                    SystemIds.Add(Convert.ToInt32(item));
+                }
             }
 
 
@@ -91,6 +97,8 @@ namespace EM.Models.VMs
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string Mobile { get; set; }
+        public List<int> SystemIds { get; set; }
+
        public string Message { get; set; }
     }
 

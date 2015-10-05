@@ -3,38 +3,31 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <title>@ViewBag.Title</title>
+    <title>NY报销系统</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="@Url.Content("~/Css/Third/bootstrap/bootstrap.min.css")" type="text/css" />
-    <link rel="stylesheet" href="@Url.Content("~/Css/Third/bootstrap/bootstrap-theme.min.css")" type="text/css" />
-    <link rel="stylesheet" href="@Url.Content("~/Css/Login.css")" type="text/css" />
-    <link rel="stylesheet" href="@Url.Content("~/Css/base.css")" type="text/css" />
-    @RenderSection("Css", required: false)
-
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="~/Css/base.css" type="text/css" />
+    <link rel="stylesheet" href="~/Css/Main.css" type="text/css" />
 </head>
 <body>
-    <div class="header">
+    <div class="header m10  p10 pl30 ">
         <a>NY报销系统</a>
+        @Html.Partial("_LoginPartial")
     </div>
-    <div class="content">
+    <div class="body m10">
         @RenderBody()
     </div>
-    <div class="footer">W
+    <div class="footer">
         <p>&copy; 2015 - 老婆的报销系统</p>
     </div>
 
-    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="@Url.Content("~/Js/Third/bootstrap/bootstrap.min.js")"></script>
+      <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript">
-    var Global = {}
-    Global.LogOff = function (){if(confirm("确认注销?"))location.href = "@Url.Action("LogOff","Account")";}
-
-    $(function () {
-        $("#logOff").click(function () { Global.LogOff() });
-    })
+    <script src="~/Js/main.js" type="text/javascript">
     </script>
-    @RenderSection("Js", required: false)
 </body>
 </html>

@@ -20,12 +20,14 @@ namespace EM.Data.Repositories
         public AccountVm Login(AccountLoginVM accountVM)
         {
             var result = new AccountVm() { Message = "" };
+            //拼接登陆信息
             string[] LoginInfo={BrowserHelper.GetIP(), BrowserHelper.GetOSVersion(),BrowserHelper.GetBrowser()};
             var LoginRecord = new EM_User_Login_Record()
             {
                 LoginTime = DateTime.Now,
                 LoginInfo = string.Join(StaticKey.Split,LoginInfo)
             };
+            //判断是否登陆成功
             var account = DataContext.EM_User_Account.Where(o => o.LoginEmaill == accountVM.UserName).FirstOrDefault();
             if (account == null)
                 result.Message = "输入的用户不存在";
@@ -40,9 +42,20 @@ namespace EM.Data.Repositories
             }
             else
             {
+                //登陆成功
                 result.UserId = account.UserId;
                 result.Mobile = account.Mobile;
                 result.UserName = account.UserName;
+
+                //获取系统信息
+
+                var SystemType = Dapper.DapperHelper.SqlQuery<int>(@"select distinct d.SystemType from EM_User_Account a 
+join EM_User_Role b on a.RoleId=b.id
+join EM_User_Right c on b.id=c.RoleId and c.Permit=1
+join EM_System_Program d on d.Id=c.ProgramId
+where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
+                result.SystemIds = SystemType;
+                
                 LoginRecord.IsLogin = true;
                 LoginRecord.UserId = account == null ? 0 : account.UserId;
             }

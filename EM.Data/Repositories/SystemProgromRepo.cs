@@ -80,16 +80,16 @@ and a.RoleId =(select top(1) a.RoleId from EM_User_Account a
 join EM_User_Role b on a.RoleId=b.id
 where a.UserId=@UserId )", new { UserId = UserId, SysTypeId = SysTypeId });
 
-            var Controls = ProgramList.Select(o => o.ControllerName).Distinct();
+            var Controls = ProgramList.Select(o =>new Tuple<string,string>(o.ControllerName,o.ControllerDescription)).Distinct();
             foreach (var Control in Controls)
             {
                 var menu = new MenuVM();
-                menu.ProgramId = Control;
-                menu.Name = Control;
-                menu.Items = ProgramList.Where(o => o.ControllerName == Control).Select(o => new MenuVM() {
+                menu.ProgramId = Control.Item1;
+                menu.Name = Control.Item2;
+                menu.Items = ProgramList.Where(o => o.ControllerName == Control.Item1).Select(o => new MenuVM() {
                     ProgramId = o.ControllerName + "_" + o.ActionName,
                     Url = o.ControllerName + "/" + o.ActionName,
-                    Name = o.ActionName,
+                    Name = o.ActionDescription,
                 }).ToList();
                 MenuList.Add(menu);
             }

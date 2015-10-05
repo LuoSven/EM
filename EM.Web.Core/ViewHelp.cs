@@ -45,8 +45,8 @@ namespace EM.Web.Core
                                  {
                                      var ap = new EM_System_Program();
                                      ap.ParentAction = rightType.ParentAction;
-                                     ap.RightType = (int)rightType.ActionType;
-                                     ap.SystemType = (int)SysType.ControlType;
+                                     ap.RightType = (int)rightType.RightType;
+                                     ap.SystemType = (int)SysType.SystemType;
                                      ap.ActionName = member.Name.ToLower();
                                      ap.ControllerName = member.DeclaringType.Name.Substring(0, member.DeclaringType.Name.Length - 10).ToLower(); // 去掉“Controller”后缀
                                      ap.ControllerDescription = ControlDescription;

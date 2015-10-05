@@ -23,8 +23,6 @@ namespace EM.Web.Core
                 throw new ArgumentNullException("filterContext");
             }
             var path = filterContext.HttpContext.Request.Path.ToLower();
-            if (path.Contains("home"))
-                return;//忽略对home页的权限判定
             AuthorizeCore(filterContext);
 
         }
@@ -35,15 +33,18 @@ namespace EM.Web.Core
             {
                 throw new ArgumentNullException("httpContext");
             }
+            var path = filterContext.HttpContext.Request.Path.ToLower();
+            if (path == "/" || path == "/Account/Login".ToLower() || path == "/Account/Logout".ToLower())
+                return true;
 
-             if(ViewHelp.GetUserId()==0)
+            if (ViewHelp.GetUserId() == 0)
                  filterContext.RequestContext.HttpContext.Response.Redirect("/account/login?returnUrl=" + filterContext.HttpContext.Request.CurrentExecutionFilePath);
 
 
 
             var controllerName = filterContext.RouteData.Values["controller"].ToString();
             var actionName = filterContext.RouteData.Values["action"].ToString();
-            if (!ViewHelp.HasRight(controllerName,actionName))
+            if (!ViewHelp.HasRight(controllerName, actionName) && !path.Contains("home"))
                 filterContext.RequestContext.HttpContext.Response.Redirect("/error/noright");
             return true;
         }

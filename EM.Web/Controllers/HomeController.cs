@@ -15,8 +15,9 @@ namespace EM.Web.Controllers
         private readonly ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
 
         
-        public ActionResult Index(int SysTypeId)
+        public ActionResult Index(string Id)
         {
+            var SysTypeId = Id == "ZJ" ? 1 : 2;
             var MemuList = systemProgromRepo.GetMenu(ViewHelp.GetUserId(), SysTypeId);
 
             return View(MemuList);

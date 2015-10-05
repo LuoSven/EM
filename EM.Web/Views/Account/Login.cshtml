@@ -12,12 +12,12 @@
                
                     <form action="@Url.Action("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl })" method="post"   class="form-horizontal">
                         @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true)
                         <div class="form-group">
                             <div class="col-sm-12  ">
                                 <span class="size26">NY报销系统</span>
                             </div>
-                        </div>
+                        </div>                   
+                             @Html.ValidationSummary(true)
                         <div class="form-group">
                             <label for="UserName" class="col-sm-2 control-label">账号</label>
                             <div class="col-sm-8">

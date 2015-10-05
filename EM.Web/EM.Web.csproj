@@ -251,6 +251,7 @@
     <Content Include="Content\Third\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\Third\bootstrap\bootstrap.min.css" />
     <Content Include="Css\base.css" />
+    <Content Include="Css\Main.css" />
     <Content Include="Css\Login.css" />
     <Content Include="Css\Site.css" />
     <Content Include="Css\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -314,6 +315,7 @@
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <None Include="Js\jquery-1.8.2.intellisense.js" />
+    <Content Include="Html\main.html" />
     <Content Include="Js\jquery-1.8.2.js" />
     <Content Include="Js\jquery-1.8.2.min.js" />
     <Content Include="Js\jquery-ui-1.8.24.js" />
@@ -327,6 +329,7 @@
     <Content Include="Js\jquery.validate.unobtrusive.min.js" />
     <Content Include="Js\knockout-2.2.0.debug.js" />
     <Content Include="Js\knockout-2.2.0.js" />
+    <Content Include="Js\main.js" />
     <Content Include="Js\modernizr-2.6.2.js" />
     <Content Include="Js\Third\bootstrap\bootstrap.min.js" />
     <None Include="Js\_references.js" />
@@ -389,6 +392,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Icons\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

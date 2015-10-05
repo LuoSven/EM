@@ -21,9 +21,9 @@ namespace EM.Web.Core
     {
         public ControlType(SystemType ControlType)
         {
-            this.ControlType = ControlType;
+            this.SystemType = ControlType;
         }
-        public SystemType ControlType { get; set; }
+        public SystemType SystemType { get; set; }
 
 
     }

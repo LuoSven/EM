@@ -18,12 +18,12 @@ namespace EM.Web.Core
     {
          public ActionType(RightType ActionType, string ParentAction="")
          {
-             this.ActionType = ActionType;
+             this.RightType = ActionType;
              this.ParentAction = ParentAction;
          }
 
          public string ParentAction {get;set;}
-         public RightType ActionType { get; set; }
+         public RightType RightType { get; set; }
             
     }
 }

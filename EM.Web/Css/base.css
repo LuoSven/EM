@@ -32,6 +32,7 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .dI{display:inline-block;}
 .pRel{position:relative;}
 .pAbs{position:absolute;}
+.curp {cursor: pointer;}
 .bN{border:none;}
 .fl{float:left;_display:inline;}
 .fr{float:right;_display:inline;}
@@ -118,6 +119,7 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .cFFF{color:#FFF;}
 
 /*--边距--*/
+.m0{margin:0px}
 .m5{margin:5px;}
 .m10{margin:10px;}
 .m15{margin:15px;}
@@ -168,6 +170,7 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .mr40{margin-right:40px;}
 .mr45{margin-right:45px;}
 .mr50{margin-right:50px;}
+.p0{padding:0px;}
 .p5{padding:5px;}
 .p10{padding:10px;}
 .p15{padding:15px;}
@@ -279,7 +282,8 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .w285{width:285px;}
 .w290{width:290px;}
 .w295{width:295px;}
-.w300{width:300px;}
+.w300{width: 300px;}
+.wp100{width:100%;}
 .h5{height:5px;}
 .h10{height:10px;}
 .h15{height:15px;}
@@ -340,3 +344,4 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .h290{height:290px;}
 .h295{height:295px;}
 .h300{height:300px;}
+.hp100{height:100%}
