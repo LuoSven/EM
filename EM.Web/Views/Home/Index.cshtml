@@ -10,12 +10,12 @@
         <button class="btn btn-default btn-xs fr" id="refreshIframe" type="button"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>刷新页面</button>
     </div>
 </div>
-<div class="menu  p0  col-xs-2">
+<div class="menu  p0  col-xs-1">
     <ul>
         @foreach (var Menu in Model)
         {
             <li>
-                <a class="wp100 fl size20 fL40 pl20">@Menu.Name</a>
+                <a class="wp100 fl size20 fL40 pl25">@Menu.Name</a>
                 <ul class="hidden">
                     @foreach (var program in Menu.Items)
                     {
@@ -28,7 +28,7 @@
         }
     </ul>
 </div>
-<div class="content col-xs-10 p5">
+<div class="content col-xs-11 p5">
     <div class="iframeTags h40 ">
         <span class="leftSlice fl size26 curp mr5 hidden"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></span>
         <div class="TagsCover fl  h40 w300 pRel ">
