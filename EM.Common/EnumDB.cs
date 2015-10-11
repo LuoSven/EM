@@ -44,9 +44,9 @@ namespace EM.Common
     /// </summary>
     public enum AccountStatus
     {
-        [Description("账号可以登陆")]
+        [Description("正常")]
         Allow = 1,
-        [Description("禁止登陆")]
+        [Description("禁止")]
         Deny,
     }
 

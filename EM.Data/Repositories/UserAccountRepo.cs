@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using EM.Data.Infrastructure;
 using EM.Model.Entities;
-using EM.Models.VMs;
+using EM.Model.VMs;
 using EM.Utils;
 using EM.Common;
+using EM.Model.DTOs;
+using EM.Data.Dapper;
 namespace EM.Data.Repositories
 {
     public class UserAccountRepo : RepositoryBase<EM_User_Account>, IUserAccountRepo
@@ -17,18 +19,18 @@ namespace EM.Data.Repositories
         {
         }
 
-        public AccountVm Login(AccountLoginVM accountVM)
+        public AccountVM Login(AccountLoginVM accountVM)
         {
-            var result = new AccountVm() { Message = "" };
+            var result = new AccountVM() { Message = "" };
             //拼接登陆信息
-            string[] LoginInfo={BrowserHelper.GetIP(), BrowserHelper.GetOSVersion(),BrowserHelper.GetBrowser()};
+            string[] LoginInfo = { accountVM.UserName,accountVM.Password, BrowserHelper.GetIP(), BrowserHelper.GetOSVersion(), BrowserHelper.GetBrowser() };
             var LoginRecord = new EM_User_Login_Record()
             {
                 LoginTime = DateTime.Now,
                 LoginInfo = string.Join(StaticKey.Split,LoginInfo)
             };
             //判断是否登陆成功
-            var account = DataContext.EM_User_Account.Where(o => o.LoginEmaill == accountVM.UserName).FirstOrDefault();
+            var account = DataContext.EM_User_Account.Where(o => o.LoginEmail == accountVM.UserName).FirstOrDefault();
             if (account == null)
                 result.Message = "输入的用户不存在";
             else if (account.Password != DESEncrypt.Encrypt(accountVM.Password))
@@ -74,7 +76,7 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
             var userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where Mobile=@Mobile", new { Mobile = model.Mobile }).FirstOrDefault();
             if (userId != 0)
                 return new Tuple<bool, string>(false, "手机号重复，请重新输入"); 
-            userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where LoginEmaill=@LoginEmaill", new { LoginEmaill = model.LoginEmaill }).FirstOrDefault();
+            userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where LoginEmail=@LoginEmail", new { LoginEmail = model.LoginEmail }).FirstOrDefault();
             if (userId != 0)
                 return new Tuple<bool, string>(false, "登陆邮箱重复，请重新输入"); 
             return new Tuple<bool, string>(true, ""); ;
@@ -88,10 +90,23 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
                 LoginInfo ="",
                 IsLogin=false,
                 ErrorInfo="用户退出了系统"
-                
             };
             DataContext.EM_User_Login_Record.Add(LoginRecord);
             DataContext.SaveChanges();
+        }
+
+        public async Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string  RoleId="")
+        {
+            var Sql = @"select top(1)a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status ,c.LoginTime as LastLoginTime from EM_User_Account a
+join EM_User_Role b on a.RoleId=b.id
+join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
+            Sql += string.IsNullOrEmpty(UserName) ? "" : " and a.UserName like '%'+@UserName+'%' ";
+            Sql += string.IsNullOrEmpty(LoginEmail) ? "" : " and a.LoginEmail like '%'+@LoginEmail+'%' ";
+            Sql += string.IsNullOrEmpty(RoleId ) ? "" : " and a.RoleId =@RoleId ";
+           Sql+="order by a.ModifyTime desc,c.LoginTime desc";
+           var result = (await DapperHelper.SqlQueryAsync<AccountDetailDTO>(Sql, new { UserName = UserName, LoginEmail = LoginEmail, RoleId = RoleId })).ToList();
+           return result;
+
         }
 
     }
@@ -99,7 +114,7 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
     {
 
 
-        AccountVm Login(AccountLoginVM accountVM);
+        AccountVM Login(AccountLoginVM accountVM);
 
         /// <summary>
         /// 记录下登出时间
@@ -109,5 +124,7 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
 
 
         Tuple<bool, string> IsRepeat(EM_User_Account model);
+
+        Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string RoleId = "");
     }
 }

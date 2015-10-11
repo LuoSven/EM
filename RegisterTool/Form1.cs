@@ -45,7 +45,7 @@ namespace RegisterTool
             }
             var Account=new EM_User_Account()
             {
-                LoginEmaill = textBox1.Text,
+                LoginEmail = textBox1.Text,
                 Password = textBox2.Text,
                 Mobile = textBox3.Text,
                 UserName = textBox4.Text

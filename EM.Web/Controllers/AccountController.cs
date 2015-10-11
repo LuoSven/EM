@@ -10,7 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using EM.Common;
 using EM.Web.Core.Base;
-using EM.Models.VMs;
+using EM.Model.VMs;
 using EM.Data.Repositories;
 using EM.Utils;
 using EM.Web.Core;
@@ -92,29 +92,6 @@ namespace EM.Web.Controllers
         //
         // POST: /Account/Register
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // 尝试注册用户
-                try
-                {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (MembershipCreateUserException e)
-                {
-                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
-                }
-            }
-
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
-        }
 
         //
         // POST: /Account/Disassociate

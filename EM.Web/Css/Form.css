@@ -1,0 +1,35 @@
+﻿.SearchFrom
+{
+    padding-top: 15px;
+
+    padding-left: 5px;
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 15px;
+}
+.SearchFrom input[type=text],.SearchFrom select,.SearchFrom .searchButton
+{
+    margin: 0px 3px 0px 0px;
+    font-size: 14px;
+}
+.SearchFrom input[type=text]
+{
+    padding-left: 5px;
+}
+.SearchFrom select
+{
+    line-height: 20px;
+    padding-bottom: 1px;
+}
+.SearchFrom .searchButton
+{
+    padding: 2px 8px;
+    background: #000000;
+    border: 1px solid;
+    color: #fff;
+    float: right;
+    border-radius: 5px;
+}
+.SearchFrom .searchButton:hover
+{
+    background: #00B2FF;
+}

@@ -108,6 +108,7 @@
     <Compile Include="ObjectContextManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\SystemProgromRepo.cs" />
+    <Compile Include="Repositories\UserRoleRepo.cs" />
     <Compile Include="Repositories\UserRightRepo.cs" />
     <Compile Include="Repositories\UserAccountRepo.cs" />
     <Compile Include="Settings\Settings.cs" />

@@ -10,7 +10,7 @@ using System.Web.Http;
 using EM.Data.Infrastructure;
 using EM.Common;
 using EM.Utils;
-using EM.Models.VMs;
+using EM.Model.VMs;
 using EM.Model.Entities;
 
 namespace EM.Web.Core
@@ -66,10 +66,10 @@ namespace EM.Web.Core
              }
              return result;
          }
-         private static AccountVm GetAccountInfoFromCookie()
+         private static AccountVM GetAccountInfoFromCookie()
          {
              var accountCookie = CookieHelper.GetCookie(StaticKey.CookieAccountKey);
-             return new AccountVm(accountCookie);
+             return new AccountVM(accountCookie);
 
          }
          public static int GetUserId()

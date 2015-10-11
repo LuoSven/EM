@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -44,6 +47,9 @@
     <Compile Include="Attribute\ControlType.cs" />
     <Compile Include="Attribute\ActionType.cs" />
     <Compile Include="Base\BaseControl.cs" />
+    <Compile Include="Mapper\Configuration.cs" />
+    <Compile Include="Mapper\DtVProfile.cs" />
+    <Compile Include="Mapper\MapResolvers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attribute\RigthFilter.cs" />
     <Compile Include="ViewHelp.cs" />
@@ -70,6 +76,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

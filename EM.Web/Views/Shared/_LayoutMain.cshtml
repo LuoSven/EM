@@ -17,6 +17,7 @@
         @Html.Partial("_LoginPartial")
     </div>
     <div class="body m10">
+        
         @RenderBody()
     </div>
     <div class="footer">
@@ -26,8 +27,40 @@
       <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+    Global = {};
+    </script>
+    <script src="~/Js/common.js" type="text/javascript"></script>
+    <script src="~/Js/form.js" type="text/javascript"></script>
+    <script src="~/Js/main.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        Global.Init = function () {
+            //刷新页面
+            $("#refreshIframe").click(function () { Global.Iframe.RefreshIframe(); })
+            //注销按钮
+            $("#logOff").click(function () { Global.Main.LogOff() });
+            //tabs左右移动效果
+            $(".leftSlice").click(function () { Global.Iframe.TabSlice("left") })
+            $(".rightSlice").click(function () { Global.Iframe.TabSlice("right") })
 
-    <script src="~/Js/main.js" type="text/javascript">
+            //暂时用这个办法解决iframe内部刷新高度会变化的问题
+            //if (window.location.href == top.location.href)
+            //    setInterval(function () { Global.AutoIframe("mainIframe"); }, 500);
+            Global.Menu.MenuHover();
+            Global.Form.DatePicker();
+            Global.Form.FileUploader();
+            Global.Main.AutoBodyWidth();
+
+            // Global.OpenNewIframe(undefined, "/" + BeginTask.split(",")[0] + "/" + BeginTask.split(",")[1])
+            //绑定菜单点击事件
+            $(".menu>ul>li>ul>li>a").click(function () {
+                Global.Menu.ClickMenu(this); Global.Iframe.OpenIframe(this.innerHTML, this.id, $(this).attr("data-url"))
+            })
+            $breadcrumb.html(BeginBreadcrumb);
+        }
+        $(function () {
+            Global.Init();
+        })
     </script>
 </body>
 </html>
