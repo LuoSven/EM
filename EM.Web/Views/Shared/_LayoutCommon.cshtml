@@ -3,20 +3,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <title>NY报销系统</title>
+    <title>浙江区财务系统</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="~/Css/base.css" type="text/css" />
     <link rel="stylesheet" href="~/Css/Form.css" type="text/css" />  
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
       @RenderSection("Css", required: false)
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid pt20 c333 ">
         @RenderBody()
     </div>
-      <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -25,12 +25,19 @@
     </script>
     <script src="~/Js/common.js" type="text/javascript"></script>
     <script src="~/Js/form.js" type="text/javascript"></script>
+    <script src="~/Js/Third/layer-v2.0/layer/layer.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         Global.Init = function () {
             Global.Form.DatePicker();
             Global.Form.FileUploader();
             Global.Form.AjaxSearchForm($("#SearchForm"), $("#List"), $("#SearchForm .searchButton"))
+            $('form[data-role=form]').each(function(){
+                var  $form=$(this);
+                var url = $form.attr("data-url");
+                Global.Form.AjaxBodyForm($form, url);
+            })
+            Global.Form.FilterAction(@ViewBag.actionOb)
         }
 
         $(function () {

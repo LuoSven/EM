@@ -5,6 +5,80 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EMDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EM_Charge_Cate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CateName" Type="nvarchar" MaxLength="500" />
+          <Property Name="CateType" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="500" />
+          <Property Name="KPIPercent" Type="decimal" Precision="10" Scale="6" />
+          <Property Name="KPIValue" Type="decimal" Precision="18" Scale="6" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“EMDB.dbo.EM_Company_Limit”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="EM_Company_Limit">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CateId" />
+            <PropertyRef Name="SeasonType" />
+            <PropertyRef Name="LimitSum" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="CateId" Type="int" Nullable="false" />
+          <Property Name="SeasonType" Type="int" Nullable="false" />
+          <Property Name="LimitSum" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ModifyDate" Type="datetime" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EM_Company_Performance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="SalesPerformance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UploadDate" Type="datetime" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EM_ExpenseAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="EANumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Money" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="OccurDate" Type="datetime" Nullable="false" />
+          <Property Name="ApplyDate" Type="datetime" Nullable="false" />
+          <Property Name="CateId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="EM_System_Program">
           <Key>
             <PropertyRef Name="Id" />
@@ -63,6 +137,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="512" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="512" />
+          <Property Name="CompanyIds" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
@@ -93,11 +168,28 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EMDBModelStoreContainer">
+          <EntitySet Name="EM_Charge_Cate" EntityType="Self.EM_Charge_Cate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_Company" EntityType="Self.EM_Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_Company_Performance" EntityType="Self.EM_Company_Performance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_ExpenseAccount" EntityType="Self.EM_ExpenseAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Role" EntityType="Self.EM_User_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_Company_Limit" EntityType="Self.EM_Company_Limit" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EM_Company_Limit].[Id] AS [Id], 
+    [EM_Company_Limit].[CompanyID] AS [CompanyID], 
+    [EM_Company_Limit].[CateId] AS [CateId], 
+    [EM_Company_Limit].[SeasonType] AS [SeasonType], 
+    [EM_Company_Limit].[LimitSum] AS [LimitSum], 
+    [EM_Company_Limit].[CreateDate] AS [CreateDate], 
+    [EM_Company_Limit].[ModifyDate] AS [ModifyDate], 
+    [EM_Company_Limit].[Creater] AS [Creater], 
+    [EM_Company_Limit].[Modifier] AS [Modifier]
+    FROM [dbo].[EM_Company_Limit] AS [EM_Company_Limit]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
@@ -157,6 +249,7 @@
           <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="EM_User_Right" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Role" ToRole="EM_User_Right" />
+          <Property Name="CompanyIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
           <End Role="EM_User_Role" Type="Self.EM_User_Role" Multiplicity="1">
@@ -186,6 +279,11 @@
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
+          <EntitySet Name="EM_Charge_Cate" EntityType="EMDBModel.EM_Charge_Cate" />
+          <EntitySet Name="EM_Company" EntityType="EMDBModel.EM_Company" />
+          <EntitySet Name="EM_Company_Performance" EntityType="EMDBModel.EM_Company_Performance" />
+          <EntitySet Name="EM_ExpenseAccount" EntityType="EMDBModel.EM_ExpenseAccount" />
+          <EntitySet Name="EM_Company_Limit" EntityType="EMDBModel.EM_Company_Limit" />
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -217,6 +315,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EM_Charge_Cate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CateName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CateType" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="EM_Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KPIPercent" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="KPIValue" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_Company_Performance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="SalesPerformance" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UploadDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_ExpenseAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="EANumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Money" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Remark" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="OccurDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CateId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creater" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_Company_Limit">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="CateId" />
+            <PropertyRef Name="SeasonType" />
+            <PropertyRef Name="LimitSum" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="CateId" Type="Int32" Nullable="false" />
+          <Property Name="SeasonType" Type="Int32" Nullable="false" />
+          <Property Name="LimitSum" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Precision="3" />
+          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -265,6 +435,7 @@
           <EntitySetMapping Name="EM_User_Role">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
               <MappingFragment StoreEntitySet="EM_User_Role">
+                <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -283,6 +454,80 @@
                 <ScalarProperty Name="ActionDescription" ColumnName="ActionDescription" />
                 <ScalarProperty Name="ActionName" ColumnName="ActionName" />
                 <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Charge_Cate">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Charge_Cate">
+              <MappingFragment StoreEntitySet="EM_Charge_Cate">
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="CateType" ColumnName="CateType" />
+                <ScalarProperty Name="CateName" ColumnName="CateName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Company">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Company">
+              <MappingFragment StoreEntitySet="EM_Company">
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="KPIValue" ColumnName="KPIValue" />
+                <ScalarProperty Name="KPIPercent" ColumnName="KPIPercent" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Company_Performance">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Company_Performance">
+              <MappingFragment StoreEntitySet="EM_Company_Performance">
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+                <ScalarProperty Name="SalesPerformance" ColumnName="SalesPerformance" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_ExpenseAccount">
+            <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
+              <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CateId" ColumnName="CateId" />
+                <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Money" ColumnName="Money" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EANumber" ColumnName="EANumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Company_Limit">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Company_Limit">
+              <MappingFragment StoreEntitySet="EM_Company_Limit">
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LimitSum" ColumnName="LimitSum" />
+                <ScalarProperty Name="SeasonType" ColumnName="SeasonType" />
+                <ScalarProperty Name="CateId" ColumnName="CateId" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

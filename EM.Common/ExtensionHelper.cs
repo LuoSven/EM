@@ -17,7 +17,7 @@ namespace EM.Common
         /// <returns></returns>
         public static string GetEnumDescription(this object e)
         {
-            
+
             //object objDesc = DataCache.GetCache(e.ToString());
             //if (objDesc != null)
             //{
@@ -48,7 +48,17 @@ namespace EM.Common
             return e.ToString();
         }
 
-
+        public static List<KeyValuePair<int, string>> GetEnumList(this object em)
+        {
+            var Type = em.GetType();
+            var list = new List<KeyValuePair<int, string>>();
+            foreach (int key in Enum.GetValues(Type))
+            {
+                string strName = Enum.ToObject(Type, key).GetEnumDescription();//获取名称
+                list.Add(new KeyValuePair<int,string>(key,strName));//添加到DropDownList控件
+            }
+            return list;
+        }
 
 
         public static void BindYear(this DropDownList ddl)

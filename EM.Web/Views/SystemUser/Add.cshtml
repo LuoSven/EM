@@ -1,6 +1,35 @@
 ﻿@{
-    ViewBag.Title = "Add";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
-
-<h2>Add</h2>
+@using EM.Model.VMs;
+@model AccountDetailVM
+@{
+    ViewBag.roleList = new List<KeyValueVM>();
+}
+<form action="" method="post" class="basic-grey">
+    <h1>
+        新增用户
+        <span></span>
+    </h1>
+    <label>
+        <span>登陆邮箱 :</span>
+        @Html.TextBoxFor(o => o.LoginEmail, new { placeholder = "登陆用户邮箱" })
+    </label>
+    <label>
+        <span>用户名 :</span>
+        @Html.TextBoxFor(o => o.UserName, new { @placeholder = "真实姓名" })
+    </label>
+    <label>
+        <span>手机 :</span>
+        @Html.TextBoxFor(o => o.Mobile, new { @placeholder = "要接收通知的邮箱，不可以重复" })
+    </label>
+    <label>
+        <span>角色 :</span>
+        @Html.DropDownListFor(o => o.RoleName, new SelectList(ViewBag.roleList, "Key", "Value"))
+    </label>
+    <label>
+        <span>&nbsp;</span>
+        <input type="submit" class="button"   value="保存" />
+    </label>
+</form>

@@ -55,9 +55,9 @@ namespace EM.Common
     /// </summary>
     public enum RightType
     {
-        [Description("查询类型action")]
+        [Description("查询")]
         View = 1,
-        [Description("增删改类型action")]
+        [Description("增删改")]
         Form,
     }
 
@@ -70,6 +70,38 @@ namespace EM.Common
         ZJ = 1,
         [Description("易捷报销系统")]
         YJ,
+        [Description("共用作业")]
+        All,
+    }
+
+    public enum CateTypeEnum
+    {
+       [Description("无")]
+        None=0,
+        [Description("有关绩效")]
+        KPIAbout,
+        [Description("年度额度")]
+        YearlyLimit,
+        [Description("季度额度")]
+        SeasonlyLimit,
+        [Description("其他")]
+        Other
+    }
+    
+
+    //额度季节
+    public enum SeasonTypeEnum
+    {
+        [Description("全年")]
+        FullYear=0,
+       [Description("第一季度")]
+        Spring,
+       [Description("第二季度")]
+       Summer,
+       [Description("第三季度")]
+       Autumn,
+       [Description("第四季度")]
+        Winter
     }
 
     #endregion

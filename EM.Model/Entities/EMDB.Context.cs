@@ -30,5 +30,10 @@ namespace EM.Model.Entities
         public virtual DbSet<EM_User_Right> EM_User_Right { get; set; }
         public virtual DbSet<EM_User_Role> EM_User_Role { get; set; }
         public virtual DbSet<EM_System_Program> EM_System_Program { get; set; }
+        public virtual DbSet<EM_Charge_Cate> EM_Charge_Cate { get; set; }
+        public virtual DbSet<EM_Company> EM_Company { get; set; }
+        public virtual DbSet<EM_Company_Performance> EM_Company_Performance { get; set; }
+        public virtual DbSet<EM_ExpenseAccount> EM_ExpenseAccount { get; set; }
+        public virtual DbSet<EM_Company_Limit> EM_Company_Limit { get; set; }
     }
 }

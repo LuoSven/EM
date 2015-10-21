@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DTOs\UserRoleProgramDTO.cs" />
     <Compile Include="DTOs\AccountDetailDTO.cs" />
     <Compile Include="Entities\EMDB.Context.cs">
       <AutoGen>True</AutoGen>
@@ -66,6 +67,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EMDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_Charge_Cate.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_Company.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_Company_Limit.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_Company_Performance.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_ExpenseAccount.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EM_System_Program.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
@@ -88,7 +104,9 @@
     <Compile Include="VMs\AccountDetailVM.cs" />
     <Compile Include="VMs\AccountVM.cs" />
     <Compile Include="VMs\KeyValueVM.cs" />
+    <Compile Include="VMs\UserRoleTreeVM.cs" />
     <Compile Include="VMs\MenuVM.cs" />
+    <Compile Include="VMs\UserRoleProgramVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

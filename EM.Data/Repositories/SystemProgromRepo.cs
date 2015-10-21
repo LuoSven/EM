@@ -75,7 +75,7 @@ namespace EM.Data.Repositories
         {
             var MenuList = new List<MenuVM>();
             var ProgramList = DapperHelper.SqlQuery<EM_System_Program>(@"select b.SystemType ,b.ControllerName,b.ControllerDescription,b.ActionName,b.ActionDescription,b.Id from EM_User_Right a 
-join EM_System_Program b on a.ProgramId=b.Id and b.RightType=1   and b.SystemType=@SysTypeId
+join EM_System_Program b on a.ProgramId=b.Id and b.RightType=1   and ( b.SystemType=@SysTypeId or b.SystemType=3)
 and a.RoleId =(select top(1) a.RoleId from EM_User_Account a
 join EM_User_Role b on a.RoleId=b.id
 where a.UserId=@UserId )", new { UserId = UserId, SysTypeId = SysTypeId });
@@ -96,6 +96,11 @@ where a.UserId=@UserId )", new { UserId = UserId, SysTypeId = SysTypeId });
             return MenuList;
         }
 
+       
+        public void DeleteAllProgram()
+        {
+            DapperHelper.SqlExecute(@"delete from EM_System_Program");
+        }
     }
     public interface ISystemProgromRepo : IRepository<EM_System_Program>
     {
@@ -104,5 +109,6 @@ where a.UserId=@UserId )", new { UserId = UserId, SysTypeId = SysTypeId });
        int AddOrUpdateProgram(EM_System_Program program);
 
        List<MenuVM> GetMenu(int UserId, int SysTypeId);
+       void DeleteAllProgram();
     }
 }

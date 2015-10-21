@@ -105,3 +105,53 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb,SubmitJqOb) {
         })
     })
 }
+Global.Form.AjaxBodyForm = function (FormJqOb, Url,SuccessFunction) {
+    var alert = Global.Utils.ShowMessage
+    FormJqOb.submit(function () {
+        $.ajax({
+            type: "post",
+            url: FormJqOb.attr("action"),
+            data: FormJqOb.serialize(),
+            success: function (a) {
+                if(SuccessFunction!=undefined&&typeof(SuccessFunction)=="function")
+                    SuccessFunction(a);
+                if (a.code) {
+                    alert("保存成功！");
+                    if (Url != undefined)
+                    {
+                        if (Url != "")
+                            location.href = Url;
+                        else
+                            location.href = location.href;
+
+                    }
+                }
+                else
+                    alert(a.message);
+            },
+            error: function (a, b, c) {
+                Global.Log(a);
+                Global.Log(b);
+                Global.Log(c);
+                alert("服务器发生错误，请联系工作人员")
+            },
+        })
+        return false;
+    })
+}
+Global.Form.NewIframe = function (name,id,url) {
+    window.parent.Global.Iframe.OpenIframe(name, id, url, false)
+}
+Global.Form.FilterAction=function(actions)
+{
+    console.log(actions)
+    var List = {};
+    $("*[data-commond]").each(function () {
+        List[$(this).attr("data-commond").toLowerCase()] = 0;;
+    })
+    for (var i in List) {
+        if (actions[i] == undefined)
+            $("*[data-commond="+i+"]").remove();
+    }
+
+}

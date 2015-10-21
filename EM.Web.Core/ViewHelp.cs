@@ -12,16 +12,18 @@ using EM.Common;
 using EM.Utils;
 using EM.Model.VMs;
 using EM.Model.Entities;
+using System.Configuration;
 
 namespace EM.Web.Core
 {
      public   class ViewHelp
     {
+         private static readonly IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
          public static List<EM_System_Program> GetAllActionByAssembly()
          {
              var result = new List<EM_System_Program>();
 
-             var types = Assembly.LoadFile("EM.Web.dll").GetTypes();
+             var types = Assembly.LoadFile(ConfigurationManager.AppSettings["WebBinPath"]+ "EM.Web.dll").GetTypes();
 
              foreach (var type in types)
              {
@@ -37,7 +39,7 @@ namespace EM.Web.Core
                          var members = type.GetMethods();
                          foreach (var member in members)
                          {
-                             if (member.ReturnType.Name == "ActionResult")//如果是Action
+                             if (member.ReturnType.Name.Contains("ActionResult") || member.ReturnType.Name.Contains("Task"))//如果是Action
                              {
                                 ActionType rightType= (ActionType)member.GetCustomAttribute(typeof(ActionType));
                                  
@@ -89,9 +91,13 @@ namespace EM.Web.Core
 
          public static bool HasRight(string ControllerName, string ActionName)
          {
-             IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
-             var Id=GetUserId();
-             return userRightRepo.HasRight(Id, ControllerName, ActionName);
+             var actions = userRightRepo.GetActions(GetUserId(), ControllerName);
+             return actions.Contains(ActionName);
+         }
+         
+         public static List<string> GetActions(string ControllerName)
+         {
+             return userRightRepo.GetActions(GetUserId(), ControllerName);
          }
     }
 }

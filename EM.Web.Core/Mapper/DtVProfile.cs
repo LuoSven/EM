@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.Mappers;
 using EM.Model.DTOs;
 using EM.Model.VMs;
+using EM.Model.Entities;
 
 namespace EM.Web.Core
 {
@@ -17,6 +18,13 @@ namespace EM.Web.Core
     {
             Mapper.CreateMap<AccountDetailDTO, AccountDetailVM>()
             .ForMember(dest => dest.StatusName, source => source.ResolveUsing<AccountStatusResolver>().FromMember(o=>o.Status));
+
+
+            Mapper.CreateMap<AccountDetailVM, EM_User_Account>();
+            Mapper.CreateMap<UserRoleProgramDTO, UserRoleProgramVM>()
+       .ForMember(dest => dest.ActionName, source => source.ResolveUsing<ActionNameResolver>());
+
+
         }
     }
 }

@@ -26,6 +26,14 @@ namespace EM.Data.Repositories
            var result=   DataContext.EM_User_Role.Select(o =>new KeyValueVM(){Key=o.id.ToString(),Value=o.Name}).ToList();
            return result;
         }
+        public async Task<List<UserRoleProgramDTO>> GetPrograms(int RoleId)
+        {
+            var list = await DapperHelper.SqlQueryAsync<UserRoleProgramDTO>(@"select c.Id,c.ActionDescription ,c.RightType,c.ControllerDescription,b.Permit from EM_User_Role a 
+join EM_User_Right b on b.RoleId=a.id
+join EM_System_Program c on c.Id=b.ProgramId 
+where a.id=@RoleId", new { RoleId = RoleId });
+          return list.ToList();
+        }
 }
 
     
@@ -33,5 +41,7 @@ namespace EM.Data.Repositories
     {
 
         List<KeyValueVM> GetList();
+
+       Task<List<UserRoleProgramDTO>> GetPrograms(int RoleId);
     }
 }

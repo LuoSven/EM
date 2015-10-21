@@ -57,7 +57,7 @@ join EM_User_Right c on b.id=c.RoleId and c.Permit=1
 join EM_System_Program d on d.Id=c.ProgramId
 where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
                 result.SystemIds = SystemType;
-                
+                result.UserRole = account.RoleId.Value;
                 LoginRecord.IsLogin = true;
                 LoginRecord.UserId = account == null ? 0 : account.UserId;
             }
@@ -109,6 +109,12 @@ join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
 
         }
 
+        public async Task<AccountDetailDTO> GetByIdDto(int UserId)
+        {
+            var user = (await Dapper.DapperHelper.SqlQueryAsync<AccountDetailDTO>("select * from EM_User_Account where UserId=@UserId", new { UserId = UserId })).FirstOrDefault();
+            return user;
+        }
+
     }
     public interface IUserAccountRepo : IRepository<EM_User_Account>
     {
@@ -126,5 +132,6 @@ join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
         Tuple<bool, string> IsRepeat(EM_User_Account model);
 
         Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string RoleId = "");
+        Task<AccountDetailDTO> GetByIdDto(int UserId);
     }
 }

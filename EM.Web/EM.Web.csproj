@@ -190,11 +190,34 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\SystemUserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Content Include="Css\Form.css" />
+    <Content Include="Css\Third\dtree\dtree.css" />
+    <Content Include="Css\Third\dtree\img\base.gif" />
+    <Content Include="Css\Third\dtree\img\cd.gif" />
+    <Content Include="Css\Third\dtree\img\empty.gif" />
+    <Content Include="Css\Third\dtree\img\folder.gif" />
+    <Content Include="Css\Third\dtree\img\folderopen.gif" />
+    <Content Include="Css\Third\dtree\img\globe.gif" />
+    <Content Include="Css\Third\dtree\img\imgfolder.gif" />
+    <Content Include="Css\Third\dtree\img\join.gif" />
+    <Content Include="Css\Third\dtree\img\joinbottom.gif" />
+    <Content Include="Css\Third\dtree\img\line.gif" />
+    <Content Include="Css\Third\dtree\img\minus.gif" />
+    <Content Include="Css\Third\dtree\img\minusbottom.gif" />
+    <Content Include="Css\Third\dtree\img\musicfolder.gif" />
+    <Content Include="Css\Third\dtree\img\nolines_minus.gif" />
+    <Content Include="Css\Third\dtree\img\nolines_plus.gif" />
+    <Content Include="Css\Third\dtree\img\page.gif" />
+    <Content Include="Css\Third\dtree\img\plus.gif" />
+    <Content Include="Css\Third\dtree\img\plusbottom.gif" />
+    <Content Include="Css\Third\dtree\img\question.gif" />
+    <Content Include="Css\Third\dtree\img\trash.gif" />
     <Content Include="Images\Icons\select_close.png" />
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
@@ -323,6 +346,10 @@
     <Content Include="Css\Third\bootstrap\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Js\Third\dtree\dtree.js" />
+    <Content Include="Js\Third\layer-v2.0\doc\jquery下载.url" />
+    <Content Include="Js\Third\layer-v2.0\doc\layer交流.url" />
+    <Content Include="Js\Third\layer-v2.0\doc\layer官网.url" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <None Include="Js\jquery-1.8.2.intellisense.js" />
     <Content Include="Html\main.html" />
@@ -343,6 +370,17 @@
     <Content Include="Js\modernizr-2.6.2.js" />
     <Content Include="Js\Third\bootstrap\bootstrap.min.js" />
     <None Include="Js\_references.js" />
+    <Content Include="Js\Third\layer-v2.0\demo.html" />
+    <Content Include="Js\Third\layer-v2.0\layer\extend\layer.ext.js" />
+    <Content Include="Js\Third\layer-v2.0\layer\layer.js" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\default\icon-ext.png" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\default\icon.png" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\default\loading-0.gif" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\default\loading-1.gif" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\default\loading-2.gif" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\layer.css" />
+    <Content Include="Js\Third\layer-v2.0\layer\skin\layer.ext.css" />
+    <Content Include="Js\Third\layer-v2.0\更新日志.txt" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -400,7 +438,11 @@
     <Content Include="Views\Shared\_LayoutCommon.cshtml" />
     <Content Include="Views\SystemUser\Index.cshtml" />
     <Content Include="Views\SystemUser\Add.cshtml" />
+    <Content Include="Views\UserRole\_List.cshtml" />
+    <Content Include="Views\SystemUser\Edit.cshtml" />
+    <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\SystemUser\_List.cshtml" />
+    <Content Include="Views\UserRole\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

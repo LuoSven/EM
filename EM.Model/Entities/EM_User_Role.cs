@@ -22,6 +22,7 @@ namespace EM.Model.Entities
         public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string CompanyIds { get; set; }
     
         public virtual ICollection<EM_User_Right> EM_User_Right { get; set; }
     }

@@ -43,7 +43,7 @@
                     @User.LastLoginTime
                 </td>
                 <td>
-                    <a>编辑</a>
+                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑用户','SystemUser@(User.UserId)','@Url.Action("Edit", new { Id=@User.UserId })',false)">编辑</a>
                 </td>
             </tr>
         }
