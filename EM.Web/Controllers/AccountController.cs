@@ -50,7 +50,7 @@ namespace EM.Web.Controllers
                  var result = userAccountRepo.Login(model);
                  if (string.IsNullOrEmpty(result.Message))
                  {
-                     string[] acconutCookie = { result.UserId.ToString(), result.UserName, result.Mobile ,string.Join(",",result.SystemIds),result.UserRole.ToString()};
+                     string[] acconutCookie = { result.UserId.ToString(), result.UserName, result.Mobile ,string.Join(",",result.SystemIds),result.UserRole.ToString(),result.CompanyIds};
                      var acconutCookieE = DESEncrypt.Encrypt(string.Join(StaticKey.Split, acconutCookie));
                      CookieHelper.WriteCookie(StaticKey.CookieAccountKey, acconutCookieE, model.RememberMe);
                      if(result.SystemIds==null||result.SystemIds.Count==0)

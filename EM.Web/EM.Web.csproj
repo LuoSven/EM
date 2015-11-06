@@ -51,6 +51,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -77,9 +81,6 @@
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -191,6 +192,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\ExpenseAccountController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\SystemUserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -221,6 +224,7 @@
     <Content Include="Images\Icons\select_close.png" />
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
+    <Content Include="Js\jquery.validate.messages_cn.js" />
     <Content Include="Js\form.js" />
     <Content Include="Js\common.js" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -381,6 +385,29 @@
     <Content Include="Js\Third\layer-v2.0\layer\skin\layer.css" />
     <Content Include="Js\Third\layer-v2.0\layer\skin\layer.ext.css" />
     <Content Include="Js\Third\layer-v2.0\更新日志.txt" />
+    <Content Include="Js\Third\My97DatePicker\calendar.js" />
+    <Content Include="Js\Third\My97DatePicker\lang\en.js" />
+    <Content Include="Js\Third\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Js\Third\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Js\Third\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Js\Third\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Js\Third\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Js\Third\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Js\Third\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Js\Third\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Js\Third\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Js\Third\My97DatePicker\WdatePicker.js" />
+    <Content Include="Js\Third\My97DatePicker\开发包\lang\en.js" />
+    <Content Include="Js\Third\My97DatePicker\开发包\lang\zh-cn.js" />
+    <Content Include="Js\Third\My97DatePicker\开发包\lang\zh-tw.js" />
+    <Content Include="Js\Third\My97DatePicker\开发包\readme.txt" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\datePicker.gif" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\default\img.gif" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -443,6 +470,11 @@
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\SystemUser\_List.cshtml" />
     <Content Include="Views\UserRole\Edit.cshtml" />
+    <Content Include="Views\ExpenseAccount\Index.cshtml" />
+    <Content Include="Views\ExpenseAccount\_List.cshtml" />
+    <Content Include="Views\ExpenseAccount\Edit.cshtml" />
+    <Content Include="Views\ExpenseAccount\Add.cshtml" />
+    <Content Include="Views\ExpenseAccount\_UploadList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

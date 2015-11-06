@@ -56,8 +56,10 @@ join EM_User_Role b on a.RoleId=b.id
 join EM_User_Right c on b.id=c.RoleId and c.Permit=1
 join EM_System_Program d on d.Id=c.ProgramId
 where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
+                var CompanyIds = DapperHelper.SqlQuery<string>(@"select CompanyIds from EM_User_Role where id=@RoleId ", new { RoleId = account.RoleId.Value }).FirstOrDefault() ;
                 result.SystemIds = SystemType;
                 result.UserRole = account.RoleId.Value;
+                result.CompanyIds = CompanyIds??"0";
                 LoginRecord.IsLogin = true;
                 LoginRecord.UserId = account == null ? 0 : account.UserId;
             }

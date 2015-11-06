@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DTOs\ExpenseAccountDTO.cs" />
     <Compile Include="DTOs\UserRoleProgramDTO.cs" />
     <Compile Include="DTOs\AccountDetailDTO.cs" />
     <Compile Include="Entities\EMDB.Context.cs">
@@ -83,6 +84,15 @@
     <Compile Include="Entities\EM_ExpenseAccount.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EM_ExpenseAccount_File.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_ExperseAccount_ApproveHistory.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_System_ActionLog.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\EM_System_Program.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
@@ -99,10 +109,12 @@
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SMs\ExpenseAccountSM.cs" />
     <Compile Include="VMs\AccountLoginVM.cs" />
     <Compile Include="VMs\AccountPasswordVM.cs" />
     <Compile Include="VMs\AccountDetailVM.cs" />
     <Compile Include="VMs\AccountVM.cs" />
+    <Compile Include="VMs\ExpenseAccountVM.cs" />
     <Compile Include="VMs\KeyValueVM.cs" />
     <Compile Include="VMs\UserRoleTreeVM.cs" />
     <Compile Include="VMs\MenuVM.cs" />

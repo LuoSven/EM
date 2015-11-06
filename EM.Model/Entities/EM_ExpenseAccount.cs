@@ -26,5 +26,6 @@ namespace EM.Model.Entities
         public System.DateTime ModifyDate { get; set; }
         public string Creater { get; set; }
         public string Modifier { get; set; }
+        public int CompanyId { get; set; }
     }
 }

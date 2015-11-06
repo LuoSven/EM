@@ -1,11 +1,4 @@
-﻿.SearchFrom
-{
-    padding-top: 15px;
-
-    padding-left: 5px;
-    border-bottom: 1px solid #DDD;
-    padding-bottom: 15px;
-}
+﻿.SearchFrom{padding-top: 15px;padding-left: 5px;border-bottom: 1px solid #DDD;padding-bottom: 15px;}
 .SearchFrom input[type=text], .SearchFrom select, .SearchFrom Button
 {
     margin: 0px 3px 0px 0px;
@@ -15,6 +8,7 @@
 {
     padding-left: 5px;
 }
+
 .SearchFrom select
 {
     line-height: 20px;
@@ -34,14 +28,17 @@
     background: #00B2FF;
 }
 
-.basic-grey{margin-left: 10px;margin-right:auto;max-width:500px;background: #FFFFFF;padding:25px 15px 25px 10px;font:12px Georgia,"Times New Roman",Times,serif;color:#888;text-shadow:1px 1px 1px #FFF;/* border:1px solid #e4e4e4 */}
+.basic-grey{margin-left: 10px;margin-right:auto;max-width: 800px;background: #FFFFFF;padding:25px 15px 25px 10px;font:12px Georgia,"Times New Roman",Times,serif;color:#888;text-shadow:1px 1px 1px #FFF;/* border:1px solid #e4e4e4 */}
 .basic-grey h1{font-size:25px;padding:0 0 10px 40px;display:block;border-bottom:1px solid #e4e4e4;margin:-10px -15px 30px -10px;color:#888}
 .basic-grey h1>span{display:block;font-size:11px}
-.basic-grey label{display:block;margin:0}
-.basic-grey label>span{float:left;width:20%;text-align:right;padding-right:10px;margin-top:10px;color:#888;font-size: 16px;font-weight: 100;}
-.basic-grey input[type=text],.basic-grey input[type=email],.basic-grey select,.basic-grey textarea{border:1px solid #dadada;color:#888;height:30px;margin-bottom: 20px;margin-right:6px;margin-top:2px;outline:0 none;padding:3px 3px 3px 5px;width:70%;font-size: 15px;line-height: 18px;font-weight: 100;box-shadow:inset 0 1px 4px #ececec;-moz-box-shadow:inset 0 1px 4px #ececec;-webkit-box-shadow:inset 0 1px 4px #ececec}
+.basic-grey>label{display:block;margin:0;position: relative;}
+.basic-grey>label>span{float:left;width:20%;text-align:right;padding-right:10px;margin-top:10px;color:#888;font-size: 16px;font-weight: 100;}
+.basic-grey>label>.errorMessage{position: absolute;bottom: 0px;left: 20%; text-decoration: blink;color: rgb(246, 0, 0);cursor: default;}
+.basic-grey input[type=text],.basic-grey input[type=email],.basic-grey select,.basic-grey textarea{border:1px solid #dadada;color:#888;height:30px;margin-bottom: 20px;margin-right:6px;margin-top:2px;outline:0 none;padding:3px 3px 3px 5px;width: 60%;font-size: 15px;line-height: 18px;font-weight: 100;box-shadow:inset 0 1px 4px #ececec;-moz-box-shadow:inset 0 1px 4px #ececec;-webkit-box-shadow:inset 0 1px 4px #ececec}
 .basic-grey textarea{padding:5px 3px 3px 5px}
-.basic-grey select{background:#FFF url(down-arrow.png) no-repeat right;background:#FFF url(down-arrow.png) no-repeat right);appearance:none;-webkit-appearance:none;-moz-appearance:none;text-indent:.01px;text-overflow:'';width:70%;height:35px;line-height:25px}
+.basic-grey select{background:#FFF url(down-arrow.png) no-repeat right;background:#FFF url(down-arrow.png) no-repeat right);appearance:none;-webkit-appearance:none;-moz-appearance:none;text-indent:.01px;text-overflow:initial;width:60%;height:35px;line-height:25px}
 .basic-grey textarea{height:100px}
 .basic-grey .button{background:#e27575;border:0;padding:10px 25px 10px 25px;color:#FFF;box-shadow:1px 1px 5px #b6b6b6;border-radius:3px;text-shadow:1px 1px 1px #9e3f3f;cursor:pointer}
 .basic-grey .button:hover{background:#cf7a7a}
+.basic-grey .checkTitle{margin-left: 10px;font-weight: 100;color: inherit;font-size: 16px;margin-right: 5px;}
+.basic-grey >label>.error{border:1px solid #ff0000}

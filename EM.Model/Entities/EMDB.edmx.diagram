@@ -17,6 +17,9 @@
         <EntityTypeShape EntityType="EMDBModel.EM_Company_Performance" Width="1.5" PointX="7.75" PointY="4.75" />
         <EntityTypeShape EntityType="EMDBModel.EM_ExpenseAccount" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="EMDBModel.EM_Company_Limit" Width="1.5" PointX="2.75" PointY="8.75" />
+        <EntityTypeShape EntityType="EMDBModel.EM_System_ActionLog" Width="1.5" PointX="5.375" PointY="8.75" />
+        <EntityTypeShape EntityType="EMDBModel.EM_ExpenseAccount_File" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="EMDBModel.EM_ExperseAccount_ApproveHistory" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

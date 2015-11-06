@@ -1,3 +1,4 @@
+/// <reference path="jquery-ui-1.8.24.js" />
 /* NUGET: BEGIN LICENSE TEXT
  *
  * Microsoft grants you the right to use these script files for the sole

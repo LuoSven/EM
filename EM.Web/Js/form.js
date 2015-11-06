@@ -1,5 +1,15 @@
 ﻿
 Global.Form = {};
+Global.Form.Init = function () {
+    Global.Form.DatePicker();
+    Global.Form.FileUploader();
+    Global.Form.AjaxSearchForm($("#SearchForm"), $("#List"))
+    $('form[data-role=form]').each(function(){
+        var  $form=$(this);
+        var url = $form.attr("data-url");
+        Global.Form.Valid($form, url)
+    })
+}
 Global.Form.FileUploader = function () {
     var b_version = navigator.appVersion
     var version = b_version.split(";")
@@ -52,9 +62,9 @@ Global.Form.FileUploader = function () {
 }
 Global.Form.DatePicker = function () {
     //时间插件目前用my97来做
-    //$(".datepicker").focus(function () {
-    //    WdatePicker({ el: this.id })
-    //});
+    $(".datepicker").focus(function () {
+        WdatePicker({ el: this.id })
+    });
 }
 Global.Form.DeleteConfirm = function (url) {
     if (confirm("确认删除？"))
@@ -84,9 +94,9 @@ Global.Form.AutoTextarea = function () {
         this.style.minHeight = t;
     })
 }
-Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb,SubmitJqOb) {
+Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb) {
     var alert = Global.Utils.ShowMessage
-    SubmitJqOb.click(function () {
+    FormJqOb.submit(function () {
         $.ajax({
             type: "get",
             url: FormJqOb.attr("action"),
@@ -103,6 +113,7 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb,SubmitJqOb) {
             complete: function () {
             }
         })
+        return false;
     })
 }
 Global.Form.AjaxBodyForm = function (FormJqOb, Url,SuccessFunction) {
@@ -142,6 +153,42 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,SuccessFunction) {
 Global.Form.NewIframe = function (name,id,url) {
     window.parent.Global.Iframe.OpenIframe(name, id, url, false)
 }
+Global.Form.DeleteFlag = 0;
+Global.Form.Delete=function(url,ob,isComfirm)
+{
+    var alert = Global.Utils.ShowMessage
+    if (!isComfirm)
+    {
+        $(ob).html("确认删除？")
+        $(ob).attr("onclick",'Global.Form.Delete("'+url+'",this, true)')
+        setTimeout(function () {
+            if (Global.Form.DeleteFla = 0)
+            {
+                $(ob).html("删除")
+                $(ob).attr("onclick", 'Global.Form.Delete("' + url + '",this, false)')
+            }
+        },1500)
+    }
+
+    if (isComfirm) {
+        if (Global.Form.DeleteFlag)
+            $(ob).focus();
+        Global.Form.DeleteFlag = 1;
+        $(ob).html("正在删除中")
+        $.ajax({
+            url: url,
+            success: function (a) {
+                Global.Form.DeleteFlag = 0
+                if(typeof a =="string")
+                    a=JSON.parse(a)
+                if (!a.code) 
+                  alert(a.message)
+                $("form").submit();
+            }
+
+        })
+    }
+}
 Global.Form.FilterAction=function(actions)
 {
     console.log(actions)
@@ -154,4 +201,34 @@ Global.Form.FilterAction=function(actions)
             $("*[data-commond="+i+"]").remove();
     }
 
+}
+Global.Form.Valid = function (ob, url) {
+    $(ob).validate({
+        submitHandler:function(form)
+        {
+            var $form = $(ob);
+            Global.Form.AjaxBodyForm($form, url);
+        },
+        messages: {
+            required: "必填"
+        },
+        unhighlight: function (element, errorClass) {
+            var $errorMessage = $(".errorMessage", $(element).parent())
+            $errorMessage.remove();
+            $(element).removeClass("error")
+        },
+        errorPlacement: function (error, element) {
+            var errorHtml = error.html();
+            var $errorMessage=$(".errorMessage", $(element).parent())
+            if($errorMessage.length>0)
+            {
+                $errorMessage.html(errorHtml)
+            }
+            else
+            {
+                $(element).parent().append("<a class=\"errorMessage\">" + errorHtml + "</a>")
+            }
+      
+    } 
+    })
 }

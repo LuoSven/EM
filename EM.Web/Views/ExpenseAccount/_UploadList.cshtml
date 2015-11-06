@@ -1,0 +1,70 @@
+﻿@using EM.Model.Entities;
+@model List<EM_ExpenseAccount_File>
+<label>
+    <span>上传记录 :</span>
+    <table class="table table-hover wp80">
+        <thead>
+            <tr>
+                <th width="50%">文件名称</th>
+                <th width="30%">上传时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="3" class="taC">暂无数据</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="taL">@item.FileName</td>
+                        <td class="taL">@item.CreateDate</td>
+                        <td class="taL"><a>删除</a><a>查看</a></td>
+                    </tr>
+                }
+            }
+
+            <tr>
+                <td colspan="3" class="taC">
+                    <div class="pRel" id="AddFileForm">
+                        <iframe name="if" id="if" class="hidden"></iframe>
+                        <a>新增记录</a>
+                    </div>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</label>
+    <script>
+    $(function () {
+        var html="<form target=\"if\" enctype=\"multipart/form-data\" id=\"AddFile\" name=\"AddFile\" method=\"post\" action=\"../../Upload/PostExpenseAccountFile/"+"@ViewBag.ExpenseAccountId"+"\">";
+        html+="<input type=\"file\" name=\"file\" id=\"file\" class=\"wp100 hp100 pAbs \" style=\"top:0px;opacity:0\" />";
+        html+="</form>";
+        $("#AddFileForm").append(html);
+        var oFrm = document.getElementById('if');
+        oFrm.onload = oFrm.onreadystatechange = function () {
+            if (this.readyState && this.readyState != 'complete') return;
+            else {
+                var json = eval("(" + oFrm.contentWindow.document.body.innerText + ")");
+                if(json.code)
+                {
+                    alert("上传成功")
+                }
+                else
+                {
+                    alert(jsob.message)
+                }
+            }
+        }
+        $("#file").change(function () {
+            $("#AddFile")[0].submit();
+        })
+    });
+    </script>

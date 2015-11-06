@@ -7,7 +7,7 @@
 <div class="SearchFrom">
     <form id="SearchForm" action="@Url.Action("Index", "UserRole")">
         <input type="text" name="UserName" value="" placeholder="名称，描述">
-        <button class="searchButton" type="button">搜索</button>
+        <button class="searchButton" type="submit">搜索</button>
         <button onclick="Global.Form.NewIframe('新增用户','UserRole_Add','@Url.Action("Add")')" type="button">新增</button>
 
     </form>

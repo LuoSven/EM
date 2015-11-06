@@ -35,5 +35,8 @@ namespace EM.Model.Entities
         public virtual DbSet<EM_Company_Performance> EM_Company_Performance { get; set; }
         public virtual DbSet<EM_ExpenseAccount> EM_ExpenseAccount { get; set; }
         public virtual DbSet<EM_Company_Limit> EM_Company_Limit { get; set; }
+        public virtual DbSet<EM_System_ActionLog> EM_System_ActionLog { get; set; }
+        public virtual DbSet<EM_ExpenseAccount_File> EM_ExpenseAccount_File { get; set; }
+        public virtual DbSet<EM_ExperseAccount_ApproveHistory> EM_ExperseAccount_ApproveHistory { get; set; }
     }
 }

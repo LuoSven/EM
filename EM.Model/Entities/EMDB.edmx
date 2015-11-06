@@ -21,7 +21,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="CompanyName" Type="nvarchar" MaxLength="500" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="KPIPercent" Type="decimal" Precision="10" Scale="6" />
           <Property Name="KPIValue" Type="decimal" Precision="18" Scale="6" />
           <Property Name="IsDelete" Type="bit" />
@@ -66,11 +66,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="EANumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Money" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="Remark" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="OccurDate" Type="datetime" Nullable="false" />
           <Property Name="ApplyDate" Type="datetime" Nullable="false" />
           <Property Name="CateId" Type="int" Nullable="false" />
@@ -78,6 +79,47 @@
           <Property Name="ModifyDate" Type="datetime" Nullable="false" />
           <Property Name="Creater" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_ExpenseAccount_File">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseAccountId" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FileId" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="UpLoader" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_ExperseAccount_ApproveHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseAccountId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="FailReason" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“EMDB.dbo.EM_System_ActionLog”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="EM_System_ActionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ControlName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ActionName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Json" Type="nvarchar(max)" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -172,6 +214,8 @@
           <EntitySet Name="EM_Company" EntityType="Self.EM_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_Company_Performance" EntityType="Self.EM_Company_Performance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount" EntityType="Self.EM_ExpenseAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_ExpenseAccount_File" EntityType="Self.EM_ExpenseAccount_File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_ExperseAccount_ApproveHistory" EntityType="Self.EM_ExperseAccount_ApproveHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
@@ -189,6 +233,18 @@
     [EM_Company_Limit].[Creater] AS [Creater], 
     [EM_Company_Limit].[Modifier] AS [Modifier]
     FROM [dbo].[EM_Company_Limit] AS [EM_Company_Limit]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="EM_System_ActionLog" EntityType="Self.EM_System_ActionLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EM_System_ActionLog].[Id] AS [Id], 
+    [EM_System_ActionLog].[TableName] AS [TableName], 
+    [EM_System_ActionLog].[ControlName] AS [ControlName], 
+    [EM_System_ActionLog].[ActionName] AS [ActionName], 
+    [EM_System_ActionLog].[Json] AS [Json], 
+    [EM_System_ActionLog].[UserName] AS [UserName], 
+    [EM_System_ActionLog].[Remark] AS [Remark], 
+    [EM_System_ActionLog].[CreateDate] AS [CreateDate]
+    FROM [dbo].[EM_System_ActionLog] AS [EM_System_ActionLog]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
@@ -284,6 +340,9 @@
           <EntitySet Name="EM_Company_Performance" EntityType="EMDBModel.EM_Company_Performance" />
           <EntitySet Name="EM_ExpenseAccount" EntityType="EMDBModel.EM_ExpenseAccount" />
           <EntitySet Name="EM_Company_Limit" EntityType="EMDBModel.EM_Company_Limit" />
+          <EntitySet Name="EM_System_ActionLog" EntityType="EMDBModel.EM_System_ActionLog" />
+          <EntitySet Name="EM_ExpenseAccount_File" EntityType="EMDBModel.EM_ExpenseAccount_File" />
+          <EntitySet Name="EM_ExperseAccount_ApproveHistory" EntityType="EMDBModel.EM_ExperseAccount_ApproveHistory" />
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -331,7 +390,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="KPIPercent" Type="Decimal" Precision="10" Scale="6" />
           <Property Name="KPIValue" Type="Decimal" Precision="18" Scale="6" />
           <Property Name="IsDelete" Type="Boolean" />
@@ -361,7 +420,7 @@
           <Property Name="EANumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Money" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Remark" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="OccurDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ApplyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CateId" Type="Int32" Nullable="false" />
@@ -369,6 +428,7 @@
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creater" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="EM_Company_Limit">
           <Key>
@@ -386,6 +446,45 @@
           <Property Name="ModifyDate" Type="DateTime" Precision="3" />
           <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_System_ActionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ControlName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ActionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Json" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="TableName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_ExpenseAccount_File">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseAccountId" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FileId" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FilePath" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpLoader" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EM_ExperseAccount_ApproveHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseAccountId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="FailReason" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Creater" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -502,6 +601,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Modifier" ColumnName="Modifier" />
                 <ScalarProperty Name="Creater" ColumnName="Creater" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
@@ -528,6 +628,48 @@
                 <ScalarProperty Name="SeasonType" ColumnName="SeasonType" />
                 <ScalarProperty Name="CateId" ColumnName="CateId" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_System_ActionLog">
+            <EntityTypeMapping TypeName="EMDBModel.EM_System_ActionLog">
+              <MappingFragment StoreEntitySet="EM_System_ActionLog">
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Json" ColumnName="Json" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControlName" ColumnName="ControlName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_ExpenseAccount_File">
+            <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount_File">
+              <MappingFragment StoreEntitySet="EM_ExpenseAccount_File">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpLoader" ColumnName="UpLoader" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="ExpenseAccountId" ColumnName="ExpenseAccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_ExperseAccount_ApproveHistory">
+            <EntityTypeMapping TypeName="EMDBModel.EM_ExperseAccount_ApproveHistory">
+              <MappingFragment StoreEntitySet="EM_ExperseAccount_ApproveHistory">
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="FailReason" ColumnName="FailReason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ExpenseAccountId" ColumnName="ExpenseAccountId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

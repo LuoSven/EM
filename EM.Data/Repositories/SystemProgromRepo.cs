@@ -78,7 +78,7 @@ namespace EM.Data.Repositories
 join EM_System_Program b on a.ProgramId=b.Id and b.RightType=1   and ( b.SystemType=@SysTypeId or b.SystemType=3)
 and a.RoleId =(select top(1) a.RoleId from EM_User_Account a
 join EM_User_Role b on a.RoleId=b.id
-where a.UserId=@UserId )", new { UserId = UserId, SysTypeId = SysTypeId });
+where a.UserId=@UserId ) and a.Permit=1", new { UserId = UserId, SysTypeId = SysTypeId });
 
             var Controls = ProgramList.Select(o =>new Tuple<string,string>(o.ControllerName,o.ControllerDescription)).Distinct();
             foreach (var Control in Controls)

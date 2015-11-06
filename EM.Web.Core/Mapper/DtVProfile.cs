@@ -24,6 +24,11 @@ namespace EM.Web.Core
             Mapper.CreateMap<UserRoleProgramDTO, UserRoleProgramVM>()
        .ForMember(dest => dest.ActionName, source => source.ResolveUsing<ActionNameResolver>());
 
+            Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>();
+            Mapper.CreateMap<EM_ExpenseAccount, EM_ExpenseAccount>()
+            .ForMember(o=>o.Creater,s=>s.Ignore())
+            .ForMember(o => o.CreateDate, s => s.Ignore());
+
 
         }
     }

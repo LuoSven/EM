@@ -34,8 +34,9 @@ namespace EM.Model.VMs
                 {
                     SystemIds.Add(Convert.ToInt32(item));
                 }
-
                 UserRole = Convert.ToInt32(account[4]);
+                CompanyIds = account[5];
+
             }
 
 
@@ -48,6 +49,9 @@ namespace EM.Model.VMs
 
         public int UserRole { get; set; }
 
+
         public string Message { get; set; }
+
+        public string CompanyIds { get; set; }
     }
 }

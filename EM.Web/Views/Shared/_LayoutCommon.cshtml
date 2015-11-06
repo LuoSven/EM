@@ -23,21 +23,17 @@
     <script>
         Global = {};
     </script>
+    <script src="~/Js/Third/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
     <script src="~/Js/common.js" type="text/javascript"></script>
     <script src="~/Js/form.js" type="text/javascript"></script>
     <script src="~/Js/Third/layer-v2.0/layer/layer.js" type="text/javascript"></script>
+    <script src="~/Js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="~/Js/jquery.validate.messages_cn.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         Global.Init = function () {
-            Global.Form.DatePicker();
-            Global.Form.FileUploader();
-            Global.Form.AjaxSearchForm($("#SearchForm"), $("#List"), $("#SearchForm .searchButton"))
-            $('form[data-role=form]').each(function(){
-                var  $form=$(this);
-                var url = $form.attr("data-url");
-                Global.Form.AjaxBodyForm($form, url);
-            })
-            Global.Form.FilterAction(@ViewBag.actionOb)
+            Global.Form.Init();
+            Global.Form.FilterAction(@ViewBag.actionOb);
         }
 
         $(function () {

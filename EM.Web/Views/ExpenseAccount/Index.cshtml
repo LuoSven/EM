@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs
+@using EM.Common;
+@model List<ExpenseAccountListVM>
+@{
+    var CateList = ViewBag.CateList as List<KeyValueVM>;
+    var DateTypeList = ExpenseAccountDateType.OccurDate.GetEnumList();
+}
+<div class="SearchFrom">
+    <form id="SearchForm" action="@Url.Action("Index", "ExpenseAccount")">
+        <input type="text" name="EANumber" value="" placeholder="单号">
+        <input type="text" name="Name" value="" placeholder="申请人">
+        <input type="text" name="CompanyName" value="" placeholder="公司名称">
+        <select name="CateType">
+            <option selected="selected" value="">请选择</option>
+            @foreach (var role in CateList)
+            {
+                <option value="@role.Key">@role.Value</option>
+            }
+        </select>
+        <select name="DateType">
+            <option selected="selected" value="">请选择</option>
+            @foreach (var role in DateTypeList)
+            {
+                <option value="@role.Key">@role.Value</option>
+            }
+        </select>
+        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+        <input type="text" class="datepicker" placeholder="结束时间"  name="EDate" />
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_List", Model)
+</div>

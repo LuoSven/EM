@@ -78,7 +78,10 @@ namespace EM.Web.Core
          {
              return GetAccountInfoFromCookie().UserId;
          }
-
+         public static string GetCompanyIds()
+         {
+             return GetAccountInfoFromCookie().CompanyIds;
+         }
          public static string GetUserName()
          {
              return GetAccountInfoFromCookie().UserName;

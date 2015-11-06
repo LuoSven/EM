@@ -104,6 +104,37 @@ namespace EM.Common
         Winter
     }
 
+    public enum ExpenseAccountDateType
+    {
+        [Description("单据日期")]
+        OccurDate,
+        [Description("录入日期")]
+        ApplyDate,
+        [Description("创建日期")]
+        CreateDate,
+        [Description("更新日期")]
+        ModifyDate 
+    }
+
+    public enum ExpenseAccountFileStatus
+    {
+        [Description("正常")]
+        Defult=1,
+        [Description("已删除")]
+        Deleted
+    }
+
+    public enum ExpenseAccountApproveStatus
+    {
+        [Description("待审核")]
+        WaitingApprove = 1,
+        [Description("审核不通过")]
+        FailApproved,
+        [Description("审核通过")]
+        PassApproved,
+
+    }
+
     #endregion
 
 
