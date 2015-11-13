@@ -190,9 +190,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CompanyPerformanceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExpenseAccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\SystemUserController.cs" />
@@ -350,6 +352,7 @@
     <Content Include="Css\Third\bootstrap\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <None Include="Js\Program\ExpenseAccount.js" />
     <Content Include="Js\Third\dtree\dtree.js" />
     <Content Include="Js\Third\layer-v2.0\doc\jquery下载.url" />
     <Content Include="Js\Third\layer-v2.0\doc\layer交流.url" />
@@ -408,6 +411,7 @@
     <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
     <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Js\Third\pdf\pdfobject.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -475,6 +479,16 @@
     <Content Include="Views\ExpenseAccount\Edit.cshtml" />
     <Content Include="Views\ExpenseAccount\Add.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadList.cshtml" />
+    <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
+    <Content Include="Views\ExpenseAccount\ViewFile.cshtml" />
+    <Content Include="Views\Error\NoRight.cshtml" />
+    <Content Include="Views\Shared\_Pager.cshtml" />
+    <Content Include="Views\CompanyPerformance\Index.cshtml" />
+    <Content Include="Views\CompanyPerformance\_List.cshtml" />
+    <Content Include="Views\CompanyPerformance\Add.cshtml" />
+    <Content Include="Views\CompanyPerformance\Edit.cshtml" />
+    <Content Include="Views\ExpenseAccount\_DetailList.cshtml" />
+    <Content Include="Views\ExpenseAccount\_EditDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,43 @@
+﻿@using EM.Model.VMs;
+@using EM.Utils;
+@model ExpenseAccountFileVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+    var IsPdf = Model.FileName.Contains("pdf");
+    var Url = "../../" + Html.Raw(Model.FilePath.Replace("\\", "/"));
+}
+@section Js
+{
+    @{
+        if (IsPdf)
+        {
+            <script type="text/javascript" src="~/Js/Third/pdf/pdfobject.js"></script>
+            <script type="text/javascript">
+
+                window.onload = function () {
+                    var myPDF = new PDFObject({ url: "@Url" }).embed("FileContent");
+                };
+
+            </script>
+        }
+    }
+
+
+
+}
+<table class="m5 pAbs c333 w300">
+    <tr><td width="25%"></td><td ></td></tr>
+    <tr><td>单据号：</td><td>@(Model.EANumber??"保存后刷新页面")</td></tr>
+    <tr><td>报销公司：</td><td>@(Model.CompanyName??"保存后刷新页面")</td></tr>
+    <tr><td>附件说明：</td><td>@StringUtil.HtmlEncode(Model.Remark)</td></tr>
+</table>
+<div class="wp100  " style="height: 2000px;" id="FileContent">
+    @if (!IsPdf)
+    {
+        <div class="taC wp100">
+            <img style="max-width:80%" src="@Url" />
+        </div>
+    }
+
+</div>

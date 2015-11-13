@@ -107,9 +107,12 @@
     <Compile Include="ObjectContextHelper.cs" />
     <Compile Include="ObjectContextManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CompanyPerformanceRepo.cs" />
     <Compile Include="Repositories\CompanyRepo.cs" />
     <Compile Include="Repositories\ChangeCateRepo.cs" />
+    <Compile Include="Repositories\ExpenseAccountDetailRepo.cs" />
     <Compile Include="Repositories\ExpenseAccountFileRepo.cs" />
+    <Compile Include="Repositories\ExpenseAccountApproveHistoryRepo.cs" />
     <Compile Include="Repositories\SystemProgromRepo.cs" />
     <Compile Include="Repositories\ExpenseAccountRepo.cs" />
     <Compile Include="Repositories\UserRoleRepo.cs" />

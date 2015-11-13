@@ -36,6 +36,20 @@ Global.Log = function (ob)
 
     }
 }
+Global.GetBrowser = function () {
+    var Sys = {};
+    var ua = navigator.userAgent.toLowerCase();
+    var browserVer;
+    (browserVer = ua.match(/msie ([\d.]+)/)) ? Sys.ie = formatVer(browserVer) :
+        (browserVer = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = formatVer(browserVer) :
+            (browserVer = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = formatVer(browserVer) :
+                (browserVer = ua.match(/opera.([\d.]+)/)) ? Sys.opera = formatVer(browserVer) :
+                    (browserVer = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = formatVer(browserVer) : 0;
+    function formatVer(val) {
+        return parseInt(val[1].split(".")[0])
+    }
+    return Sys;
+}
 //原型拓展
 Global.Expand = function () {
     //为array加上contains的方法
@@ -129,6 +143,78 @@ Global.Expand = function () {
         }
         return result;
     }
+
+    //原生方法增强
+    String.prototype.Trim = function () {
+        return this.replace(/(^\s*)|(\s*$)/g, "");
+    }
+    //判断是否匹配手机
+    String.prototype.isMobile = function () {
+        var val = this;
+        if (!val.match(/^1[3|4|5|7|8][0-9]\d{4,8}$/) || val.length != 11 || val == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //判断是否匹配邮箱
+    String.prototype.isEmail = function () {
+        var val = this;
+        if (!val.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/) || val == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //判断是否匹配字符a-z0-9A-Z
+    String.prototype.isWords = function () {
+        var val = this;
+        if (val.match(/[A-Za-z0-9]+$/) != val || val == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //判断是否为纯数字
+    String.prototype.isNumber = function () {
+        var val = this;
+        if (val.match(/\d+$/) != val || val == "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //判断数据类型
+    String.prototype.getType = function () {
+        var _t, o = this;
+        return ((_t = typeof (o)) == "object" ? o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+    };
+    String.prototype.isFunction = function () {
+      
+        if (eval(this.valueOf()) != undefined && typeof (eval(this.valueOf())) == "function")
+            return true;
+        return false;
+    };
+
+    (function ($) {
+        $.fn.serializeJson = function () {
+            var serializeObj = {};
+            var array = this.serializeArray();
+            var str = this.serialize();
+            $(array).each(function () {
+                if (serializeObj[this.name]) {
+                    if ($.isArray(serializeObj[this.name])) {
+                        serializeObj[this.name].push(this.value);
+                    } else {
+                        serializeObj[this.name] = [serializeObj[this.name], this.value];
+                    }
+                } else {
+                    serializeObj[this.name] = this.value;
+                }
+            });
+            return serializeObj;
+        };
+    })(jQuery);
 }
 Global.UiBlockAll = function () {
     $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);

@@ -101,6 +101,14 @@ where a.UserId=@UserId ) and a.Permit=1", new { UserId = UserId, SysTypeId = Sys
         {
             DapperHelper.SqlExecute(@"delete from EM_System_Program");
         }
+        public  bool IsNeedRight(string ActionName, string ControlName,int SystemTypeId=0)
+        {
+            var sql="select Id from EM_System_Program where ControllerName=@ControlName and ActionName=@ActionName";
+            if(SystemTypeId!=0)
+                sql+=" and  SystemType=@SystemType";
+            var result = DapperHelper.SqlQuery<int>(sql, new { ControlName = ControlName, ActionName = ActionName, SystemType = SystemTypeId }).Any();
+            return result;
+        }
     }
     public interface ISystemProgromRepo : IRepository<EM_System_Program>
     {
@@ -109,6 +117,8 @@ where a.UserId=@UserId ) and a.Permit=1", new { UserId = UserId, SysTypeId = Sys
        int AddOrUpdateProgram(EM_System_Program program);
 
        List<MenuVM> GetMenu(int UserId, int SysTypeId);
+
+       bool IsNeedRight(string ActionName, string ControlName,int SystemTypeId=0);
        void DeleteAllProgram();
     }
 }

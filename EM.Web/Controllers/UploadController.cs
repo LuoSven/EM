@@ -22,9 +22,14 @@ namespace EM.Web.Controllers
             return View();
         }
 
-        public ActionResult PostExpenseAccountFile(int id)
+        public ActionResult PostExpenseAccountFile(int id,string remark="")
         {
             var message = "";
+            if(string.IsNullOrEmpty(remark))
+            {
+                return Json(new { code = 0, message = "必须填写附件说明" });
+            }
+            var FilePathId = id == 0 ? "temp" : id.ToString();
             if (Request.Files.Count > 0)
             {
                 HttpPostedFileBase file = Request.Files[0];
@@ -33,29 +38,30 @@ namespace EM.Web.Controllers
                 if (string.IsNullOrEmpty(message))
                 {
                     var BasePath = Server.MapPath("~");
-                    var FileName = DateTime.Now.ToLongTimeString();
-                    var FilePath = BasePath + "Upload/ExpenseAccountFile/" + id + "/";
-                    if (!Directory.Exists(FilePath))
+                    var FileName = DateTime.Now.ToBinary().ToString();
+                    var FilePath =  "Upload\\ExpenseAccountFile\\" + FilePathId + "\\";
+                    if (!Directory.Exists(BasePath+FilePath))
                     {
-                        Directory.CreateDirectory(FilePath);
+                        Directory.CreateDirectory(BasePath+FilePath);
                     }
-                    var FullFilePath = FilePath + FileName + "." + FileType;
+                    var FullFilePath = BasePath+FilePath + FileName + "." + FileType;
                     file.SaveAs(FullFilePath);
                     var model = new EM_ExpenseAccount_File()
                     {
                         ExpenseAccountId = id,
                         FileName = file.FileName,
                         FileId = FileName,
-                        FilePath = FullFilePath,
+                        FilePath = FilePath + FileName + "." + FileType,
                         CreateDate = DateTime.Now,
                         UpLoader = ViewHelp.GetUserName(),
-                        Status = (int)ExpenseAccountFileStatus.Defult
+                        Status = (int)ExpenseAccountFileStatus.NoRelated,
+                        Remark=remark
 
                     };
                     expenseAccountFileRepo.Add(model);
                     expenseAccountFileRepo.SaveChanges();
 
-                    return Json(new { code = 1, model = model });
+                    return Json(new { code = 1, model = new { Id = model.Id, FileName = model.FileName, CreateDate=model.CreateDate.ToString("yyyy-MM-dd HH:mm:ss") } });
                 }
 
             }
@@ -65,7 +71,7 @@ namespace EM.Web.Controllers
         public string CheckFileType(string FileType)
         {
             string[] FileTypeList = { "pdf", "jpg", "png" };
-            if (FileTypeList.Contains(FileType))
+            if (!FileTypeList.Contains(FileType))
                 return string.Format("请上传以下格式的的文件：{0}", string.Join(",", FileTypeList));
                 return "";
         }

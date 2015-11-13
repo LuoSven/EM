@@ -51,6 +51,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DTOs\CompanyPerformanceDTO.cs" />
+    <Compile Include="DTOs\ExpenseAccountDetailListDTO.cs" />
+    <Compile Include="Entities\EM_ExpenseAccount_ApproveHistory.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_ExpenseAccount_Detail.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMs\CompanyPerformanceSM.cs" />
+    <Compile Include="VMs\CompanyPerformanceVM.cs" />
+    <Compile Include="VMs\ExpenseAccountDetailListVM.cs" />
+    <Compile Include="VMs\ExpenseAccountFileVM.cs" />
+    <Compile Include="DTOs\ExpenseAccountFileDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountDTO.cs" />
     <Compile Include="DTOs\UserRoleProgramDTO.cs" />
     <Compile Include="DTOs\AccountDetailDTO.cs" />
@@ -85,9 +98,6 @@
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EM_ExpenseAccount_File.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_ExperseAccount_ApproveHistory.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EM_System_ActionLog.cs">

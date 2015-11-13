@@ -12,15 +12,18 @@ namespace EM.Model.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class EM_ExperseAccount_ApproveHistory
+    public partial class EM_ExpenseAccount_Detail
     {
         public int Id { get; set; }
         public int ExpenseAccountId { get; set; }
-        public int Status { get; set; }
-        public string FailReason { get; set; }
+        public System.DateTime OccurDate { get; set; }
+        public string Remark { get; set; }
+        public int CateId { get; set; }
+        public decimal Money { get; set; }
+        public System.DateTime CreateTime { get; set; }
+        public System.DateTime ModifyTime { get; set; }
         public string Creater { get; set; }
         public string Modifier { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public System.DateTime ModifyDate { get; set; }
+        public int CompanyId { get; set; }
     }
 }

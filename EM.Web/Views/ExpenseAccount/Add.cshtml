@@ -7,78 +7,51 @@
     var Title = Model.Id == 0 ? "新增报销单" : "编辑报销单";
 }
 @model EM_ExpenseAccount  
-<form  method="post" data-role="form" data-url="" class="basic-grey">
+<form method="post" data-role="form" data-url="" class="basic-grey" data-beforesave="BeforeSave" data-success="UploadEAFile.UpdateFiles">
     <h1>
         @Title
         <span></span>
     </h1>
-    @Html.HiddenFor(o=>o.Id)
+    @Html.HiddenFor(o => o.Id)
     <label>
         <span>报销单号 :</span>
-        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号" ,@class="required" })<a class="checkTitle">对公</a><input type="checkbox" id="IsPublic" />
+        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })<a class="checkTitle">对公</a><input type="checkbox" id="IsPublic" />
     </label>
     <label>
         <span>申请日期 :</span>
-        @Html.TextBoxFor(o => o.ApplyDate, new { @placeholder = "报销单上的申请时间", @class = "datepicker required", value = Model.ApplyDate.ToShortDateString() })
-    </label> 
+        @Html.TextBox("ApplyDate", Model.ApplyDate.ToShortDateString(), new { @placeholder = "报销单上的申请时间", @class = "datepicker required" })
+    </label>
     <label>
-        <span>报销日期 :</span>
-        @Html.TextBoxFor(o => o.OccurDate, new { @placeholder = "具体报销的时间，通常是今天", @class = "datepicker required", value = Model.ApplyDate.ToShortDateString() })
-    </label> 
+        <span>费用发生日期 :</span>
+        @Html.TextBox("OccurDate", Model.ApplyDate.ToShortDateString(), new { @placeholder = "具体报销的时间，通常是今天", @class = "datepicker required" })
+    </label>
     <label>
         <span>报销人 :</span>
         @Html.TextBoxFor(o => o.Name, new { @placeholder = "报销的对象", @class = "required" })
-    </label> 
-      <label>
+    </label>
+    <label>
         <span>公司 :</span>
         @Html.DropDownListFor(o => o.CompanyId, (SelectList)ViewBag.CompanyList, "-请选择-", new { @class = "required" })
     </label>
 
     <label>
-        <span>报销事由 :</span>
+        <span>费用明细 :</span>
         @Html.DropDownListFor(o => o.CateId, (SelectList)ViewBag.CateList, "-请选择-", new { @class = "required" })
     </label>
     <label>
         <span>金额 :</span>
-        @Html.TextBox("Money", "",new { @class = "required" })
+        @Html.TextBox("Money", "", new { @class = "required" })
     </label>
     <label>
-        <span>备注 :</span>
-        @Html.TextBoxFor(o => o.Remark)
+        <span>费用说明 :</span>
+        @Html.TextBoxFor(o => o.Remark, new { @class = "required" })
     </label>
-  
+    @Html.Partial("_UploadList", (List<EM_ExpenseAccount_File>)ViewBag.Files)
     <label>
         <span>&nbsp;</span>
-        <input type="submit" class="button"   value="保存" />
+        <input type="submit" class="button" value="提交报销单" />
     </label>
 </form>
+@Html.Partial("_UploadField")
 @section Js
-{
-<script>
-    var OldValue = "";
-    $("#IsPublic").change(function () {
-        var $this = $(this);
-        var $EANumber = $("#EANumber")
-        if($this.is(":checked"))
-        {
-            OldValue = $EANumber.val();
-            $EANumber.attr("readOnly", "readOnly")
-            $.ajax({
-                url: "@Url.Action("GetNewPublicId")",
-                success:function(a)
-                {
-                    if(a.code)
-                    {
-                        $EANumber.val(a.EANumber);
-                    }
-                }
-            })
-        }
-        else
-        {
-            $EANumber.removeAttr("readOnly");
-            $EANumber.val(OldValue);
-        }
-    })
-    </script>
-}
+{<script src="~/Js/Program/ExpenseAccount.js"></script>}

@@ -39,11 +39,10 @@ namespace EM.Web.Core.Base
             if (ViewHelp.GetUserId() == 0)
                 filterContext.RequestContext.HttpContext.Response.Redirect("/account/login?returnUrl=" + filterContext.HttpContext.Request.CurrentExecutionFilePath);
 
-
-
              ControlName = filterContext.RouteData.Values["controller"].ToString().ToLower();
              ActionName = filterContext.RouteData.Values["action"].ToString().ToLower();
-
+             ViewBag.ControlName = ControlName;
+             ViewBag.ActionName = ActionName;
              if (Request.IsAjaxRequest() && !NormalAction.Contains(ActionName))
                     return true;
 

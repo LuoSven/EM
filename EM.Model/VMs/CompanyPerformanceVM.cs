@@ -1,4 +1,5 @@
 ﻿using EM.Model.DTOs;
+using EM.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace EM.Model.VMs
 {
-    public class ExpenseAccountListVM : ExpenseAccountListDTO
+    public class CompanyPerformanceVM : CompanyPerformanceDTO
     {
-        public string ApproveStatusName { get; set; }
+
     }
 }

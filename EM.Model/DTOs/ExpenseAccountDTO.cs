@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EM.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,7 @@ namespace EM.Model.DTOs
         public string CateName { get; set; }
         public System.DateTime CreateDate { get; set; }
         public string Creater { get; set; }
+        public int ApproveStatus { get; set; }
+        public List<EM_ExperseAccount_ApproveHistory> ApproveHistory { get; set; }
     }
 }

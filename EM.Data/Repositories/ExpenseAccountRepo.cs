@@ -24,7 +24,7 @@ namespace EM.Data.Repositories
         public async Task<List<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm)
         {
             var dateSql = "and a.{0} >= @SDate and a.{0} <=@EDate";
-            var sql = string.Format(@"select a.Id,a.EANumber,a.Creater,a.CreateDate,a.Money,a.OccurDate,a.Name,a.Remark,a.ApplyDate,b.CompanyName,c.CateName from EM_ExpenseAccount a 
+            var sql = string.Format(@"select a.Id,a.EANumber,a.Creater,a.CreateDate,a.Money,a.OccurDate,a.Name,a.Remark,a.ApplyDate,b.CompanyName,c.CateName,a.ApproveStatus  from EM_ExpenseAccount a 
 join EM_Company b on a.CompanyId=b.Id
 join EM_Charge_Cate c on a.CateId=c.Id
 where a.CompanyId in ({0})",sm.CompanyIds);
@@ -60,7 +60,10 @@ where a.CompanyId in ({0})",sm.CompanyIds);
                     sql += string.Format(dateSql, "ModifyDate");
                     break;
             }
-            
+            sql += " order by a.ModifyDate desc";
+
+     
+
 
             var list = await DapperHelper.SqlQueryAsync<ExpenseAccountListDTO>(sql,sm);
             return list.ToList();

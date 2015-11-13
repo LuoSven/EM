@@ -1,0 +1,174 @@
+﻿@model Topuc22Top.Web.Core.ViewModels.PagerModel
+@using Topuc22Top.Web.Core
+@using System.Text.RegularExpressions
+@{
+    ViewBag.Title = "_Pager";
+}
+
+@{
+    string sourceUrl = Context.Request.Url.ToString();
+    string changeSourceUrl = sourceUrl;
+    string flag = "";
+    var IsAjax = "";
+    var HttpMethod = "";
+    var LoadingElementId = "";
+    var SearchFormId = "";
+    var UpdateTargetId = "";
+
+    if (Model.AjaxOptions != null)
+    {
+        IsAjax = "data-ajaxPager=\"true\"";
+        HttpMethod = "data-ajax-method=\"" + Model.AjaxOptions.HttpMethod + "\"";
+        LoadingElementId = "data-ajax-loadingId=\"" + Model.AjaxOptions.LoadingElementId + "\"";
+        SearchFormId = "data-ajax-form-id=\"" + Model.AjaxOptions.SearchFormId + "\"";
+        UpdateTargetId = "data-ajax-targetid=\"" + Model.AjaxOptions.UpdateTargetId + "\"";
+    }
+    
+    Regex regex1 = new Regex(@"&page=\d+", RegexOptions.None);
+    Regex regex2 = new Regex(@"\?(page=\d*&?)", RegexOptions.None);
+    Regex regex3 = new Regex(@"\?(\w*)", RegexOptions.None);
+
+    Match collection1 = regex1.Match(sourceUrl);
+    Match collection2 = regex2.Match(sourceUrl);
+
+    if (regex1.IsMatch(sourceUrl))
+    {
+        changeSourceUrl = regex1.Replace(changeSourceUrl, "");//正则替换
+    }
+    if (regex2.IsMatch(sourceUrl))
+    {
+        changeSourceUrl = changeSourceUrl.Replace(collection2.Groups[1].Value.ToString(), "");
+    }
+    if (regex3.IsMatch(changeSourceUrl))
+    {
+        if (!regex3.Match(changeSourceUrl).Groups[1].Value.IsEmpty())
+        {
+            flag = "&";
+        }
+    }
+    else
+    {
+        flag = "?";
+    }
+
+    string prevPageUrl = changeSourceUrl + flag + "page=" + (Model.CurrentPage - 1).ToString();
+    string nextPageUrl = changeSourceUrl + flag + "page=" + (Model.CurrentPage + 1).ToString();
+    string firstPageUrl = changeSourceUrl + flag + "page=" + "1";
+    string lastPageUrl = changeSourceUrl + flag + "page=" + (Model.PageCount).ToString();
+    
+    
+
+}
+<div  @Html.Raw(IsAjax) @Html.Raw(HttpMethod) @Html.Raw(LoadingElementId)  @Html.Raw(UpdateTargetId)    @Html.Raw(SearchFormId)  class="pagination span10 row pull-right">
+    <ol>
+        <li>共<strong>@Model.PageCount</strong>页<strong>@Model.RecCount</strong>条记录</li>
+
+        @if (Model.CurrentPage == 1)
+        {
+            <li class="active"><a>首页</a></li>
+        }
+        else
+        {
+            <li><a href="@firstPageUrl">首页</a></li>
+        }
+
+        @*@Html.ActionLink("首页", "Index", new { page = 1, pageSize = ViewBag.PageSize })*@
+        @if (Model.CurrentPage != 1)
+        {
+            <li><a href="@prevPageUrl">上一页</a></li>
+        }
+        @{
+            IEnumerable<int> pageArray = PagerHelper.GetPageArray(Model);
+            foreach (int page in pageArray)
+            {
+                if (page == Model.CurrentPage)
+                {
+                    <li class="active"><a>@page.ToString()</a></li>
+                }
+                else
+                {
+                    string pageUrl = changeSourceUrl + flag + "page=" + page.ToString();
+                    <li><a href="@pageUrl">@page.ToString()</a></li>
+                }
+            }
+            if (Model.PageCount > 5 && Model.CurrentPage < Model.PageCount - 2)
+            {
+                if ((Model.CurrentPage + 5) <= Model.PageCount)
+                {
+                    string pageUrl = changeSourceUrl + flag + "page=" + (Model.CurrentPage + 5).ToString();
+                    <li><a href="@pageUrl">...</a></li>
+                }
+                else
+                {
+
+                    string pageUrl = changeSourceUrl + flag + "page=" + (Model.PageCount - 2).ToString();
+                    <li><a href="@pageUrl">...</a></li>
+                }
+
+            }
+        }
+        @if (Model.CurrentPage != Model.PageCount && Model.PageCount != 1)
+        {
+            <li><a href="@nextPageUrl">下一页</a></li>
+        }
+
+        @if (Model.CurrentPage == Model.PageCount)
+        {
+            <li class="active"><a>尾页</a></li>
+        }
+        else
+        {
+            <li><a href="@lastPageUrl">尾页</a></li>
+        }
+
+        @if (Model.PageCount > 1)
+        {
+            <li>
+                <span>
+                    <span class="page-input">
+                        <strong>跳到</strong>
+                        @*        @Html.TextBox("skipindex",string.Empty,new {id="skipindex"})*@
+                        <input type="text" size="3" id="skipindex" name="skipindex" class="input-mini" />
+                    </span><strong>页</strong>
+                    <input type="submit" onclick="pageskip();" value="确定" />
+                </span>
+                @Html.Hidden("hdPageCount", Model.PageCount)
+
+            </li>
+        }
+    </ol>
+</div>
+
+
+<script type="text/javascript">
+    function gotopage(page) {
+        var newurl = window.location.href.toString();
+        var reg = /page=([\d]*)/;
+        if (reg.test(newurl)) {
+            newurl = newurl.replace(reg, "page=" + page.toString());
+        }
+        else if (/\?/.test(newurl)) {
+            newurl = newurl + "&page=" + page.toString();
+        }
+        else {
+            newurl = newurl + "?page=" + page.toString();
+        }
+        window.location.href = newurl;
+
+    }
+
+    function pageskip() {
+        var page = $("#skipindex").val();
+        if (page == "0") return false;
+        if (/[^\d]/.test(page)) {
+            return false;
+        }
+        var pcnt = $("#hdPageCount").val();
+        if (parseInt(page) > parseInt(pcnt)) {
+            return false;
+        }
+        gotopage(page);
+    }
+</script>
+
+

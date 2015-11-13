@@ -24,11 +24,18 @@ namespace EM.Web.Core
             Mapper.CreateMap<UserRoleProgramDTO, UserRoleProgramVM>()
        .ForMember(dest => dest.ActionName, source => source.ResolveUsing<ActionNameResolver>());
 
-            Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>();
+            Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>()
+            .ForMember(dest => dest.ApproveStatusName, source => source.ResolveUsing<ApproveStatusResolver>().FromMember(o => o.ApproveStatus));
             Mapper.CreateMap<EM_ExpenseAccount, EM_ExpenseAccount>()
             .ForMember(o=>o.Creater,s=>s.Ignore())
             .ForMember(o => o.CreateDate, s => s.Ignore());
 
+            Mapper.CreateMap<ExpenseAccountFileDTO, ExpenseAccountFileVM>();
+            Mapper.CreateMap<CompanyPerformanceDTO, CompanyPerformanceVM>();
+          
+            Mapper.CreateMap<EM_Company_Performance, EM_Company_Performance>()
+            .ForMember(o=>o.Creater,s=>s.Ignore())
+            .ForMember(o => o.CreateDate, s => s.Ignore());
 
         }
     }

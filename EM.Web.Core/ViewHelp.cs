@@ -18,7 +18,8 @@ namespace EM.Web.Core
 {
      public   class ViewHelp
     {
-         private static readonly IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
+        private static readonly IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
+        private static readonly ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
          public static List<EM_System_Program> GetAllActionByAssembly()
          {
              var result = new List<EM_System_Program>();
@@ -82,6 +83,16 @@ namespace EM.Web.Core
          {
              return GetAccountInfoFromCookie().CompanyIds;
          }
+         public static bool IsAdmin()
+         {
+             int[] AdminRoleIds={1};
+             return AdminRoleIds.Contains(GetRoleId());
+         }
+
+         public static int GetRoleId()
+         {
+             return GetAccountInfoFromCookie().UserRole;
+         }
          public static string GetUserName()
          {
              return GetAccountInfoFromCookie().UserName;
@@ -95,6 +106,8 @@ namespace EM.Web.Core
          public static bool HasRight(string ControllerName, string ActionName)
          {
              var actions = userRightRepo.GetActions(GetUserId(), ControllerName);
+             if (!systemProgromRepo.IsNeedRight(ActionName, ControllerName))
+                 return true;
              return actions.Contains(ActionName);
          }
          

@@ -118,19 +118,23 @@ namespace EM.Common
 
     public enum ExpenseAccountFileStatus
     {
+        [Description("无关联")]//说明新增之后还没刷新报销单号的
+        NoRelated = 1,
         [Description("正常")]
-        Defult=1,
+        Default = 2,
         [Description("已删除")]
         Deleted
     }
 
     public enum ExpenseAccountApproveStatus
     {
-        [Description("待审核")]
-        WaitingApprove = 1,
-        [Description("审核不通过")]
+        [Description("草稿箱")]
+        Created = 1,
+        [Description("待确认")]
+        WaitingApprove ,
+        [Description("已计入预算")]
         FailApproved,
-        [Description("审核通过")]
+        [Description("退回")]
         PassApproved,
 
     }

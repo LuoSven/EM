@@ -1,0 +1,48 @@
+﻿@using EM.Model.VMs;
+@model List<CompanyPerformanceVM>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="w150">分公司名</th>
+            <th class="w80 taR">录入日期</th>
+            <th class="w80 taR">分公司业绩</th>
+            <th class="taR">创建日期</th>
+            <th class="taR">修改日期</th>
+            <th class="taR">创建人</th>
+            <th class="taR">修改人</th>
+            <th class="taR">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Performance in Model)
+        {
+            <tr>
+                <td>
+                    @Performance.CompanyName
+                </td>
+                <td class="taR">
+                    @Performance.UploadDate.ToShortDateString()
+                </td>
+                <td class="taR">
+                    @(Performance.SalesPerformance.ToString("f1"))万
+                </td>
+                <td class="taR">
+                    @Performance.CreateDate.ToShortDateString()
+                </td>
+                <td class="taR">
+                    @Performance.ModifyDate.ToShortDateString()
+                </td>
+                <td class="taR">
+                    @Performance.Creater
+                </td>
+                <td class="taR">
+                    @Performance.Modifier
+                </td>
+                <td class="taR">
+                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑业绩','EditCompanyPerformance_@(Performance.Id)','@Url.Action("Edit", new { Id = Performance.Id })',false)">编辑</a>
+                    <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new { Id = Performance.Id })',this,false)">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

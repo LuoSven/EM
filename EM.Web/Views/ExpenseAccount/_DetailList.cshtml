@@ -1,15 +1,18 @@
 ﻿@using EM.Model.Entities;
-@model List<EM_ExpenseAccount_File>
+@model List<EM_ExpenseAccount_Detail>
 @{
     var IsView = (string)ViewBag.ActionName == "detail";
 }
 <label>
-    <span>上传记录 :</span>
-    <table id="FileList" data-role="body" data-field="FileIds" class="table table-hover wp80">
+    <span>报销明细 :</span>
+    <table id="FileList" class="table table-hover wp80">
         <thead>
             <tr>
-                <th width="50%">附件名称</th>
-                <th width="30%">上传时间</th>
+                <th width="20%">费用公司</th>
+                <th width="10%">发生日期</th>
+                <th width="10%">费用大类</th>
+                <th width="20%">金额</th>
+                <th width="10%">事由说明</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -25,7 +28,7 @@
                 foreach (var item in Model)
                 {
                     <tr data-id="@item.Id">
-                        <td class="taL">@item.FileName</td>
+                        <td class="taL">@item.</td>
                         <td class="taL">@item.CreateDate</td>
                         <td class="taL">
                             @if (!IsView)

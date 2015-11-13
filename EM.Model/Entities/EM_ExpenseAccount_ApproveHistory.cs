@@ -12,16 +12,15 @@ namespace EM.Model.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class EM_ExpenseAccount_File
+    public partial class EM_ExpenseAccount_ApproveHistory
     {
         public int Id { get; set; }
         public int ExpenseAccountId { get; set; }
-        public string FileName { get; set; }
-        public string FileId { get; set; }
-        public string FilePath { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public string UpLoader { get; set; }
         public int Status { get; set; }
-        public string Remark { get; set; }
+        public string FailReason { get; set; }
+        public string Creater { get; set; }
+        public string Modifier { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public System.DateTime ModifyDate { get; set; }
     }
 }

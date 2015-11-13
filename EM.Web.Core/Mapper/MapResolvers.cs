@@ -16,6 +16,13 @@ namespace EM.Web.Core
             return Enum.ToObject(typeof(AccountStatus), source).GetEnumDescription();
         }
     }
+    public class ApproveStatusResolver : ValueResolver<int, string>
+    {
+        protected override string ResolveCore(int source)
+        {
+            return Enum.ToObject(typeof(ExpenseAccountApproveStatus), source).GetEnumDescription();
+        }
+    }
 
     public class ActionNameResolver : ValueResolver<UserRoleProgramDTO, string>
     {

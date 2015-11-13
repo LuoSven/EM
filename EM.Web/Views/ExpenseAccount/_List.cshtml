@@ -3,16 +3,16 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th class="w50">单号</th>
-            <th class="w150">申请人</th>
-            <th class="w80">公司名称</th>
-            <th>金额</th>
-            <th>原因</th>
-            <th>报销时间</th>
-            <th>录入时间</th>
-            <th>创建时间</th>
-            <th>备注</th>
-            <th>操作</th>
+            <th class="w150">单号</th>
+            <th class="w80 taR">报销人</th>
+            <th class="w80 taR">公司名称</th>
+            <th class="taR">费用大类</th>
+            <th class="taR">金额</th>
+            <th class="taR">报销日期</th>
+            <th class="taR">录入日期</th>
+            <th class="taR">创建日期</th>
+            <th class="taR">当前状态</th>
+            <th class="taR">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -22,32 +22,32 @@
                 <td>
                     @EA.EANumber
                 </td>
-                <td>
+                <td class="taR">
                     @EA.Name
                 </td>
-                <td>
+                <td class="taR">
                     @EA.CompanyName
                 </td>
-                <td>
-                    @EA.Money
-                </td>
-                <td>
+                <td class="taR">
                     @EA.CateName
                 </td>
-                <td>
-                    @EA.OccurDate
+                <td class="taR">
+                    @EA.Money
                 </td>
-                <td>
-                    @EA.ApplyDate
+                <td class="taR">
+                    @EA.OccurDate.ToShortDateString()
                 </td>
-                <td>
-                    @EA.CreateDate
+                <td class="taR">
+                    @EA.ApplyDate.ToShortDateString()
                 </td>
-                <td>
-                    @EA.Remark
+                <td class="taR">
+                    @EA.CreateDate.ToShortDateString()
                 </td>
-                <td>
-                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑单据_@(EA.EANumber)','EditExpenseAccount_@(EA.Id)','@Url.Action("Edit", new { Id=EA.Id })',false)">编辑</a>
+                <td class="taR">
+                    @EA.ApproveStatusName
+                </td>
+                <td class="taR">
+                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑报销单','EditExpenseAccount_@(EA.Id)','@Url.Action("Edit", new { Id=EA.Id })',false)">编辑</a>
                     <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new {Id=EA.Id })',this,false)">删除</a>
                 </td>
             </tr>

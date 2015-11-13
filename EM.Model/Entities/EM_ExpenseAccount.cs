@@ -17,15 +17,16 @@ namespace EM.Model.Entities
         public int Id { get; set; }
         public string EANumber { get; set; }
         public string Name { get; set; }
-        public decimal Money { get; set; }
         public string Remark { get; set; }
-        public System.DateTime OccurDate { get; set; }
+        public Nullable<System.DateTime> OccurDate { get; set; }
         public System.DateTime ApplyDate { get; set; }
-        public int CateId { get; set; }
+        public Nullable<int> CateId { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime ModifyDate { get; set; }
         public string Creater { get; set; }
         public string Modifier { get; set; }
         public int CompanyId { get; set; }
+        public decimal SumMoney { get; set; }
+        public int ApproveStatus { get; set; }
     }
 }

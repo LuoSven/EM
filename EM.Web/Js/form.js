@@ -116,25 +116,40 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb) {
         return false;
     })
 }
-Global.Form.AjaxBodyForm = function (FormJqOb, Url,SuccessFunction) {
+Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
     var alert = Global.Utils.ShowMessage
-    FormJqOb.submit(function () {
+    var modelField = FormJqOb.attr("data-field");
+    modelField = modelField == undefined || modelField == "" ? "model" : "modelName";
+    var Data = {};
+    Data[modelField] = FormJqOb.serializeJson()
+    $("*[data-role=body]").each(function () {
+        var bodyField = $(this).attr("data-field");
+        var dataList = [];
+        $("*[data-id]", this).each(function () {
+            dataList.push((this).attr("data-id"));
+        })
+        Data[bodyField] = dataList;
+    })
+  
         $.ajax({
             type: "post",
             url: FormJqOb.attr("action"),
-            data: FormJqOb.serialize(),
+            data: Data,
             success: function (a) {
-                if(SuccessFunction!=undefined&&typeof(SuccessFunction)=="function")
-                    SuccessFunction(a);
+                var FunctionResult = true;
                 if (a.code) {
-                    alert("保存成功！");
-                    if (Url != undefined)
+                    if (sf!=undefined&& sf.isFunction())
+                        FunctionResult = eval(sf)(a);
+                    if (FunctionResult)
                     {
-                        if (Url != "")
-                            location.href = Url;
-                        else
-                            location.href = location.href;
+                        alert("保存成功！");
+                        if (Url != undefined) {
+                            if (Url != "")
+                                location.href = Url;
+                            else
+                                location.href = location.href;
 
+                        }
                     }
                 }
                 else
@@ -148,10 +163,12 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,SuccessFunction) {
             },
         })
         return false;
-    })
 }
 Global.Form.NewIframe = function (name,id,url) {
-    window.parent.Global.Iframe.OpenIframe(name, id, url, false)
+    window.parent.Global.Iframe.OpenIframe(name, id, url, false, true)
+}
+Global.Form.CloseIframe = function (id) {
+    window.parent.Global.Iframe.CloseIframe(id)
 }
 Global.Form.DeleteFlag = 0;
 Global.Form.Delete=function(url,ob,isComfirm)
@@ -206,11 +223,14 @@ Global.Form.Valid = function (ob, url) {
     $(ob).validate({
         submitHandler:function(form)
         {
+            var BeforeResult = true;
             var $form = $(ob);
-            Global.Form.AjaxBodyForm($form, url);
-        },
-        messages: {
-            required: "必填"
+            var SuccessFunction = $(ob).attr("data-success");
+            var BeforeSaveFunction = $(ob).attr("data-beforesave");
+            if (BeforeSaveFunction != undefined && BeforeSaveFunction.isFunction())
+                BeforeResult = eval(BeforeSaveFunction)();
+            if (BeforeResult)
+                Global.Form.AjaxBodyForm($form, url, SuccessFunction);
         },
         unhighlight: function (element, errorClass) {
             var $errorMessage = $(".errorMessage", $(element).parent())
