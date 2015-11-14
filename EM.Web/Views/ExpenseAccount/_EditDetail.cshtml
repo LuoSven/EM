@@ -1,3 +1,44 @@
-﻿@{
+﻿@using EM.Model.Entities
+@model EM_ExpenseAccount_Detail
+@{
    
 }
+
+<div id="DetailField" style="display:none" class=" p10 pl50">
+    <form target="if" enctype="multipart/form-data" id="AddFile" name="AddFile" method="post" action="ExpenseAccount/SaveDetail">
+        <table class="wp100">
+            <tr>
+                <td width="20%"></td>
+                <td width="80%"></td>
+            </tr>
+            <tr>
+                <td class="size14">公司名称：</td>
+                <td class="p5">
+                @Html.DropDownListFor(o => o.CompanyId, (SelectList)ViewBag.CompanyList, "-请选择-")
+                </td>
+            </tr> 
+            <tr>
+                <td class="size14">发生日期：</td>
+                <td class="p5">
+                    @Html.TextBoxFor(o=>o.OccurDate, new { onclick = "WdatePicker({ el: this.id })" })
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">费用大类：</td>
+                <td class="p5">
+                @Html.DropDownListFor(o => o.CateId, (SelectList)ViewBag.CateList, "-请选择-")
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">金额：</td>
+                <td class="p5">                 
+                       @Html.TextBoxFor(o => o.Money, new { onclick = "WdatePicker({ el: this.id })" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="p5"> <button class="btn">上传</button></td>
+            </tr>
+        </table>
+    </form>
+</div>

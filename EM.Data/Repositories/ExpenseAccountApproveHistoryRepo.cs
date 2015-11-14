@@ -14,7 +14,7 @@ using EM.Model.SMs;
 
 namespace EM.Data.Repositories
 {
-    public class ExpenseAccountApproveHistoryRepo : RepositoryBase<EM_ExperseAccount_ApproveHistory>, IExpenseAccountApproveHistoryRepo
+    public class ExpenseAccountApproveHistoryRepo : RepositoryBase<EM_ExpenseAccount_ApproveHistory>, IExpenseAccountApproveHistoryRepo
     {
         public ExpenseAccountApproveHistoryRepo(IDatabaseFactory databaseFactory)
             : base(databaseFactory)
@@ -24,7 +24,7 @@ namespace EM.Data.Repositories
     }
 
 
-    public interface IExpenseAccountApproveHistoryRepo : IRepository<EM_ExperseAccount_ApproveHistory>
+    public interface IExpenseAccountApproveHistoryRepo : IRepository<EM_ExpenseAccount_ApproveHistory>
     {
     }
 }

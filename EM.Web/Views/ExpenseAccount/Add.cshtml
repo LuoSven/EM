@@ -3,11 +3,13 @@
     Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
 @using EM.Model.Entities;
+@using EM.Model.DTOs;
+@using EM.Common;
 @{
     var Title = Model.Id == 0 ? "新增报销单" : "编辑报销单";
 }
-@model EM_ExpenseAccount  
-<form method="post" data-role="form" data-url="" class="basic-grey" data-beforesave="BeforeSave" data-success="UploadEAFile.UpdateFiles">
+@model EM_ExpenseAccount
+<form method="post" data-role="form" data-url="" data-beforesave="BeforeSave" data-success="SuccessFunction" class="basic-grey">
     <h1>
         @Title
         <span></span>
@@ -22,36 +24,28 @@
         @Html.TextBox("ApplyDate", Model.ApplyDate.ToShortDateString(), new { @placeholder = "报销单上的申请时间", @class = "datepicker required" })
     </label>
     <label>
-        <span>费用发生日期 :</span>
-        @Html.TextBox("OccurDate", Model.ApplyDate.ToShortDateString(), new { @placeholder = "具体报销的时间，通常是今天", @class = "datepicker required" })
-    </label>
-    <label>
         <span>报销人 :</span>
         @Html.TextBoxFor(o => o.Name, new { @placeholder = "报销的对象", @class = "required" })
     </label>
-    <label>
-        <span>公司 :</span>
-        @Html.DropDownListFor(o => o.CompanyId, (SelectList)ViewBag.CompanyList, "-请选择-", new { @class = "required" })
-    </label>
 
     <label>
-        <span>费用明细 :</span>
-        @Html.DropDownListFor(o => o.CateId, (SelectList)ViewBag.CateList, "-请选择-", new { @class = "required" })
-    </label>
-    <label>
-        <span>金额 :</span>
-        @Html.TextBox("Money", "", new { @class = "required" })
-    </label>
-    <label>
-        <span>费用说明 :</span>
-        @Html.TextBoxFor(o => o.Remark, new { @class = "required" })
-    </label>
-    @Html.Partial("_UploadList", (List<EM_ExpenseAccount_File>)ViewBag.Files)
+        <span>总金额 :</span>
+        @Html.TextBoxFor(o => o.SumMoney, new { @class = "required" })
+    </label>    @Html.Partial("_BodyList")
     <label>
         <span>&nbsp;</span>
-        <input type="submit" class="button" value="提交报销单" />
+        <input type="hidden" name="ApproveStatus" value="@((int)ExpenseAccountApproveStatus.Created)" />
+        <input type="submit" class="button" value="保存" />
+         <p class="mlp20 cCCC mt10 fwN"><input type="checkbox" value="@((int)ExpenseAccountApproveStatus.WaitingApprove)" /> 同时提交报销单</p>
     </label>
 </form>
 @Html.Partial("_UploadField")
+<div id="DetailUpdate">
+
+</div>
+<div id="bodyContent">
+
+</div>
 @section Js
-{<script src="~/Js/Program/ExpenseAccount.js"></script>}
+{
+    <script src="~/Js/Program/ExpenseAccount.js"></script>}

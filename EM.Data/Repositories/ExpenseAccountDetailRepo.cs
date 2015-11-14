@@ -27,12 +27,21 @@ namespace EM.Data.Repositories
             var result = await DapperHelper.SqlExecuteAsync(string.Format(@"update EM_ExpenseAccount_Detail set ExpenseAccountId=@ExpenseAccountId where Id in ({0})",Ids), new { ExpenseAccountId = ExpenseAccountId});
         }
 
-
+        public  List<ExpenseAccountDetailListDTO> GetListByExpenseAccountId(int ExpenseAccountId)
+        {
+            var result=  DapperHelper.SqlQuery<ExpenseAccountDetailListDTO>(@"select a.Id,b.CompanyName,c.CateName,a.Money,a.Remark from EM_ExpenseAccount_Detail a
+join EM_Company b on a.CompanyId=b.Id
+join EM_Charge_Cate c on a.CateId=c.Id
+where ExpenseAccountId=@ExpenseAccountId",new{ExpenseAccountId=ExpenseAccountId});
+            return result.ToList();
+        }
     }
 
 
     public interface IExpenseAccountDetailRepo : IRepository<EM_ExpenseAccount_Detail>
     {
         Task UpdateFileExpenseAccountId(int ExpenseAccountId,string Ids);
+
+        List<ExpenseAccountDetailListDTO> GetListByExpenseAccountId(int ExpenseAccountId);
     }
 }

@@ -21,6 +21,5 @@ namespace EM.Model.DTOs
         public System.DateTime CreateDate { get; set; }
         public string Creater { get; set; }
         public int ApproveStatus { get; set; }
-        public List<EM_ExperseAccount_ApproveHistory> ApproveHistory { get; set; }
     }
 }

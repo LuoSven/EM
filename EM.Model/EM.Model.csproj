@@ -61,7 +61,6 @@
     </Compile>
     <Compile Include="SMs\CompanyPerformanceSM.cs" />
     <Compile Include="VMs\CompanyPerformanceVM.cs" />
-    <Compile Include="VMs\ExpenseAccountDetailListVM.cs" />
     <Compile Include="VMs\ExpenseAccountFileVM.cs" />
     <Compile Include="DTOs\ExpenseAccountFileDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountDTO.cs" />

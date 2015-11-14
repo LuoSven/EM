@@ -49,10 +49,8 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> Add()
         {
-            InitSelect(0, 0);
             var model = new EM_ExpenseAccount();
-            ViewBag.Files = new List<EM_ExpenseAccount_File>();
-            ViewBag.ExpenseAccountId = 0;
+            InitBodys();
             model.OccurDate = DateTime.Now;
             model.ApplyDate = DateTime.Now;
             model.Name = ViewHelp.GetUserName();
@@ -147,12 +145,34 @@ namespace EM.Web.Controllers
             return Json(new { code = result }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> EditDetail(int Id)
+        public ActionResult GetDetail(int Id)
         {
-            var model = expenseAccountFileRepo.GetById(Id);
+            var model = new EM_ExpenseAccount_Detail();
+            if (Id != 0)
+             model = expenseAccountDetailRepo.GetById(Id);
+            InitSelect(model.CateId, model.CompanyId);
+            return PartialView("_EditDetail", model);
+        }
+        public ActionResult SaveDetail(EM_ExpenseAccount_Detail model)
+        {
+            model.Modifier = ViewHelp.GetUserName();
+            model.ModifyTime = DateTime.Now;
+            if(model.Id==0)
+            {
+                model.Creater = ViewHelp.GetUserName();
+                model.CreateTime = DateTime.Now;
+                expenseAccountDetailRepo.Add(model);
+            }
+            else
+            {
+                var entity = expenseAccountDetailRepo.GetById(model.Id);
+                entity = Mapper.Map<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>(model, entity);
+            }
+            expenseAccountDetailRepo.SaveChanges();
 
             return View(model);
         }
+
         public async Task<ActionResult> ViewFile(int Id)
         {
             var Dto = await expenseAccountFileRepo.GetDtos(Id);
@@ -167,7 +187,7 @@ namespace EM.Web.Controllers
         #region 私有函数
         
 
-        private void InitSelect(int CateId,int CompanyId)
+        private void InitSelect(int CateId=0,int CompanyId=0)
         {
           var CateList = changeCateRepo.GetList();
           ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
@@ -175,7 +195,22 @@ namespace EM.Web.Controllers
           ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);
         }
 
-        private void InitBodys(int )
+        private void InitBodys(int ExpenseAccountId=0)
+        {
+            ViewBag.ExpenseAccountId = ExpenseAccountId;
+            if (ExpenseAccountId==0)
+            {
+                ViewBag.Files = new List<EM_ExpenseAccount_File>();
+                ViewBag.Details =new List<ExpenseAccountDetailListDTO>();
+
+            }
+            else
+            {
+                ViewBag.Files = expenseAccountFileRepo.GetListByExpenseAccountId(ExpenseAccountId);
+                ViewBag.Details = expenseAccountDetailRepo.GetListByExpenseAccountId(ExpenseAccountId);
+
+            }
+        }
 
         public async Task< JsonResult> GetNewPublicId()
         {

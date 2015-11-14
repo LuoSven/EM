@@ -1,18 +1,18 @@
-﻿@using EM.Model.Entities;
-@model List<EM_ExpenseAccount_Detail>
+﻿@using EM.Model.DTOs;
+@model List<ExpenseAccountDetailListDTO>
 @{
-    var IsView = (string)ViewBag.ActionName == "detail";
+    var IsView = (string)ViewBag.ActionName == "browse";
 }
 <label>
     <span>报销明细 :</span>
-    <table id="FileList" class="table table-hover wp80">
+    <table id="DetailList" class="table table-hover wp80">
         <thead>
             <tr>
                 <th width="20%">费用公司</th>
-                <th width="10%">发生日期</th>
-                <th width="10%">费用大类</th>
-                <th width="20%">金额</th>
-                <th width="10%">事由说明</th>
+                <th width="15%">发生日期</th>
+                <th width="15%">费用大类</th>
+                <th width="15%">金额</th>
+                <th width="20%">事由说明</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -20,7 +20,7 @@
             @if (Model.Count == 0)
             {
                 <tr id="NoRow">
-                    <td colspan="3" class="taC">暂无数据</td>
+                    <td colspan="7" class="taC">暂无数据</td>
                 </tr>
             }
             else
@@ -28,14 +28,18 @@
                 foreach (var item in Model)
                 {
                     <tr data-id="@item.Id">
-                        <td class="taL">@item.</td>
-                        <td class="taL">@item.CreateDate</td>
+                        <td class="taL">@item.CompanyName</td>
+                        <td class="taL">@item.OccurDate.ToShortDateString()</td>
+                        <td class="taL">@item.CateName</td>
+                        <td class="taL">@item.Money</td>
+                        <td class="taL">@item.Remark</td>
                         <td class="taL">
                             @if (!IsView)
                             {
-                                <a href="javascript:;" onclick="UploadEAFile.DeleteFile(@item.Id)">删除</a>
+                                <a href="javascript:;" onclick="EADetail.DeleteDetail(@item.Id)">删除</a>
+                                <a href="javascript:;" onclick="EADetail.Show(@item.Id)">编辑</a>
                             }
-                            &nbsp;<a href="~/ExpenseAccount/ViewFile/@item.Id" target="_blank">查看</a>
+                            &nbsp;<a href="~/ExpenseAccount/BrowseDetail/@item.Id" target="_blank">查看</a>
                         </td>
                     </tr>
                 }
@@ -43,9 +47,9 @@
             @if (!IsView)
             {
                 <tr id="AddRow">
-                    <td colspan="3" class="taC">
-                        <div class="pRel" id="AddFileForm">
-                            <a onclick="UploadEAFile.Show()" >新增记录</a>
+                    <td colspan="7" class="taC">
+                        <div class="pRel" id="AddDetailForm">
+                            <a onclick="EADetail.Show()" >新增明细</a>
                         </div>
 
                     </td>

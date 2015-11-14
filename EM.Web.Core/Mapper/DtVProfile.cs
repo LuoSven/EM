@@ -37,6 +37,10 @@ namespace EM.Web.Core
             .ForMember(o=>o.Creater,s=>s.Ignore())
             .ForMember(o => o.CreateDate, s => s.Ignore());
 
+            Mapper.CreateMap<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>()
+            .ForMember(o => o.Creater, s => s.Ignore())
+            .ForMember(o => o.CreateTime, s => s.Ignore());
+
         }
     }
 }
