@@ -27,17 +27,17 @@ namespace EM.Model.Entities
     
         public virtual DbSet<EM_User_Account> EM_User_Account { get; set; }
         public virtual DbSet<EM_User_Login_Record> EM_User_Login_Record { get; set; }
-        public virtual DbSet<EM_User_Right> EM_User_Right { get; set; }
-        public virtual DbSet<EM_User_Role> EM_User_Role { get; set; }
         public virtual DbSet<EM_System_Program> EM_System_Program { get; set; }
         public virtual DbSet<EM_Charge_Cate> EM_Charge_Cate { get; set; }
         public virtual DbSet<EM_Company> EM_Company { get; set; }
         public virtual DbSet<EM_Company_Performance> EM_Company_Performance { get; set; }
         public virtual DbSet<EM_ExpenseAccount> EM_ExpenseAccount { get; set; }
-        public virtual DbSet<EM_Company_Limit> EM_Company_Limit { get; set; }
         public virtual DbSet<EM_System_ActionLog> EM_System_ActionLog { get; set; }
         public virtual DbSet<EM_ExpenseAccount_File> EM_ExpenseAccount_File { get; set; }
         public virtual DbSet<EM_ExpenseAccount_ApproveHistory> EM_ExpenseAccount_ApproveHistory { get; set; }
         public virtual DbSet<EM_ExpenseAccount_Detail> EM_ExpenseAccount_Detail { get; set; }
+        public virtual DbSet<EM_Company_Limit> EM_Company_Limit { get; set; }
+        public virtual DbSet<EM_User_Right> EM_User_Right { get; set; }
+        public virtual DbSet<EM_User_Role> EM_User_Role { get; set; }
     }
 }

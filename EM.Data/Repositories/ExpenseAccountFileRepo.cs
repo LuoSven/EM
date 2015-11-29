@@ -29,7 +29,8 @@ namespace EM.Data.Repositories
 
         public async Task UpdateFileExpenseAccountId(int ExpenseAccountId,string Ids)
         {
-            var result = await DapperHelper.SqlExecuteAsync(string.Format(@"update EM_ExpenseAccount_File set ExpenseAccountId=@ExpenseAccountId,Status=@Default where Id in ({0}) and Status=@NoRelated",  Ids), new { ExpenseAccountId = ExpenseAccountId, Default = ExpenseAccountFileStatus.Default, NoRelated =ExpenseAccountFileStatus.NoRelated});
+            if(!string.IsNullOrEmpty(Ids))
+             await DapperHelper.SqlExecuteAsync(string.Format(@"update EM_ExpenseAccount_File set ExpenseAccountId=@ExpenseAccountId,Status=@Default where Id in ({0}) and Status=@NoRelated",  Ids), new { ExpenseAccountId = ExpenseAccountId, Default = ExpenseAccountFileStatus.Default, NoRelated =ExpenseAccountFileStatus.NoRelated});
         }
 
         public async Task< bool> UpdateDeleteStatus(int Id)

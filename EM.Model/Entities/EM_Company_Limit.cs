@@ -15,12 +15,12 @@ namespace EM.Model.Entities
     public partial class EM_Company_Limit
     {
         public int Id { get; set; }
-        public Nullable<int> CompanyID { get; set; }
+        public int CompanyId { get; set; }
         public int CateId { get; set; }
         public int SeasonType { get; set; }
         public decimal LimitSum { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<System.DateTime> ModifyDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public System.DateTime ModifyDate { get; set; }
         public string Creater { get; set; }
         public string Modifier { get; set; }
     }

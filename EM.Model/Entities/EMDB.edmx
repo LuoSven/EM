@@ -15,6 +15,7 @@
           <Property Name="ParentId" Type="int" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="RoleTypes" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="EM_Company">
           <Key>
@@ -30,24 +31,19 @@
           <Property Name="Creater" Type="nvarchar" MaxLength="50" />
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“EMDB.dbo.EM_Company_Limit”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="EM_Company_Limit">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="CateId" />
-            <PropertyRef Name="SeasonType" />
-            <PropertyRef Name="LimitSum" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyID" Type="int" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
           <Property Name="CateId" Type="int" Nullable="false" />
           <Property Name="SeasonType" Type="int" Nullable="false" />
           <Property Name="LimitSum" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="ModifyDate" Type="datetime" />
-          <Property Name="Creater" Type="nvarchar" MaxLength="50" />
-          <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="Creater" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="EM_Company_Performance">
           <Key>
@@ -67,7 +63,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
           <Property Name="EANumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SumMoney" Type="decimal" Precision="18" Scale="2" Nullable="false" />
@@ -192,12 +188,13 @@
         </EntityType>
         <EntityType Name="EM_User_Role">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="512" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="512" />
           <Property Name="CompanyIds" Type="nvarchar" MaxLength="500" />
+          <Property Name="RoleType" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
@@ -213,23 +210,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
-          <End Role="EM_User_Role" Type="Self.EM_User_Role" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EM_User_Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="EM_User_Right">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="EMDBModelStoreContainer">
           <EntitySet Name="EM_Charge_Cate" EntityType="Self.EM_Charge_Cate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_Company" EntityType="Self.EM_Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_Company_Limit" EntityType="Self.EM_Company_Limit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_Company_Performance" EntityType="Self.EM_Company_Performance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount" EntityType="Self.EM_ExpenseAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount_ApproveHistory" EntityType="Self.EM_ExpenseAccount_ApproveHistory" Schema="dbo" store:Type="Tables" />
@@ -240,19 +224,6 @@
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Role" EntityType="Self.EM_User_Role" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EM_Company_Limit" EntityType="Self.EM_Company_Limit" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [EM_Company_Limit].[Id] AS [Id], 
-    [EM_Company_Limit].[CompanyID] AS [CompanyID], 
-    [EM_Company_Limit].[CateId] AS [CateId], 
-    [EM_Company_Limit].[SeasonType] AS [SeasonType], 
-    [EM_Company_Limit].[LimitSum] AS [LimitSum], 
-    [EM_Company_Limit].[CreateDate] AS [CreateDate], 
-    [EM_Company_Limit].[ModifyDate] AS [ModifyDate], 
-    [EM_Company_Limit].[Creater] AS [Creater], 
-    [EM_Company_Limit].[Modifier] AS [Modifier]
-    FROM [dbo].[EM_Company_Limit] AS [EM_Company_Limit]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="EM_System_ActionLog" EntityType="Self.EM_System_ActionLog" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [EM_System_ActionLog].[Id] AS [Id], 
@@ -267,10 +238,6 @@
           </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
-            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
-            <End Role="EM_User_Role" EntitySet="EM_User_Role" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
         </EntityContainer>
@@ -303,66 +270,25 @@
           <Property Name="IsLogin" Type="Boolean" />
           <Property Name="ErrorInfo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="EM_User_Right">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <Property Name="ProgramId" Type="Int32" Nullable="false" />
-          <Property Name="Permit" Type="Boolean" Nullable="false" />
-          <Property Name="ModifeTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="EM_User_Role" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Right" ToRole="EM_User_Role" />
-          <NavigationProperty Name="EM_System_Program" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_User_Right" ToRole="EM_System_Program" />
-        </EntityType>
-        <EntityType Name="EM_User_Role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="EM_User_Right" Relationship="Self.FK_EM_UserAccount_EM_UserRight_UserId" FromRole="EM_User_Role" ToRole="EM_User_Right" />
-          <Property Name="CompanyIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_EM_UserAccount_EM_UserRight_UserId">
-          <End Role="EM_User_Role" Type="Self.EM_User_Role" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="EM_User_Right" Type="Self.EM_User_Right" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EM_User_Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="EM_User_Right">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="EMDB" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" />
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" />
-          <EntitySet Name="EM_User_Right" EntityType="Self.EM_User_Right" />
-          <EntitySet Name="EM_User_Role" EntityType="Self.EM_User_Role" />
-          <AssociationSet Name="FK_EM_UserAccount_EM_UserRight_UserId" Association="Self.FK_EM_UserAccount_EM_UserRight_UserId">
-            <End Role="EM_User_Role" EntitySet="EM_User_Role" />
-            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
-          </AssociationSet>
           <EntitySet Name="EM_System_Program" EntityType="EMDBModel.EM_System_Program" />
-          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="EMDBModel.FK_EM_System_Program_EM_User_Right">
-            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
-            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
-          </AssociationSet>
           <EntitySet Name="EM_Charge_Cate" EntityType="EMDBModel.EM_Charge_Cate" />
           <EntitySet Name="EM_Company" EntityType="EMDBModel.EM_Company" />
           <EntitySet Name="EM_Company_Performance" EntityType="EMDBModel.EM_Company_Performance" />
           <EntitySet Name="EM_ExpenseAccount" EntityType="EMDBModel.EM_ExpenseAccount" />
-          <EntitySet Name="EM_Company_Limit" EntityType="EMDBModel.EM_Company_Limit" />
           <EntitySet Name="EM_System_ActionLog" EntityType="EMDBModel.EM_System_ActionLog" />
           <EntitySet Name="EM_ExpenseAccount_File" EntityType="EMDBModel.EM_ExpenseAccount_File" />
           <EntitySet Name="EM_ExpenseAccount_ApproveHistory" EntityType="EMDBModel.EM_ExpenseAccount_ApproveHistory" />
           <EntitySet Name="EM_ExpenseAccount_Detail" EntityType="EMDBModel.EM_ExpenseAccount_Detail" />
+          <EntitySet Name="EM_Company_Limit" EntityType="EMDBModel.EM_Company_Limit" />
+          <EntitySet Name="EM_User_Right" EntityType="EMDBModel.EM_User_Right" />
+          <EntitySet Name="EM_User_Role" EntityType="EMDBModel.EM_User_Role" />
+          <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="EMDBModel.FK_EM_System_Program_EM_User_Right">
+            <End Role="EM_System_Program" EntitySet="EM_System_Program" />
+            <End Role="EM_User_Right" EntitySet="EM_User_Right" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -380,20 +306,6 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="EM_User_Right" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_System_Program" ToRole="EM_User_Right" />
         </EntityType>
-        <Association Name="FK_EM_System_Program_EM_User_Right">
-          <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="EMDBModel.EM_User_Right" Role="EM_User_Right" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EM_System_Program">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EM_User_Right">
-              <PropertyRef Name="ProgramId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="EM_Charge_Cate">
           <Key>
             <PropertyRef Name="Id" />
@@ -404,6 +316,7 @@
           <Property Name="ParentId" Type="Int32" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RoleTypes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EM_Company">
           <Key>
@@ -447,26 +360,9 @@
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creater" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" />
           <Property Name="SumMoney" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="ApproveStatus" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EM_Company_Limit">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="CateId" />
-            <PropertyRef Name="SeasonType" />
-            <PropertyRef Name="LimitSum" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyID" Type="Int32" />
-          <Property Name="CateId" Type="Int32" Nullable="false" />
-          <Property Name="SeasonType" Type="Int32" Nullable="false" />
-          <Property Name="LimitSum" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifyDate" Type="DateTime" Precision="3" />
-          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EM_System_ActionLog">
           <Key>
@@ -524,6 +420,56 @@
           <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="EM_Company_Limit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="CateId" Type="Int32" Nullable="false" />
+          <Property Name="SeasonType" Type="Int32" Nullable="false" />
+          <Property Name="LimitSum" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creater" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EM_User_Right">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="ProgramId" Type="Int32" Nullable="false" />
+          <Property Name="Permit" Type="Boolean" Nullable="false" />
+          <Property Name="ModifeTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="EM_System_Program" Relationship="EMDBModel.FK_EM_System_Program_EM_User_Right" FromRole="EM_User_Right" ToRole="EM_System_Program" />
+        </EntityType>
+        <EntityType Name="EM_User_Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RoleType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EM_System_Program_EM_User_Right">
+          <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="EMDBModel.EM_User_Right" Role="EM_User_Right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EM_System_Program">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EM_User_Right">
+              <PropertyRef Name="ProgramId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -557,28 +503,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EM_User_Right">
-            <EntityTypeMapping TypeName="EMDBModel.EM_User_Right">
-              <MappingFragment StoreEntitySet="EM_User_Right">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
-                <ScalarProperty Name="Permit" ColumnName="Permit" />
-                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EM_User_Role">
-            <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
-              <MappingFragment StoreEntitySet="EM_User_Role">
-                <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EM_System_Program">
             <EntityTypeMapping TypeName="EMDBModel.EM_System_Program">
               <MappingFragment StoreEntitySet="EM_System_Program">
@@ -598,6 +522,7 @@
           <EntitySetMapping Name="EM_Charge_Cate">
             <EntityTypeMapping TypeName="EMDBModel.EM_Charge_Cate">
               <MappingFragment StoreEntitySet="EM_Charge_Cate">
+                <ScalarProperty Name="RoleTypes" ColumnName="RoleTypes" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
@@ -652,21 +577,6 @@
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EANumber" ColumnName="EANumber" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EM_Company_Limit">
-            <EntityTypeMapping TypeName="EMDBModel.EM_Company_Limit">
-              <MappingFragment StoreEntitySet="EM_Company_Limit">
-                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
-                <ScalarProperty Name="Creater" ColumnName="Creater" />
-                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="LimitSum" ColumnName="LimitSum" />
-                <ScalarProperty Name="SeasonType" ColumnName="SeasonType" />
-                <ScalarProperty Name="CateId" ColumnName="CateId" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -727,6 +637,44 @@
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
                 <ScalarProperty Name="ExpenseAccountId" ColumnName="ExpenseAccountId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Company_Limit">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Company_Limit">
+              <MappingFragment StoreEntitySet="EM_Company_Limit">
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LimitSum" ColumnName="LimitSum" />
+                <ScalarProperty Name="SeasonType" ColumnName="SeasonType" />
+                <ScalarProperty Name="CateId" ColumnName="CateId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_User_Right">
+            <EntityTypeMapping TypeName="EMDBModel.EM_User_Right">
+              <MappingFragment StoreEntitySet="EM_User_Right">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ModifeTime" ColumnName="ModifeTime" />
+                <ScalarProperty Name="Permit" ColumnName="Permit" />
+                <ScalarProperty Name="ProgramId" ColumnName="ProgramId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_User_Role">
+            <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
+              <MappingFragment StoreEntitySet="EM_User_Role">
+                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
+                <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

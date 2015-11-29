@@ -57,7 +57,7 @@ namespace EM.Web.Controllers
         {
             InitSelect();
             var Role =  userRoleRepo.GetById(Id);
-            var Dtos =await userRoleRepo.GetPrograms(Id);
+            var Dtos = userRoleRepo.GetPrograms(Id);
             var Vms = Mapper.Map<List<UserRoleProgramDTO>, List<UserRoleProgramVM>>(Dtos);
             var Systems = SystemType.YJ.GetEnumList().Where(o=>o.Key!=(int)SystemType.All).Select(o => new UserRoleTreeVM()//两个系统
             {
@@ -99,7 +99,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(EM_User_Role model,List<int> Ids)
         {
             ViewBag.AccountStatusList = AccountStatus.Allow.GetEnumList();
-            var entity = userRoleRepo.GetById(model.id);
+            var entity = userRoleRepo.GetById(model.Id);
             entity = Mapper.Map<EM_User_Role, EM_User_Role>(model, entity);
             var result = userRoleRepo.SaveChanges();
            if (result > 0)

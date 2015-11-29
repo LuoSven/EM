@@ -2,13 +2,12 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
-@using EM.Model.Entities
-@model List<EM_User_Role>
+@using EM.Model.VMs
+@model List<UserRoleListVM>
 <div class="SearchFrom">
     <form id="SearchForm" action="@Url.Action("Index", "UserRole")">
         <input type="text" name="UserName" value="" placeholder="名称，描述">
         <button class="searchButton" type="submit">搜索</button>
-        <button onclick="Global.Form.NewIframe('新增用户','UserRole_Add','@Url.Action("Add")')" type="button">新增</button>
 
     </form>
 

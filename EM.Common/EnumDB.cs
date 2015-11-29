@@ -138,6 +138,19 @@ namespace EM.Common
         PassApproved,
 
     }
+    /// <summary>
+    /// 角色分类-表示操作的是老板，录入员，还是系统管理员
+    /// </summary>
+    public enum RoleType
+    {
+
+        [Description("系统管理员")]
+        Admin=0,
+        [Description("公司总经理")]
+        CompanyManager,
+        [Description("员工")]
+        Staff
+    }
 
     #endregion
 

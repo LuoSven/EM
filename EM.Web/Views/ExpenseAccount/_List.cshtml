@@ -1,24 +1,28 @@
 ﻿@using EM.Model.VMs;
-@model List<ExpenseAccountListVM>
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<ExpenseAccountListVM>
 <table class="table table-hover">
     <thead>
         <tr>
             <th class="w150">单号</th>
             <th class="w80 taR">报销人</th>
-            <th class="w80 taR">公司名称</th>
+            <th class=" taR">公司名称</th>
             <th class="taR">费用大类</th>
-            <th class="taR">金额</th>
-            <th class="taR">报销日期</th>
-            <th class="taR">录入日期</th>
-            <th class="taR">创建日期</th>
-            <th class="taR">当前状态</th>
+            <th class="taR w80">报销日期</th>
+            <th class="taR w100">金额</th>
+            <th class="taR w100">总金额</th>
+            <th class="w80 taR">录入日期</th>
+            <th class="w80 taR">更新日期</th>
+            <th class="taR w80">当前状态</th>
             <th class="taR">操作</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var EA in Model)
+        @foreach (var EA in Model.Results)
         {
-            <tr>
+            <tr data-id="@EA.Id" >
                 <td>
                     @EA.EANumber
                 </td>
@@ -26,31 +30,39 @@
                     @EA.Name
                 </td>
                 <td class="taR">
-                    @EA.CompanyName
+                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CompanyName)))
                 </td>
                 <td class="taR">
-                    @EA.CateName
+                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CateName)))
                 </td>
                 <td class="taR">
-                    @EA.Money
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.OccurDate.ToShortDateString())))
                 </td>
                 <td class="taR">
-                    @EA.OccurDate.ToShortDateString()
+                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.Money)))
+                </td>
+                <td class="taR">
+                    @EA.SumMoney
                 </td>
                 <td class="taR">
                     @EA.ApplyDate.ToShortDateString()
                 </td>
                 <td class="taR">
-                    @EA.CreateDate.ToShortDateString()
+                    @EA.ModifyDate.ToShortDateString()
                 </td>
                 <td class="taR">
                     @EA.ApproveStatusName
                 </td>
                 <td class="taR">
-                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑报销单','EditExpenseAccount_@(EA.Id)','@Url.Action("Edit", new { Id=EA.Id })',false)">编辑</a>
-                    <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new {Id=EA.Id })',this,false)">删除</a>
+                    @if (EA.ApproveStatus == (int)ExpenseAccountApproveStatus.Created || EA.ApproveStatus == (int)ExpenseAccountApproveStatus.FailApproved)
+                    {
+                        <a data-commond="edit" onclick="Global.Form.NewIframe('编辑报销单','editexpenseaccount_@(EA.Id)','@Url.Action("Edit", new { id=EA.Id })')">编辑</a>
+                         <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new {Id=EA.Id })',this,false)">删除</a>      
+                    }
+                    <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id=EA.Id })')">查看</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })

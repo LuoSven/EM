@@ -25,7 +25,7 @@ namespace EM.Web.Controllers
 
         private readonly IExpenseAccountRepo expenseAccountRepo = new ExpenseAccountRepo(new DatabaseFactory());
         private readonly IUserRoleRepo userRoleRepo = new UserRoleRepo(new DatabaseFactory());
-        private readonly IChangeCateRepo changeCateRepo = new ChangeCateRepo(new DatabaseFactory());
+        private readonly IChargeCateRepo changeCateRepo = new ChargeCateRepo(new DatabaseFactory());
         private readonly ICompanyRepo companyRepo = new CompanyRepo(new DatabaseFactory());
         private readonly IExpenseAccountFileRepo expenseAccountFileRepo = new ExpenseAccountFileRepo(new DatabaseFactory());
         private readonly IExpenseAccountDetailRepo expenseAccountDetailRepo = new ExpenseAccountDetailRepo(new DatabaseFactory());
@@ -35,14 +35,22 @@ namespace EM.Web.Controllers
 
         [Description("我的报销单")]
         [ActionType(RightType.View)]
-        public async Task<ActionResult> Index(ExpenseAccountSM Sm)
+        public async Task<ActionResult> Index(ExpenseAccountSM Sm,int Page=1,int PageSize=20)
         {
             Sm.CompanyIds = ViewHelp.GetCompanyIds();
-            var Dtos = await expenseAccountRepo.GetListByDtoAsync(Sm);
-            var Vms = Mapper.Map<List<ExpenseAccountListDTO>, List<ExpenseAccountListVM>>(Dtos);
+            var Dtos = await expenseAccountRepo.GetListByDtoAsync(Sm, ViewHelp.GetUserName(), Page, PageSize);
+            var Vms = new PagedResult<ExpenseAccountListVM>()
+            {
+                CurrentPage = Dtos.CurrentPage,
+                PageSize = Dtos.PageSize,
+                RowCount = Dtos.RowCount,
+                Stats = Dtos.Stats
+
+            };
+            Vms.Results = Mapper.Map<IList<ExpenseAccountListDTO>, IList<ExpenseAccountListVM>>(Dtos.Results);
             if (Request.IsAjaxRequest())
                 return PartialView("_List", Vms);
-            ViewBag.CateList = changeCateRepo.GetList();
+            InitSelect();
             return View(Vms);
         }
         [Description("新增报销单")]
@@ -54,7 +62,7 @@ namespace EM.Web.Controllers
             model.OccurDate = DateTime.Now;
             model.ApplyDate = DateTime.Now;
             model.Name = ViewHelp.GetUserName();
-            return View(model);
+            return View("AddOrEdit",model);
         }
 
         [HttpPost]
@@ -64,16 +72,17 @@ namespace EM.Web.Controllers
             model.Creater = ViewHelp.GetUserName();
             model.ModifyDate = DateTime.Now;
             model.Modifier = ViewHelp.GetUserName();
+            expenseAccountRepo.Add(model);
             var result = expenseAccountRepo.SaveChanges();
             if (result > 0)
             {
                 //更新单身
-                await expenseAccountDetailRepo.UpdateFileExpenseAccountId(model.Id, DetailIds);
+                await expenseAccountDetailRepo.UpdateDetailExpenseAccountId(model.Id, DetailIds);
                 await expenseAccountFileRepo.UpdateFileExpenseAccountId(model.Id, FileIds);
                 return Json(new { code = 1, model = model }, JsonRequestBehavior.AllowGet);
             }
             else
-                return Json(new { code = 0, messgage = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 0, message = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
         }
 
         [Description("编辑报销单")]
@@ -82,8 +91,8 @@ namespace EM.Web.Controllers
         {
             var model = expenseAccountRepo.GetById(Id);
             ViewBag.ExpenseAccountId = Id;
-
-            return View(model);
+            InitBodys(Id);
+            return View("AddOrEdit", model);
         }
         [HttpPost]
         public async Task<ActionResult> Edit(EM_ExpenseAccount model, string FileIds, string DetailIds)
@@ -101,7 +110,7 @@ namespace EM.Web.Controllers
             if (result > 0)
             {
                 //更新单身
-                await expenseAccountDetailRepo.UpdateFileExpenseAccountId(model.Id, DetailIds);
+                await expenseAccountDetailRepo.UpdateDetailExpenseAccountId(model.Id, DetailIds);
                 await expenseAccountFileRepo.UpdateFileExpenseAccountId(model.Id, FileIds);
                 Log(model);
                 return Json(new { code = 1, model = model });
@@ -128,6 +137,17 @@ namespace EM.Web.Controllers
             return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);
         }
 
+
+        [Description("查看报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> Browse(int Id)
+        {
+            var model = expenseAccountRepo.GetById(Id);
+            ViewBag.ExpenseAccountId = Id;
+            InitBodys(Id);
+            return View(model);
+        }
+
         public async Task<ActionResult> DeleteFile(int Id)
         {
             var result = await expenseAccountFileRepo.UpdateDeleteStatus(Id);
@@ -149,9 +169,11 @@ namespace EM.Web.Controllers
         {
             var model = new EM_ExpenseAccount_Detail();
             if (Id != 0)
-             model = expenseAccountDetailRepo.GetById(Id);
+                model = expenseAccountDetailRepo.GetById(Id);
+            else
+                model.OccurDate = DateTime.Now;
             InitSelect(model.CateId, model.CompanyId);
-            return PartialView("_EditDetail", model);
+            return PartialView("_AddOrEditDetail", model);
         }
         public ActionResult SaveDetail(EM_ExpenseAccount_Detail model)
         {
@@ -166,11 +188,12 @@ namespace EM.Web.Controllers
             else
             {
                 var entity = expenseAccountDetailRepo.GetById(model.Id);
+                Log(entity);
                 entity = Mapper.Map<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>(model, entity);
             }
-            expenseAccountDetailRepo.SaveChanges();
-
-            return View(model);
+            var result=expenseAccountDetailRepo.SaveChanges();
+            var dto = Mapper.Map<EM_ExpenseAccount_Detail, ExpenseAccountDetailListDTO>(model);
+            return Json(new { code = result, message = "保存失败，请重试", model = dto });
         }
 
         public async Task<ActionResult> ViewFile(int Id)
@@ -182,6 +205,19 @@ namespace EM.Web.Controllers
             return View(Vm);
         }
 
+
+        [Description("确认报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> UpdataApproveStatus(int Id,int ApproveStatus )
+        {
+            var Dto = await expenseAccountFileRepo.GetDtos(Id);
+            if (Dto.UpLoader != ViewHelp.GetUserName() && !ViewHelp.IsAdmin())
+                return RedirectToAction("noright", "error");
+            var Vm = Mapper.Map<ExpenseAccountFileVM>(Dto);
+            return View(Vm);
+        }
+
+
         #endregion
 
         #region 私有函数
@@ -189,7 +225,7 @@ namespace EM.Web.Controllers
 
         private void InitSelect(int CateId=0,int CompanyId=0)
         {
-          var CateList = changeCateRepo.GetList();
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType());
           ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
           var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
           ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);

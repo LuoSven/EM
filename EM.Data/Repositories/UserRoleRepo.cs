@@ -23,16 +23,28 @@ namespace EM.Data.Repositories
 
         public  List<KeyValueVM> GetList()
         {
-           var result=   DataContext.EM_User_Role.Select(o =>new KeyValueVM(){Key=o.id.ToString(),Value=o.Name}).ToList();
+           var result=   DataContext.EM_User_Role.Select(o =>new KeyValueVM(){Key=o.Id.ToString(),Value=o.Name}).ToList();
            return result;
         }
-        public async Task<List<UserRoleProgramDTO>> GetPrograms(int RoleId)
+        public List<UserRoleProgramDTO> GetPrograms(int RoleId=0)
         {
-            var list = await DapperHelper.SqlQueryAsync<UserRoleProgramDTO>(@"select c.Id,c.ActionDescription ,c.RightType,c.ControllerDescription,b.Permit from EM_User_Role a 
+            var sql = @"select c.Id,c.ActionDescription ,c.RightType,c.ControllerDescription,b.Permit from EM_User_Role a 
 join EM_User_Right b on b.RoleId=a.id
-join EM_System_Program c on c.Id=b.ProgramId 
-where a.id=@RoleId", new { RoleId = RoleId });
+join EM_System_Program c on c.Id=b.ProgramId ";
+            if (RoleId != 0)
+                sql += "where a.id=@RoleId";
+            var list = DapperHelper.SqlQuery<UserRoleProgramDTO>(sql, new { RoleId = RoleId });
           return list.ToList();
+        }
+
+        public List<UserRoleListDTO> GetListDto()
+        {
+            var query = DapperHelper.SqlQuery<UserRoleListDTO>("select * from EM_User_Role").ToList();
+            return query;
+        }
+        public void UpdateRightByIdAndProgromId(int Id, string ProgromIds)
+        {
+
         }
 }
 
@@ -41,7 +53,10 @@ where a.id=@RoleId", new { RoleId = RoleId });
     {
 
         List<KeyValueVM> GetList();
+        List<UserRoleListDTO> GetListDto();
 
-       Task<List<UserRoleProgramDTO>> GetPrograms(int RoleId);
+      List<UserRoleProgramDTO> GetPrograms(int RoleId=0);
+
+      void UpdateRightByIdAndProgromId(int Id, string ProgromIds);
     }
 }

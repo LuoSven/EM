@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.Entities;
+@using EM.Model.VMs;
+@model EM_User_Role
+@{
+    var Systems = (List<UserRoleTreeVM>)ViewBag.Systems;
+    var Title = Model.Id == 0 ? "新增角色" : "编辑角色";
+    var Action = Model.Id == 0 ? "Add" : "Edit";
+}
+<form method="post" data-role="form" action="@Action" data-beforesave="BeforeSave" class="basic-grey">
+    <h1>
+        @Title
+        <span></span>
+    </h1>
+    @Html.HiddenFor(o => o.Id)
+    <label>
+        <span>角色名 :</span>
+        @Html.TextBoxFor(o => o.Name, new { placeholder = "角色名",@class = "required"  })
+    </label>
+    <label>
+        <span>说明 :</span>
+        @Html.TextBoxFor(o => o.Description, new { placeholder = "说明",@class = "required"  })
+    </label>
+
+    <label>
+        <span>角色类型 :</span>
+        @Html.DropDownListFor(o => o.RoleType, (SelectList)ViewBag.RoleTypeList, "请选择", new { @class = "required" })
+    </label>
+    <label>
+        <span>公司 :</span>
+        @Html.Partial("_CompanyList", (List<EM_Company>)ViewBag.CompanyIdList)
+    </label>
+    <ul class="hidden" id="ProgramList" data-role="body" data-field="ProgramIds">
+        <li data-id=""></li>
+    </ul>
+    <label>
+        <span>&nbsp;</span>
+        <input type="submit" class="button" value="保存" />
+    </label>
+</form>
+    <script type="text/javascript" src="~/Js/Third/dtree/dtree.js"></script>
+    <script type="text/javascript">
+        var  d = new dTree('d');
+        d.add(0, -1, '权限管理');
+        @{
+            var totalCount =0;
+            var VirtualId="0000";
+            for (int i = 0; i < Systems.Count-1; i++)
+            {
+                var System = Systems[i];
+                @:d.add(@(System.Id),0,'authority', '@VirtualId','@System.Name',"","","","","","","",true);
+                          foreach (var control in System.Items)
+                 {
+                      @:d.add(@(control.Id),@(control.ParentId),'authority','@VirtualId', '@control.Name',false,"","","","","","",true);
+                              foreach (var action in control.Items)
+	                 {
+                                  @:d.add(@(action.Id),@(action.ParentId),'authority','@action.Id', '@action.Name',@action.PerMit.ToString().ToLower(),"","","","","","",true);
+                     }
+                 }
+            }
+        }
+        document.write(d);
+        
+    </script>
+@section Css{
+    <link type="text/css" href="~/Css/Third/dtree/dtree.css" rel="stylesheet" />
+}
+@section Js{
+    <script>
+        var  AddCompany=function(){
+            var option=  $("#CompanyList option:selected");
+            var ob={};
+             ob.id=option.val();
+             ob.name=option.html();
+             var ids={};
+             if($("#CompanyList *[data-id="+ ob.id+"]").length==0)
+             {
+                 $("#AddRow").before('<tr data-id="{id}"><td>{id}</td><td>{name}</td><td><a onclick="$(this).parent().parent().remove()">删除</a></td></tr>'.format(ob))
+             }
+        }
+        var  BeforeSave=function(){
+            $("#ProgramList li").remove();
+            $("#dd1 input[type=checkbox]:checked").each(function(){
+                var value=parseInt($(this).val());
+                if(value!=0)
+                {
+                    $("#ProgramList").append('<li data-id="'+value+'"></li>')
+                }
+            });
+            return true;
+        }
+    </script>
+}

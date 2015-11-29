@@ -8,6 +8,7 @@ using AutoMapper.Mappers;
 using EM.Model.DTOs;
 using EM.Model.VMs;
 using EM.Model.Entities;
+using EM.Data.Infrastructure;
 
 namespace EM.Web.Core
 {
@@ -25,7 +26,13 @@ namespace EM.Web.Core
        .ForMember(dest => dest.ActionName, source => source.ResolveUsing<ActionNameResolver>());
 
             Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>()
-            .ForMember(dest => dest.ApproveStatusName, source => source.ResolveUsing<ApproveStatusResolver>().FromMember(o => o.ApproveStatus));
+            .ForMember(dest => dest.ApproveStatusName, source => source.ResolveUsing<ApproveStatusResolver>().FromMember(o => o.ApproveStatus))
+            .ForMember(dest => dest.List, source => source.ResolveUsing<ExpenseAccountDetailsResolver>().FromMember(o => o.Id));
+
+
+            Mapper.CreateMap<CompanyLimitDTO, CompanyLimitVM>()
+            .ForMember(dest => dest.SeasonTypeName, source => source.ResolveUsing<SeasonTypeResolver>().FromMember(o => o.SeasonType));
+
             Mapper.CreateMap<EM_ExpenseAccount, EM_ExpenseAccount>()
             .ForMember(o=>o.Creater,s=>s.Ignore())
             .ForMember(o => o.CreateDate, s => s.Ignore());
@@ -40,6 +47,24 @@ namespace EM.Web.Core
             Mapper.CreateMap<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>()
             .ForMember(o => o.Creater, s => s.Ignore())
             .ForMember(o => o.CreateTime, s => s.Ignore());
+
+            Mapper.CreateMap<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>()
+            .ForMember(o => o.Creater, s => s.Ignore())
+            .ForMember(o => o.CreateTime, s => s.Ignore());
+
+            Mapper.CreateMap<EM_Company_Limit, EM_Company_Limit>()
+            .ForMember(o => o.Creater, s => s.Ignore())
+            .ForMember(o => o.CreateDate, s => s.Ignore());
+
+            Mapper.CreateMap<EM_User_Role, EM_User_Role>();
+
+            Mapper.CreateMap<UserRoleListDTO, UserRoleListVM>()
+            .ForMember(d => d.CompanyNames, source => source.ResolveUsing<CompanysNameResolver>().FromMember(s => s.CompanyIds))
+            .ForMember(d => d.RoleTypeName, source => source.ResolveUsing<RoleTypeResolver>().FromMember(s => s.RoleType));
+
+            Mapper.CreateMap<EM_ExpenseAccount_Detail, ExpenseAccountDetailListDTO>()
+                .ForMember(d=>d.CateName,source=>source.ResolveUsing<CateNameResolver>().FromMember(s=>s.CateId))
+                .ForMember(d => d.CompanyName, source => source.ResolveUsing<CompanyNameResolver>().FromMember(s => s.CompanyId));
 
         }
     }

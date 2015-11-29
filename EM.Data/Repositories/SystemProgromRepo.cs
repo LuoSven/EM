@@ -20,6 +20,7 @@ namespace EM.Data.Repositories
 
         public int AddOrUpdateProgram(EM_System_Program program)
         {
+                int[] AdminRoleList = { 1 };
             var source = DataContext.EM_System_Program.Where(o => o.ActionName == program.ActionName && o.ControllerName == program.ControllerName).FirstOrDefault();
             if(source==null)
             {
@@ -29,18 +30,17 @@ namespace EM.Data.Repositories
                 DataContext.EM_System_Program.Add(program);
                 var ProgramResult=DataContext.SaveChanges();
 
-                int[] AdminRoleList = { 1 };
                 foreach (var id in AdminRoleList)
                 {
-                    var right = new EM_User_Right()
-                    {
-                        RoleId = id,
-                        ProgramId=program.Id,
-                        Permit=true,
-                        ModifeTime = DateTime.Now,
-                        CreateTime = DateTime.Now,
-                    };
-                  DataContext.EM_User_Right.Add(right);
+                        var right = new EM_User_Right()
+                        {
+                            RoleId = id,
+                            ProgramId = program.Id,
+                            Permit = true,
+                            ModifeTime = DateTime.Now,
+                            CreateTime = DateTime.Now,
+                        };
+                        DataContext.EM_User_Right.Add(right);
                  ProgramResult+= DataContext.SaveChanges();
                 }
 
@@ -61,8 +61,29 @@ namespace EM.Data.Repositories
                 source.RightType = program.RightType;
                 source.ParentAction = program.ParentAction;
 
+                foreach (var id in AdminRoleList)
+                {
+                    var Right= DataContext.EM_User_Right.Where(o => o.RoleId == id && o.ProgramId == source.Id).FirstOrDefault();
+                    if (Right == null)
+                    {
+                        var right = new EM_User_Right()
+                        {
+                            RoleId = id,
+                            ProgramId = program.Id,
+                            Permit = true,
+                            ModifeTime = DateTime.Now,
+                            CreateTime = DateTime.Now,
+                        };
+                        DataContext.EM_User_Right.Add(right);
+                    }
+                    else
+                    {
+                        Right.Permit = true;
+                        Right.ModifeTime = DateTime.Now;
+                    }
+                }
 
-                if (DataContext.SaveChanges() == 1)
+                if (DataContext.SaveChanges() > 1)
                 return 3;
                 return 4;
             }

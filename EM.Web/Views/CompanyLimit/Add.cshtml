@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.Entities;
+@model EM_Company_Limit
+<form method="post" data-role="form" data-url="" class="basic-grey" data-success="SuccessFunction">
+    <h1>
+        新增公司额度
+        <span></span>
+    </h1>
+    @Html.HiddenFor(o => o.Id)
+    <label>
+        <span>公司 :</span>
+        @Html.DropDownListFor(o => o.CompanyId, (SelectList)ViewBag.CompanyList, "-请选择-", new { @class = "required" })
+    </label>
+    <label>
+        <span>额度分类:</span>
+        @Html.DropDownListFor(o => o.CateId, (SelectList)ViewBag.CateList, "-请选择-", new { @class = "required" })
+    </label>
+    <label>
+        <span>季度 :</span>
+        @Html.DropDownListFor(o => o.SeasonType, (SelectList)ViewBag.SeasonTypeList, "-请选择-", new { @class = "required" })
+    </label>
+    <label>
+        <span>额度 :</span>
+        @Html.TextBoxFor(o => o.LimitSum, new { @class = "required" })
+    </label>
+    <label>
+        <span>&nbsp;</span>
+        <input type="submit" class="button" value="保存" />
+    </label>
+</form>
+@section Js
+{
+    <script >
+        var SuccessFunction = function () {
+            if (confirm("是否继续新增额度？"))
+                location.href = location.href;
+            else {
+                Global.Form.NewIframe("额度列表", "companylimit_index", "companylimit/index");
+                Global.Form.CloseIframe("companylimit_add");
+            }
+            return false
+        }
+    </script>
+    }

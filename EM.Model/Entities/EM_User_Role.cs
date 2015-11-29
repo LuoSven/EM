@@ -14,16 +14,10 @@ namespace EM.Model.Entities
     
     public partial class EM_User_Role
     {
-        public EM_User_Role()
-        {
-            this.EM_User_Right = new HashSet<EM_User_Right>();
-        }
-    
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string CompanyIds { get; set; }
-    
-        public virtual ICollection<EM_User_Right> EM_User_Right { get; set; }
+        public int RoleType { get; set; }
     }
 }

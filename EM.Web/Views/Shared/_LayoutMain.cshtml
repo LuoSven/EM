@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="~/Css/base.css" type="text/css" />
+    @if(Request.QueryString["style"]=="black")
+    {
+        
+    <link rel="stylesheet" href="~/Css/Main-Black.css" type="text/css" />
+    }
+    else
+    {
+        
     <link rel="stylesheet" href="~/Css/Main.css" type="text/css" />
+    }
+    
 </head>
 <body>
     <div class="header m10  p10 pl30 ">
@@ -39,6 +49,7 @@
             $("#refreshIframe").click(function () { Global.Iframe.RefreshIframe(); })
             //注销按钮
             $("#logOff").click(function () { Global.Main.LogOff() });
+            $("#changePassword").click(function () { Global.Main.ChangePassword() });
             //tabs左右移动效果
             $(".leftSlice").click(function () { Global.Iframe.TabSlice("left") })
             $(".rightSlice").click(function () { Global.Iframe.TabSlice("right") })
@@ -50,6 +61,7 @@
             Global.Form.DatePicker();
             Global.Form.FileUploader();
             Global.Main.AutoBodyWidth();
+            Global.Iframe.AutoIframeHeight();
 
             // Global.OpenNewIframe(undefined, "/" + BeginTask.split(",")[0] + "/" + BeginTask.split(",")[1])
             //绑定菜单点击事件

@@ -25,7 +25,7 @@ namespace EM.Model.Entities
         public System.DateTime ModifyDate { get; set; }
         public string Creater { get; set; }
         public string Modifier { get; set; }
-        public int CompanyId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
         public decimal SumMoney { get; set; }
         public int ApproveStatus { get; set; }
     }

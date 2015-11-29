@@ -9,9 +9,9 @@ namespace EM.Model.SMs
      public   class ExpenseAccountSM
     {
         public string EANumber { get; set; }
-        public string CompanyName { get; set; }
+        public int? CompanyId { get; set; }
         public string Name { get; set; }
-        public int? CateType { get; set; }
+        public int? CateId { get; set; }
         public int DateType { get; set; }
         public DateTime? SDate { get; set; }
         public DateTime? EDate { get; set; }

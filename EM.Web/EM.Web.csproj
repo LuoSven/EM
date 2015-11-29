@@ -190,6 +190,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CompanyLimitController.cs" />
     <Compile Include="Controllers\CompanyPerformanceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -202,6 +203,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Content Include="Css\Form.css" />
+    <Content Include="Css\Main-2015-11-21.css" />
+    <Content Include="Css\Main-Black.css" />
     <Content Include="Css\Third\dtree\dtree.css" />
     <Content Include="Css\Third\dtree\img\base.gif" />
     <Content Include="Css\Third\dtree\img\cd.gif" />
@@ -226,6 +229,7 @@
     <Content Include="Images\Icons\select_close.png" />
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
+    <Content Include="Js\ajaxPager.js" />
     <Content Include="Js\jquery.validate.messages_cn.js" />
     <Content Include="Js\form.js" />
     <Content Include="Js\common.js" />
@@ -473,11 +477,10 @@
     <Content Include="Views\SystemUser\Edit.cshtml" />
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\SystemUser\_List.cshtml" />
-    <Content Include="Views\UserRole\Edit.cshtml" />
+    <Content Include="Views\UserRole\AddOrEdit.cshtml" />
     <Content Include="Views\ExpenseAccount\Index.cshtml" />
     <Content Include="Views\ExpenseAccount\_List.cshtml" />
-    <Content Include="Views\ExpenseAccount\Edit.cshtml" />
-    <Content Include="Views\ExpenseAccount\Add.cshtml" />
+    <Content Include="Views\ExpenseAccount\AddOrEdit.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadList.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
     <Content Include="Views\ExpenseAccount\ViewFile.cshtml" />
@@ -488,8 +491,15 @@
     <Content Include="Views\CompanyPerformance\Add.cshtml" />
     <Content Include="Views\CompanyPerformance\Edit.cshtml" />
     <Content Include="Views\ExpenseAccount\_DetailList.cshtml" />
-    <Content Include="Views\ExpenseAccount\_EditDetail.cshtml" />
+    <Content Include="Views\ExpenseAccount\_AddOrEditDetail.cshtml" />
     <Content Include="Views\ExpenseAccount\_BodyList.cshtml" />
+    <Content Include="Views\ExpenseAccount\Browse.cshtml" />
+    <Content Include="Views\CompanyLimit\_List.cshtml" />
+    <Content Include="Views\CompanyLimit\Add.cshtml" />
+    <Content Include="Views\CompanyLimit\Edit.cshtml" />
+    <Content Include="Views\CompanyLimit\Index.cshtml" />
+    <Content Include="Views\UserRole\_CompanyList.cshtml" />
+    <Content Include="Views\SystemUser\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

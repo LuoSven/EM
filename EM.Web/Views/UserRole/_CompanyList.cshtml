@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+@using EM.Model.Entities;
+@model List<EM_Company>
+
+<table id="CompanyList" data-role="body" data-field="CompanyIds" class="table table-hover w280">
+    <thead>
+        <tr>
+            <th class="w40">Id</th>
+            <th>公司名</th>
+            <th class="w60">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var company in Model)
+        {
+            <tr data-id="@company.Id">
+                <td>
+                    @company.Id
+                </td>
+                <td>
+                    @company.CompanyName
+                </td>
+                <td>
+                    <a onclick="$(this).parent().parent().remove()">删除</a>
+                </td>
+            </tr>
+        }
+        <tr id="AddRow">
+            <td colspan="3">
+                @Html.DropDownList("CompanyList") <button type="button" class="btn btn-xs" onclick="AddCompany()">添加</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

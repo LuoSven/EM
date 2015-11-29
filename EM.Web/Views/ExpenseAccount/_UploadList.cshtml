@@ -2,8 +2,9 @@
 @{
     var IsView = (string)ViewBag.ActionName == "browse";
 }
+@model List<EM_ExpenseAccount_File>
 <label>
-    <span>上传记录 :</span>
+    <span>附件记录 :</span>
     <table id="FileList" data-role="body" data-field="FileIds" class="table table-hover wp80">
         <thead>
             <tr>
@@ -31,7 +32,7 @@
                             {
                                 <a href="javascript:;" onclick="UploadEAFile.DeleteFile(@item.Id)">删除</a>
                             }
-                            &nbsp;<a href="~/ExpenseAccount/ViewFile/@item.Id" target="_blank">查看</a>
+                            &nbsp;<a href="../../ExpenseAccount/ViewFile/@item.Id" target="_blank">查看</a>
                         </td>
                     </tr>
                 }

@@ -36,11 +36,19 @@ namespace EM.Model.VMs
                 }
                 UserRole = Convert.ToInt32(account[4]);
                 CompanyIds = account[5];
+                
+                RoleType =Convert.ToInt32( account[6]);
 
             }
 
 
 
+        }
+
+        public string SetCookie()
+        {
+            string[] acconutCookie = { UserId.ToString(), UserName, Mobile, string.Join(",", SystemIds), UserRole.ToString(), CompanyIds, RoleType.ToString() };
+            return DESEncrypt.Encrypt(string.Join(StaticKey.Split, acconutCookie));
         }
         public int UserId { get; set; }
         public string UserName { get; set; }
@@ -53,5 +61,6 @@ namespace EM.Model.VMs
         public string Message { get; set; }
 
         public string CompanyIds { get; set; }
+        public int RoleType { get; set; }
     }
 }

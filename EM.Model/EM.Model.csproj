@@ -51,36 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DTOs\CompanyLimitDTO.cs" />
     <Compile Include="DTOs\CompanyPerformanceDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountDetailListDTO.cs" />
-    <Compile Include="Entities\EM_ExpenseAccount_ApproveHistory.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EM_ExpenseAccount_Detail.cs">
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SMs\CompanyPerformanceSM.cs" />
-    <Compile Include="VMs\CompanyPerformanceVM.cs" />
-    <Compile Include="VMs\ExpenseAccountFileVM.cs" />
-    <Compile Include="DTOs\ExpenseAccountFileDTO.cs" />
-    <Compile Include="DTOs\ExpenseAccountDTO.cs" />
-    <Compile Include="DTOs\UserRoleProgramDTO.cs" />
-    <Compile Include="DTOs\AccountDetailDTO.cs" />
-    <Compile Include="Entities\EMDB.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EMDB.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EMDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EMDB.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="DTOs\UserRoleListDTO.cs" />
     <Compile Include="Entities\EM_Charge_Cate.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
@@ -94,6 +68,12 @@
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EM_ExpenseAccount.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_ExpenseAccount_ApproveHistory.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_ExpenseAccount_Detail.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EM_ExpenseAccount_File.cs">
@@ -117,14 +97,40 @@
     <Compile Include="Entities\EM_User_Role.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SMs\CompanyLimitSM.cs" />
+    <Compile Include="SMs\CompanyPerformanceSM.cs" />
+    <Compile Include="VMs\CompanyLimitVM.cs" />
+    <Compile Include="VMs\CompanyPerformanceVM.cs" />
+    <Compile Include="VMs\ExpenseAccountFileVM.cs" />
+    <Compile Include="DTOs\ExpenseAccountFileDTO.cs" />
+    <Compile Include="DTOs\ExpenseAccountDTO.cs" />
+    <Compile Include="DTOs\UserRoleProgramDTO.cs" />
+    <Compile Include="DTOs\AccountDetailDTO.cs" />
+    <Compile Include="Entities\EMDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EMDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EMDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMDB.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMs\ExpenseAccountSM.cs" />
     <Compile Include="VMs\AccountLoginVM.cs" />
     <Compile Include="VMs\AccountPasswordVM.cs" />
     <Compile Include="VMs\AccountDetailVM.cs" />
     <Compile Include="VMs\AccountVM.cs" />
+    <Compile Include="VMs\ExpenseAccountSubmitVM.cs" />
     <Compile Include="VMs\ExpenseAccountVM.cs" />
     <Compile Include="VMs\KeyValueVM.cs" />
+    <Compile Include="VMs\UserRoleListVM.cs" />
     <Compile Include="VMs\UserRoleTreeVM.cs" />
     <Compile Include="VMs\MenuVM.cs" />
     <Compile Include="VMs\UserRoleProgramVM.cs" />

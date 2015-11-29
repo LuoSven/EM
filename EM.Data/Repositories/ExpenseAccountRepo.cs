@@ -21,26 +21,23 @@ namespace EM.Data.Repositories
         {
         }
 
-        public async Task<List<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm)
+        public async Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize)
         {
-            var dateSql = "and a.{0} >= @SDate and a.{0} <=@EDate";
-            var sql = string.Format(@"select a.Id,a.EANumber,a.Creater,a.CreateDate,a.SumMoney,a.OccurDate,a.Name,a.Remark,a.ApplyDate,b.CompanyName,c.CateName,a.ApproveStatus  from EM_ExpenseAccount a 
-join EM_Company b on a.CompanyId=b.Id
-join EM_Charge_Cate c on a.CateId=c.Id
-where a.CompanyId in ({0})",sm.CompanyIds);
+            var dateSql = "and b.{0} >= @SDate and b.{0} <=@EDate";
+            var sql = string.Format(@"select  distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate  from EM_ExpenseAccount a
+join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
+where a.Creater='{0}'  ", UserName);
 
-            if(!string.IsNullOrEmpty(sm.CompanyName))
-                sql += " and b.CompanyName like '%'+@CompanyName+'%' ";
+            if (sm.CompanyId.HasValue)
+                sql += " and a.CompanyId = @CompanyId ";
             if (!string.IsNullOrEmpty(sm.Creater))
                 sql += " and a.Creater like '%'+@Creater+'%' ";
             if (!string.IsNullOrEmpty(sm.EANumber))
                 sql += " and a.EANumber like '%'+@EANumber+'%' ";
-            if (!string.IsNullOrEmpty(sm.EANumber))
-                sql += " and a.EANumber like '%'+@EANumber+'%' ";
             if (!string.IsNullOrEmpty(sm.Name))
                 sql += " and a.Name like '%'+@Name+'%' ";
-            if (sm.CateType.HasValue)
-                sql += " and a.CateId = @CateType ";
+            if (sm.CateId.HasValue)
+                sql += " and a.CateId = @CateId ";
 
             sm.SDate = sm.SDate.HasValue ? sm.SDate : DateTime.Now.AddYears(-10);
             sm.EDate = sm.EDate.HasValue ? sm.EDate : DateTime.Now.AddYears(10);
@@ -60,13 +57,12 @@ where a.CompanyId in ({0})",sm.CompanyIds);
                     sql += string.Format(dateSql, "ModifyDate");
                     break;
             }
-            sql += " order by a.ModifyDate desc";
-
-     
 
 
-            var list = await DapperHelper.SqlQueryAsync<ExpenseAccountListDTO>(sql,sm);
-            return list.ToList();
+
+
+            var list = await DapperHelper.QueryWithPageAsync<ExpenseAccountListDTO>(sql, sm, " ModifyDate desc ", Page, PageSize);
+            return list;
         }
 
         public async Task<string> GetNewPublicId()
@@ -83,8 +79,10 @@ where a.CompanyId in ({0})",sm.CompanyIds);
 
     public interface IExpenseAccountRepo : IRepository<EM_ExpenseAccount>
     {
-        Task<List<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm);
+        Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize);
 
         Task<string> GetNewPublicId();
+
+
     }
 }

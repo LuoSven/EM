@@ -76,6 +76,17 @@ namespace EM.Web.Controllers
            else
                return Json(new { code = 0,messgage="保存失败，请重试" });
         }
+
+         public async Task<ActionResult> ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+         public async Task<JsonResult> ChangePassword(string OPassword,string NPassword)
+         {
+             var result=userAccountRepo.ChangePassword(ViewHelp.GetUserId(), OPassword, NPassword);
+             return Json(new { code = result == "" ? 1 : 0,message= result });
+         }
         private void InitSelect()
         {
             ViewBag.roleList = userRoleRepo.GetList();

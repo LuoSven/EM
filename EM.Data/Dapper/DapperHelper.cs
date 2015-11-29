@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using System.Data;
 using System.Text;
+using EM.Data.Infrastructure;
 
 namespace EM.Data.Dapper
 {
@@ -56,6 +57,15 @@ namespace EM.Data.Dapper
                 string sql = Sql;
                 var list = conn.Query<T>(sql, param);
                 return list;
+            }
+        }
+
+        public static async Task<PagedResult<T>> QueryWithPageAsync<T>( string sql, object param, string orders, int page, int pageSize)where T : class
+        {
+            using (var conn = DapperHelper.GetConnection())
+            {
+                var result = await conn.QueryWithPageAsync<T>(sql, param, orders, page, pageSize);
+                return result;
             }
         }
         #endregion
@@ -151,6 +161,16 @@ namespace EM.Data.Dapper
             }
         }
 
+        public static int Insert<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
+where T : class
+        {
+            using (var conn = DapperHelper.GetConnection())
+            {
+                var result =  conn.Insert<T>(entityToUpdate, transaction, commandTimeout);
+                return (int)result;
+            }
+        }
+
         public static   async Task<bool> UpdateAsync<T>(T entityToUpdate, IDbTransaction transaction = null, int? commandTimeout = null)
      where T : class
         {
@@ -210,9 +230,9 @@ namespace EM.Data.Dapper
         /// </summary> 
         /// <param name="str">要转换的字符串</param> 
         /// <returns>格式化后的字符串</returns> 
-        public static string ToSqlLink(this string sqlstr)
+        public static string ToSqlLike(this string sqlstr)
         {
-            if (sqlstr == null) return "";
+            if (string.IsNullOrEmpty(sqlstr)) return string.Empty;
             StringBuilder str = new StringBuilder(sqlstr);
             str.Replace("'", "''");
             str.Replace("[", "[[]");

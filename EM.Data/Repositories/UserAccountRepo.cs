@@ -52,14 +52,16 @@ namespace EM.Data.Repositories
                 //获取系统信息
 
                 var SystemType = Dapper.DapperHelper.SqlQuery<int>(@"select distinct d.SystemType from EM_User_Account a 
-join EM_User_Role b on a.RoleId=b.id
+join EM_User_Role b on a.RoleId=b.Id
 join EM_User_Right c on b.id=c.RoleId and c.Permit=1
 join EM_System_Program d on d.Id=c.ProgramId
 where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
-                var CompanyIds = DapperHelper.SqlQuery<string>(@"select CompanyIds from EM_User_Role where id=@RoleId ", new { RoleId = account.RoleId.Value }).FirstOrDefault() ;
+                var CompanyIdsAndRoleType = DapperHelper.SqlQuery<AccountVM>(@"select CompanyIds  ,RoleType   from EM_User_Role where Id=@RoleId ", new { RoleId = account.RoleId.Value }).FirstOrDefault();
+
                 result.SystemIds = SystemType;
                 result.UserRole = account.RoleId.Value;
-                result.CompanyIds = CompanyIds??"0";
+                result.CompanyIds = CompanyIdsAndRoleType.CompanyIds ?? "0";
+                result.RoleType = CompanyIdsAndRoleType.RoleType;
                 LoginRecord.IsLogin = true;
                 LoginRecord.UserId = account == null ? 0 : account.UserId;
             }
@@ -117,6 +119,17 @@ join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
             return user;
         }
 
+
+        public string ChangePassword(int UserId,string OPassword,string NPassword)
+        {
+             var result= DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where UserId=@UserId and Password=@Password", new { UserId = UserId, Password =DESEncrypt.Encrypt(OPassword)}).FirstOrDefault();
+            if(result!=0)
+            {
+                result = DapperHelper.SqlExecute(@"update EM_User_Account set Password=@Password where UserId=@UserId", new { UserId = UserId, Password = DESEncrypt.Encrypt(NPassword) });
+                return result > 0 ? "" : "保存失败,请重试";
+            }
+            return "旧密码错误，请重新输入";
+        }
     }
     public interface IUserAccountRepo : IRepository<EM_User_Account>
     {
@@ -135,5 +148,7 @@ join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
 
         Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string RoleId = "");
         Task<AccountDetailDTO> GetByIdDto(int UserId);
+
+        string ChangePassword(int UserId,string OPassword,string NPassword);
     }
 }

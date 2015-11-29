@@ -121,20 +121,24 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
     var modelField = FormJqOb.attr("data-field");
     modelField = modelField == undefined || modelField == "" ? "model" : "modelName";
     var Data = {};
-    Data[modelField] = FormJqOb.serializeJson()
     $("*[data-role=body]").each(function () {
         var bodyField = $(this).attr("data-field");
         var dataList = [];
         $("*[data-id]", this).each(function () {
-            dataList.push((this).attr("data-id"));
+            dataList.push($(this).attr("data-id"));
         })
-        Data[bodyField] = dataList;
+        Data[bodyField] = dataList.join(',');
     })
-  
-        $.ajax({
+    var urlSearch = "?";
+    for (var i in Data) {
+        urlSearch += i + "=" + Data[i] + "&";
+    }
+    var url = FormJqOb.attr("action");
+    url = url === "" || url == undefined ? "" : url;
+    $.ajax({
             type: "post",
-            url: FormJqOb.attr("action"),
-            data: Data,
+            url: url + urlSearch,
+            data: FormJqOb.serialize(),
             success: function (a) {
                 var FunctionResult = true;
                 if (a.code) {

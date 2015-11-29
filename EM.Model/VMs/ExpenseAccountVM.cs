@@ -10,5 +10,7 @@ namespace EM.Model.VMs
     public class ExpenseAccountListVM : ExpenseAccountListDTO
     {
         public string ApproveStatusName { get; set; }
+
+        public List<ExpenseAccountDetailListDTO> List { get; set; } 
     }
 }

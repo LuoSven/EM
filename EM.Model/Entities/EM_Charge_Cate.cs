@@ -20,5 +20,6 @@ namespace EM.Model.Entities
         public Nullable<int> ParentId { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime ModifyDate { get; set; }
+        public string RoleTypes { get; set; }
     }
 }

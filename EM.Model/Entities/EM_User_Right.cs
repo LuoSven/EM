@@ -21,7 +21,6 @@ namespace EM.Model.Entities
         public System.DateTime ModifeTime { get; set; }
         public System.DateTime CreateTime { get; set; }
     
-        public virtual EM_User_Role EM_User_Role { get; set; }
         public virtual EM_System_Program EM_System_Program { get; set; }
     }
 }

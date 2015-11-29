@@ -93,6 +93,10 @@ namespace EM.Web.Core
          {
              return GetAccountInfoFromCookie().UserRole;
          }
+         public static int GetRoleType()
+         {
+             return GetAccountInfoFromCookie().RoleType;
+         }
          public static string GetUserName()
          {
              return GetAccountInfoFromCookie().UserName;

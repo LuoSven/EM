@@ -4,7 +4,8 @@
 }
 @using EM.Model.VMs
 @using EM.Common;
-@model List<ExpenseAccountListVM>
+@using EM.Data.Infrastructure;
+@model PagedResult<ExpenseAccountListVM>
 @{
     var CateList = ViewBag.CateList as List<KeyValueVM>;
     var DateTypeList = ExpenseAccountDateType.OccurDate.GetEnumList();
@@ -13,14 +14,9 @@
     <form id="SearchForm" action="@Url.Action("Index", "ExpenseAccount")">
         <input type="text" name="EANumber" value="" placeholder="单号">
         <input type="text" name="Name" value="" placeholder="报销人">
-        <input type="text" name="CompanyName" value="" placeholder="公司名称">
-        <select name="CateType">
-            <option selected="selected" value="">请选择</option>
-            @foreach (var role in CateList)
-            {
-                <option value="@role.Key">@role.Value</option>
-            }
-        </select>
+        <input type="text" name="CompanyID" value="" placeholder="公司名称">
+        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "请选择")
+        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "请选择")
         <select name="DateType">
             <option selected="selected" value="">请选择</option>
             @foreach (var role in DateTypeList)
@@ -29,7 +25,7 @@
             }
         </select>
         <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
-        <input type="text" class="datepicker" placeholder="结束时间"  name="EDate" />
+        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
         <button class="searchButton" type="submit">搜索</button>
     </form>
 

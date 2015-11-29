@@ -36,6 +36,46 @@ join EM_System_Program d on d.Id=c.ProgramId  and d.ControllerName=@ControllerNa
 where a.UserId=@UserId", new { UserId = UserId, ControllerName = ControllerName }).Select(o=>o.ToLower()).ToList();
             return result;
         }
+      public  void UpdateUserRoleRight(int RoleId, string ProgramIds)
+      {
+          //补全全部权限信息
+
+          #region 补全权限信息
+          var userRight = new EM_User_Right();
+          userRight.RoleId = RoleId;
+          userRight.CreateTime = DateTime.Now;
+          userRight.ModifeTime = DateTime.Now;
+          userRight.Permit = false;
+          var programIds = DapperHelper.SqlQuery<int>(@"  select Id from EM_System_Program 
+where Id not in (select ProgramId from EM_User_Right where RoleId=@RoleId )", new { RoleId = RoleId }).ToList();
+          foreach (var item in programIds)
+          {
+              userRight.ProgramId = item;
+              DapperHelper.SqlExecute(@"INSERT INTO EM_User_Right
+           (RoleId
+           ,ProgramId
+           ,Permit
+           ,ModifeTime
+           ,CreateTime)
+     VALUES
+           (@RoleId
+           ,@ProgramId
+           ,@Permit
+           ,@ModifeTime
+           ,@CreateTime)", userRight);
+          }
+          #endregion
+         
+
+          //全部置为否
+          DapperHelper.SqlExecute("update EM_User_Right set Permit=0 where RoleId=@RoleId ", new { RoleId = RoleId });
+
+          if (!string.IsNullOrWhiteSpace(ProgramIds))
+          {
+              //选中的置为是
+              DapperHelper.SqlExecute(string.Format("update EM_User_Right set Permit=1 where RoleId=@RoleId and  ProgramId in ({0})", ProgramIds), new { RoleId = RoleId });
+          }
+      }
 
     }
     public interface IUserRightRepo : IRepository<EM_User_Right>
@@ -44,6 +84,8 @@ where a.UserId=@UserId", new { UserId = UserId, ControllerName = ControllerName 
         bool HasRight(int UserId,string ControllerName, string ActionName);
 
         List<string> GetActions(int UserId, string ControllerName);
+
+        void UpdateUserRoleRight(int RoleId, string ProgramIds);
 
 
     }

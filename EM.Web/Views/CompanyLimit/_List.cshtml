@@ -1,0 +1,44 @@
+﻿@using EM.Model.VMs;
+@model List<CompanyLimitVM>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="w150">公司名</th>
+            <th class="w80 taR">额度分类</th>
+            <th class="w80 taR">季度</th>
+            <th class="taR">额度</th>
+            <th class="taR">修改日期</th>
+            <th class="taR">修改人</th>
+            <th class="taR">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Limit in Model)
+        {
+            <tr>
+                <td>
+                    @Limit.CompanyName
+                </td>
+                <td class="taR">
+                    @Limit.CateName
+                </td>
+                <td class="taR">
+                    @Limit.SeasonTypeName
+                </td>
+                <td class="taR">
+                    @(Limit.LimitSum.ToString("f2"))
+                </td>
+                <td class="taR">
+                    @Limit.ModifyDate.ToShortDateString()
+                </td>
+                <td class="taR">
+                    @Limit.Modifier
+                </td>
+                <td class="taR">
+                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑额度','EditCompanyLimit_@(Limit.Id)','@Url.Action("Edit", new { Id = Limit.Id })',false)">编辑</a>
+                    <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new { Id = Limit.Id })',this,false)">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

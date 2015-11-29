@@ -1,40 +1,18 @@
 ﻿.SearchFrom{padding-top: 15px;padding-left: 5px;border-bottom: 1px solid #DDD;padding-bottom: 15px;}
-.SearchFrom input[type=text], .SearchFrom select, .SearchFrom Button
-{
-    margin: 0px 3px 0px 0px;
-    font-size: 14px;
-}
-.SearchFrom input[type=text]
-{
-    padding-left: 5px;
-}
+.SearchFrom Button,.SearchFrom input[type=text],.SearchFrom select{margin:0 3px 0 0;font-size:14px}
+.SearchFrom input[type=text]{padding-left:5px;width:100px}
+.SearchFrom select{line-height:20px;padding-bottom:1px}
+.SearchFrom button{padding:2px 8px;background:#000;border:1px solid;color:#fff;float:right;border-radius:5px}
+.SearchFrom button:hover{background:#00B2FF}
 
-.SearchFrom select
-{
-    line-height: 20px;
-    padding-bottom: 1px;
-}
-.SearchFrom  button
-{
-    padding: 2px 8px;
-    background: #000000;
-    border: 1px solid;
-    color: #fff;
-    float: right;
-    border-radius: 5px;
-}
-.SearchFrom  button:hover
-{
-    background: #00B2FF;
-}
-
+.error{color:red}
 .basic-grey{margin-left: 10px;margin-right:auto;max-width: 800px;background: #FFFFFF;padding:25px 15px 25px 10px;font:12px Georgia,"Times New Roman",Times,serif;color:#888;text-shadow:1px 1px 1px #FFF;/* border:1px solid #e4e4e4 */}
 .basic-grey h1{font-size:25px;padding:0 0 10px 40px;display:block;border-bottom:1px solid #e4e4e4;margin:-10px -15px 30px -10px;color:#888}
 .basic-grey h1>span{display:block;font-size:11px}
 .basic-grey>label{display:block;margin:0;position: relative;}
 .basic-grey>label>span{float:left;width:20%;text-align:right;padding-right:10px;margin-top:10px;color:#888;font-size: 16px;font-weight: 100;}
 .basic-grey>label>.errorMessage{position: absolute;bottom: 0px;left: 20%; text-decoration: blink;color: rgb(246, 0, 0);cursor: default;}
-.basic-grey input[type=text],.basic-grey input[type=email],.basic-grey select,.basic-grey textarea{border:1px solid #dadada;color:#888;height:30px;margin-bottom: 20px;margin-right:6px;margin-top:2px;outline:0 none;padding:3px 3px 3px 5px;width: 60%;font-size: 15px;line-height: 18px;font-weight: 100;box-shadow:inset 0 1px 4px #ececec;-moz-box-shadow:inset 0 1px 4px #ececec;-webkit-box-shadow:inset 0 1px 4px #ececec}
+.basic-grey input[type=text],.basic-grey input[type=password],.basic-grey input[type=email],.basic-grey select,.basic-grey textarea{border:1px solid #dadada;color:#888;height:30px;margin-bottom: 20px;margin-right:6px;margin-top:2px;outline:0 none;padding:3px 3px 3px 5px;width: 60%;font-size: 15px;line-height: 18px;font-weight: 100;box-shadow:inset 0 1px 4px #ececec;-moz-box-shadow:inset 0 1px 4px #ececec;-webkit-box-shadow:inset 0 1px 4px #ececec}
 .basic-grey textarea{padding:5px 3px 3px 5px}
 .basic-grey select{background:#FFF url(down-arrow.png) no-repeat right;background:#FFF url(down-arrow.png) no-repeat right);appearance:none;-webkit-appearance:none;-moz-appearance:none;text-indent:.01px;text-overflow:initial;width:60%;height:35px;line-height:25px}
 .basic-grey textarea{height:100px}
@@ -42,3 +20,20 @@
 .basic-grey .button:hover{background:#cf7a7a}
 .basic-grey .checkTitle{margin-left: 10px;font-weight: 100;color: inherit;font-size: 16px;margin-right: 5px;}
 .basic-grey >label>.error{border:1px solid #ff0000}
+.basic-grey label .view{color:#888;height:30px;margin-bottom: 20px;margin-right:6px;margin-top:2px;outline:0 none;padding: 10px 3px 3px 10px;width: 60%;font-size: 15px;line-height: 18px;font-weight: 100;box-shadow: none;-moz-box-shadow: none;-webkit-box-shadow: none;text-align: left;}
+
+ol,ul{padding:0;margin:0 0 9px 25px}
+.pagination{height:36px;margin:18px 0}
+.pagination ul{display:inline-block;margin-left:0;margin-bottom:0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);-moz-box-shadow:0 1px 2px rgba(0,0,0,.05);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.pagination li{display:inline;line-height:18px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;line-height:18px;color:#333}
+.pagination a{float:left;padding:0 14px;line-height:34px;text-decoration:none;border:1px solid #ddd;border-left-width:0}
+.pagination .active a,.pagination a:hover{background-color:#f5f5f5}
+.pagination .active a{color:#999;cursor:default}
+.pagination .disabled a,.pagination .disabled a:hover,.pagination .disabled span{color:#999;background-color:transparent;cursor:default}
+.pagination li:first-child a{border-left-width:1px;-webkit-border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;border-radius:3px 0 0 3px}
+.pagination li:last-child a{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0}
+.pagination-centered{text-align:center}
+.pagination-right{text-align:right}
+.pagerCount{float: right; margin: 26px 10px;font-size: 15px;}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{vertical-align:middle}

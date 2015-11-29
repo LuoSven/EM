@@ -13,7 +13,14 @@ namespace EM.Model.DTOs
 
     public class ExpenseAccountDetailListDTO
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+        public string OccurDateName
+        {
+            get
+            {
+                return OccurDate.ToShortDateString();
+            }
+        }
         public System.DateTime OccurDate { get; set; }
         public string Remark { get; set; }
         public string CateName { get; set; }

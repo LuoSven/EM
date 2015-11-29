@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs
+@using EM.Common;
+@model List<CompanyLimitVM>
+@{
+}
+<div class="SearchFrom">
+    <form id="SearchForm" action="@Url.Action("Index", "CompanyLimit")">
+        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "请选择")
+        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "请选择")
+        @Html.DropDownList("SeasonType", (SelectList)ViewBag.SeasonTypeList, "请选择")
+        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+        <input type="text" class="datepicker" placeholder="结束时间"  name="EDate" />
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_List", Model)
+</div>

@@ -37,6 +37,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.RoleId = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
@@ -97,7 +99,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(22, 107);
+            this.label4.Location = new System.Drawing.Point(24, 107);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 8;
@@ -106,7 +108,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("微软雅黑", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(24, 143);
+            this.button1.Location = new System.Drawing.Point(22, 197);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(160, 50);
             this.button1.TabIndex = 9;
@@ -114,11 +116,32 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // RoleId
+            // 
+            this.RoleId.DisplayMember = "Value";
+            this.RoleId.FormattingEnabled = true;
+            this.RoleId.Location = new System.Drawing.Point(59, 131);
+            this.RoleId.Name = "RoleId";
+            this.RoleId.Size = new System.Drawing.Size(125, 20);
+            this.RoleId.TabIndex = 11;
+            this.RoleId.ValueMember = "Key";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 134);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "权限组";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(204, 205);
+            this.ClientSize = new System.Drawing.Size(194, 259);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.RoleId);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -147,6 +170,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox RoleId;
+        private System.Windows.Forms.Label label5;
     }
 }
 

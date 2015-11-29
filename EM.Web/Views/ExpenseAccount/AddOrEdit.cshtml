@@ -7,9 +7,11 @@
 @using EM.Common;
 @{
     var Title = Model.Id == 0 ? "新增报销单" : "编辑报销单";
+    var action = Model.Id == 0 ? "Add" : "Edit";
+    var IsPublic = Model.EANumber!=null&&Model.EANumber.Contains("对公") ? "checked" : "";
 }
 @model EM_ExpenseAccount
-<form method="post" data-role="form" data-url="" data-beforesave="BeforeSave" data-success="SuccessFunction" class="basic-grey">
+<form method="post" data-role="form" action="@action" data-url="" data-beforesave="BeforeSave" data-success="SuccessFunction" class="basic-grey">
     <h1>
         @Title
         <span></span>
@@ -17,7 +19,7 @@
     @Html.HiddenFor(o => o.Id)
     <label>
         <span>报销单号 :</span>
-        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })<a class="checkTitle">对公</a><input type="checkbox" id="IsPublic" />
+        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })<a class="checkTitle">对公</a><input type="checkbox" @IsPublic id="IsPublic" />
     </label>
     <label>
         <span>申请日期 :</span>
@@ -30,13 +32,14 @@
 
     <label>
         <span>总金额 :</span>
-        @Html.TextBoxFor(o => o.SumMoney, new { @class = "required" })
+        @Html.TextBoxFor(o => o.SumMoney, new { @class = "required", readOnly = "readOnly" })
     </label>    @Html.Partial("_BodyList")
     <label>
         <span>&nbsp;</span>
-        <input type="hidden" name="ApproveStatus" value="@((int)ExpenseAccountApproveStatus.Created)" />
         <input type="submit" class="button" value="保存" />
-         <p class="mlp20 cCCC mt10 fwN"><input type="checkbox" value="@((int)ExpenseAccountApproveStatus.WaitingApprove)" /> 同时提交报销单</p>
+        <p class="mlp20 cCCC mt10 fwN"><input name="ApproveStatus" type="checkbox" value="@((int)ExpenseAccountApproveStatus.WaitingApprove)" /> 同时提交报销单(提交后不能进行编辑，请慎重提交)</p>
+
+        <input type="hidden" name="ApproveStatus" value="@((int)ExpenseAccountApproveStatus.Created)" />
     </label>
 </form>
 @Html.Partial("_UploadField")
