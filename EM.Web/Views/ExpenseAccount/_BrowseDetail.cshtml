@@ -1,0 +1,51 @@
+﻿@using EM.Model.Entities
+@using EM.Data.Repositories;
+@model EM_ExpenseAccount_Detail
+@{
+    var companyRopo = new CompanyRepo(new EM.Data.Infrastructure.DatabaseFactory());
+    var CompanyName = companyRopo.GetCompanyName(Model.CompanyId);
+    var ChargeCateRopo = new ChargeCateRepo(new EM.Data.Infrastructure.DatabaseFactory());
+    var CateName = ChargeCateRopo.GetCateName(Model.CateId);
+}
+
+<div id="DetailField" style="display:none" class=" p10 pl50">
+    <form  id="EditDetail" name="EditDetail" method="post" action="../../ExpenseAccount/SaveDetail">
+       
+        <table class="wp100">
+            <tr>
+                <td width="20%"></td>
+                <td width="80%"></td>
+            </tr>
+            <tr>
+                <td class="size14">公司名称：</td>
+                <td class="p5">
+                    @CompanyName
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">发生日期：</td>
+                <td class="p5">
+                   @Model.OccurDate.ToShortDateString()
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">费用明细：</td>
+                <td class="p5">
+                    @CateName
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">金额：</td>
+                <td class="p5">
+                    @Model.Money.ToString("F2")
+                </td>
+            </tr>
+            <tr>
+                <td class="size14">说明：</td>
+                <td class="p5">
+                    @Model.Remark.Replace("\r\n","<br>").Replace("\n","<br>")
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -11,12 +11,7 @@
         <form id="SearchForm" action="@Url.Action("Index","SystemUser")">
             <input type="text" name="UserName" value="" placeholder="用户名">
             <input type="text" name="LoginEmail" value="" placeholder=" 登录账户">
-            <select name="RoleId" class=" ">
-                @foreach (var role in RoleList)
-                {
-                    <option value="@role.Key">@role.Value</option>
-                }
-            </select>
+            @Html.DropDownList("RoleId",new SelectList(RoleList,"Key","Value"),"-请选择-")
             <button class="searchButton"  type="submit">搜索</button>
         </form>
 

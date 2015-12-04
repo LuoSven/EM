@@ -54,6 +54,7 @@
     <Compile Include="DTOs\CompanyLimitDTO.cs" />
     <Compile Include="DTOs\CompanyPerformanceDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountDetailListDTO.cs" />
+    <Compile Include="DTOs\CompanyCateLimitDTO.cs" />
     <Compile Include="DTOs\UserRoleListDTO.cs" />
     <Compile Include="Entities\EM_Charge_Cate.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
@@ -97,6 +98,7 @@
     <Compile Include="Entities\EM_User_Role.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SMs\CompanyCateLimitSM.cs" />
     <Compile Include="SMs\CompanyLimitSM.cs" />
     <Compile Include="SMs\CompanyPerformanceSM.cs" />
     <Compile Include="VMs\CompanyLimitVM.cs" />

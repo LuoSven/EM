@@ -46,6 +46,8 @@ left join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
 left join EM_Company c on b.CompanyId=c.Id
 where a.Id=@Id", new { Id = Id })).FirstOrDefault();
         }
+
+    
     }
 
 
@@ -57,6 +59,7 @@ where a.Id=@Id", new { Id = Id })).FirstOrDefault();
          Task<bool> UpdateDeleteStatus(int Id);
 
          Task<ExpenseAccountFileDTO> GetDtos(int Id);
+
 
          //bool CheckFileName(int Id, string FileName, string Uploader);
 

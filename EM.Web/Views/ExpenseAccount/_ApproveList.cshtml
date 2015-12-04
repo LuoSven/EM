@@ -7,16 +7,16 @@
     <thead>
         <tr>
             <th class="w150">单号</th>
-            <th class="w80 taR">报销人</th>
+            <th class="w70 taR">报销人</th>
             <th class=" taR">公司名称</th>
             <th class="taR">费用大类</th>
             <th class="taR w80">报销日期</th>
-            <th class="taR w100">金额</th>
+            <th class="taR w80">金额</th>
             <th class="taR w100">总金额</th>
             <th class="w80 taR">录入日期</th>
             <th class="w80 taR">更新日期</th>
             <th class="taR w80">当前状态</th>
-            <th class="taR">操作</th>
+            <th class="taR w160">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -54,17 +54,15 @@
                     @EA.ApproveStatusName
                 </td>
                 <td class="taR">
-                    @if (EA.ApproveStatus == (int)ExpenseAccountApproveStatus.Created || EA.ApproveStatus == (int)ExpenseAccountApproveStatus.FailApproved)
+                    <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id = EA.Id, IsApprove=true })')">查看</a>
+                    @if (EA.ApproveStatus != (int)ExpenseAccountApproveStatus.PassApproved)
                     {
-                        <a data-commond="edit" onclick="Global.Form.NewIframe('编辑报销单','editexpenseaccount_@(EA.Id)','@Url.Action("Edit", new { id=EA.Id })')">编辑</a>
-                         <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new {Id=EA.Id })',this,false)">删除</a>    
-                        <a  onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove })',this,false,'提交')">提交</a>
+                        <a data-commond="updataapprovestatus" onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.PassApproved })',this,false,'通过')">通过</a>
                     }
-                    else if(EA.ApproveStatus == (int)ExpenseAccountApproveStatus.WaitingApprove)
+                    @if (EA.ApproveStatus != (int)ExpenseAccountApproveStatus.FailApproved)
                     {
-                        <a onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.Created })',this,false,'撤回')">撤回</a>
+                        <a data-commond="updataapprovestatus" onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.FailApproved })',this,false,'不通过')">不通过</a>
                     }
-                    <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id=EA.Id })')">查看</a>
                 </td>
             </tr>
         }

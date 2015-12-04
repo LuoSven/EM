@@ -7,7 +7,7 @@
 @using EM.Data.Infrastructure;
 @model PagedResult<ExpenseAccountListVM>
 <div class="SearchFrom">
-    <form id="SearchForm" action="@Url.Action("Index", "ExpenseAccount")">
+    <form id="SearchForm" action="@Url.Action("ApproveIndex", "ExpenseAccount")">
         <input type="text" name="EANumber" value="" placeholder="单号">
         <input type="text" name="Name" value="" placeholder="报销人">
         <input type="text" name="CompanyID" value="" placeholder="公司名称">
@@ -23,5 +23,5 @@
 </div>
 
 <div id="List">
-    @Html.Partial("_List", Model)
+    @Html.Partial("_ApproveList", Model)
 </div>

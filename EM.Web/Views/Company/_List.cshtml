@@ -1,0 +1,44 @@
+﻿@using EM.Model.Entities;
+@model List<EM_Company>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="taR">公司Id</th>
+            <th class="taR">公司名</th>
+            <th class="taR">Kpi百分比</th>
+            <th class="taR">KPI（万元）</th>
+            <th class="taR">修改日期</th>
+            <th class="taR">修改人</th>
+            <th class="taR">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var company in Model)
+        {
+            <tr>
+                <td class="taR">
+                    @company.Id
+                </td>
+                <td class="taR">
+                    @company.CompanyName
+                </td>
+                <td class="taR">
+                     @(company.KPIPercent.Value.ToString("f2"))%
+                </td>
+                <td class="taR">
+                     @((company.KPIValue/10000).Value.ToString("f0"))
+                </td>
+                <td class="taR">
+                    @company.ModifyDate.ToShortDateString()
+                </td>
+                <td class="taR">
+                    @company.Modifier
+                </td>
+                <td class="taR">
+                    <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑公司','EditCompanyLimit_@(company.Id)','@Url.Action("Edit", new { Id = company.Id })',false)">编辑</a>
+                    <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new { Id = company.Id })',this,false)">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

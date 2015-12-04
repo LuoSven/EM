@@ -55,7 +55,7 @@ namespace EM.Web.Controllers
             if (result > 0)
                 return Json(new { code = 1 });
             else
-                return Json(new { code = 0, messgage = "保存失败，请重试" });
+                return Json(new { code = 0, message = "保存失败，请重试" });
         }
 
         [Description("编辑角色")]
@@ -75,10 +75,7 @@ namespace EM.Web.Controllers
             entity.CompanyIds = CompanyIds;
             userRightRepo.UpdateUserRoleRight(model.Id, ProgramIds);
             var result = userRoleRepo.SaveChanges();
-           if (result > 0)
                return Json(new { code = 1 });
-           else
-               return Json(new { code = 0,messgage="保存失败，请重试" });
         }
         [Description("删除角色")]
         [ActionType(RightType.Form)]
@@ -91,6 +88,40 @@ namespace EM.Web.Controllers
             userRoleRepo.Delete(entity);
             userRoleRepo.SaveChanges();
             return Json(new { code = 1 },JsonRequestBehavior.AllowGet);
+        }
+
+        [Description("更新系统作业")]
+        [ActionType(RightType.Form)]
+        public ActionResult UpdateSystemPrograms()
+        {
+            var Programs = ViewHelp.GetAllActionByAssembly();
+            var messageAll = "";
+            ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
+            messageAll+=string.Format("共发现{0}个作业\r\n", Programs.Count);
+            foreach (var item in Programs)
+            {
+
+                var result = systemProgromRepo.AddOrUpdateProgram(item);
+                var message = item.ActionDescription+"("+item.ControllerName+"/"+item.ActionName+")";
+                switch (result)
+                {
+                    case 1:
+                        message += "已新增\r\n";
+                        break;
+                    case 2:
+                        message += "新增失败\r\n";
+                        break;
+                    case 3:
+                        message += "已更新\r\n";
+                        break;
+                    case 4:
+                        message += "更新失败\r\n";
+                        break;
+                }
+               messageAll+=message;
+            }
+
+            return Json(new { code = 1, message = messageAll }, JsonRequestBehavior.AllowGet);
         }
 
         private void InitSelect(int roleType=0)

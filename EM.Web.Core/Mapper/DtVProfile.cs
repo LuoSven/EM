@@ -63,8 +63,18 @@ namespace EM.Web.Core
             .ForMember(d => d.RoleTypeName, source => source.ResolveUsing<RoleTypeResolver>().FromMember(s => s.RoleType));
 
             Mapper.CreateMap<EM_ExpenseAccount_Detail, ExpenseAccountDetailListDTO>()
-                .ForMember(d=>d.CateName,source=>source.ResolveUsing<CateNameResolver>().FromMember(s=>s.CateId))
+                .ForMember(d => d.CateName, source => source.ResolveUsing<CateNameResolver>().FromMember(s => s.CateId))
+                .ForMember(d => d.LimitInfo, source => source.ResolveUsing<CompanyCateLimitResolver>())
                 .ForMember(d => d.CompanyName, source => source.ResolveUsing<CompanyNameResolver>().FromMember(s => s.CompanyId));
+
+            Mapper.CreateMap<EM_User_Account, EM_User_Account>()
+            .ForMember(o => o.CreateTime, s => s.Ignore());
+
+            Mapper.CreateMap<EM_Company, EM_Company>()
+            .ForMember(o => o.Creater, s => s.Ignore())
+            .ForMember(o => o.CreateDate, s => s.Ignore());
+
+
 
         }
     }

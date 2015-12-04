@@ -76,6 +76,7 @@
           <Property Name="Creater" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ApproveStatus" Type="int" Nullable="false" />
+          <Property Name="RefusedMessage" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_ApproveHistory">
           <Key>
@@ -363,6 +364,7 @@
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="SumMoney" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="ApproveStatus" Type="Int32" Nullable="false" />
+          <Property Name="RefusedMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EM_System_ActionLog">
           <Key>
@@ -564,6 +566,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="RefusedMessage" ColumnName="RefusedMessage" />
                 <ScalarProperty Name="ApproveStatus" ColumnName="ApproveStatus" />
                 <ScalarProperty Name="SumMoney" ColumnName="SumMoney" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />

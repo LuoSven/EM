@@ -14,6 +14,7 @@ using EM.Model.VMs;
 using EM.Model.DTOs;
 using System.Threading.Tasks;
 using EM.Model.Entities;
+using EM.Utils;
 
 namespace EM.Web.Controllers
 {
@@ -36,46 +37,81 @@ namespace EM.Web.Controllers
           ViewBag.RoleList = userRoleRepo.GetList();
           return View(Vms);
         }
-        //[Description("新增用户")]
-        //[ActionType(RightType.View)]
-        //public async Task<ActionResult> Add()
-        //{
-        //    InitSelect();
-        //    ViewBag.roleList = userRoleRepo.GetList();
-        //    var accountDetailVM = new AccountDetailVM();
-        //    return View(accountDetailVM);
-        //}
+        [Description("新增用户")]
+        [ActionType(RightType.View)]
+        public async Task<ActionResult> Add()
+        {
+            var model = new EM_User_Account();
+            InitSelect(model.RoleId, model.Status);
+            return View("AddOrEdit", model);
+        }
 
-        //[HttpPost]
-        //public async Task<ActionResult> Add(AccountDetailVM model)
-        //{
-        //    InitSelect();
-        //    var accountDetailVM = new AccountDetailVM();
-        //    return View(accountDetailVM);
-        //}
+        [HttpPost]
+        public async Task<ActionResult> Add(EM_User_Account model)
+        {
+            if(userAccountRepo.IsEmailRepeat(model.LoginEmail,0))
+            {
+                return Json(new { code = 0, message = "邮箱已存在，请重新输入" });
+            }
+
+
+            model.Password = DESEncrypt.Encrypt(model.Password);
+            model.CreateTime = DateTime.Now;
+            model.ModifyTime = DateTime.Now;
+            userAccountRepo.Add(model);
+            var result = userAccountRepo.SaveChanges();
+            if (result > 0)
+                return Json(new { code = 1 });
+            else
+                return Json(new { code = 0, message = "保存失败，请重试" });
+        }
 
         [Description("编辑用户")]
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> Edit(int Id)
         {
-            InitSelect();
-            var account = await userAccountRepo.GetByIdDto(Id);
-           var model= Mapper.Map<AccountDetailDTO, AccountDetailVM>(account);
-           return View(model);
+            var model = userAccountRepo.GetById(Id);
+            model.Password = DESEncrypt.Decrypt(model.Password);
+            InitSelect(model.RoleId, model.Status);
+           return View("AddOrEdit",model);
         }
         [HttpPost]
-        public async Task<ActionResult> Edit(AccountDetailVM model)
+        public async Task<ActionResult> Edit(EM_User_Account model)
         {
-            ViewBag.AccountStatusList = AccountStatus.Allow.GetEnumList();
+            if (userAccountRepo.IsEmailRepeat(model.LoginEmail, model.UserId))
+            {
+                return Json(new { code = 0, message = "邮箱已存在，请重新输入" });
+            }
             var entity=userAccountRepo.GetById(model.UserId);
-            entity = Mapper.Map<AccountDetailVM, EM_User_Account>(model, entity);
+            model.Password = DESEncrypt.Encrypt(model.Password);
+            entity = Mapper.Map<EM_User_Account, EM_User_Account>(model, entity);
+            entity.CreateTime = entity.CreateTime == DateTime.MinValue ? DateTime.Now : entity.CreateTime;
             entity.ModifyTime = DateTime.Now;
            var result= userAccountRepo.SaveChanges();
            if (result > 0)
                return Json(new { code = 1 });
            else
-               return Json(new { code = 0,messgage="保存失败，请重试" });
+               return Json(new { code = 0,message="保存失败，请重试" });
         }
+
+        [Description("删除用户")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> Delete(int Id)
+        {
+            var model = userAccountRepo.GetById(Id);
+            if (model == null)
+            {
+                return Json(new { code = 0, message = "报销单不存在！" }, JsonRequestBehavior.AllowGet);
+            }
+            userAccountRepo.Delete(model);
+            if (userAccountRepo.SaveChanges() > 0)
+            {
+                Log(model);
+                return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);
+        }
+
 
          public async Task<ActionResult> ChangePassword()
         {
@@ -87,9 +123,18 @@ namespace EM.Web.Controllers
              var result=userAccountRepo.ChangePassword(ViewHelp.GetUserId(), OPassword, NPassword);
              return Json(new { code = result == "" ? 1 : 0,message= result });
          }
-        private void InitSelect()
+
+        public ActionResult CheckLoginEmail(int UserId,string LoginEmail)
         {
-            ViewBag.roleList = userRoleRepo.GetList();
+               var result= userAccountRepo.IsEmailRepeat(LoginEmail, UserId);
+               return Json(!result,JsonRequestBehavior.AllowGet);
+        }
+        private void InitSelect(int? RoleId,int AccountStatusId)
+        {
+         var roleList  = userRoleRepo.GetList();
+             ViewBag.roleList =new SelectList(roleList,"Key","Value",RoleId.HasValue?RoleId.Value:0);
+         var AccountStatusList  = AccountStatus.Allow.GetEnumList();
+         ViewBag.AccountStatusList = new SelectList(AccountStatusList, "Key", "Value", AccountStatusId);
         }
 
     }

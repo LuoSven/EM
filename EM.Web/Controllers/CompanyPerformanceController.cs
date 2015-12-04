@@ -62,7 +62,7 @@ namespace EM.Web.Controllers
             if (result > 0)
                 return Json(new { code = 1, model = model }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { code = 0, messgage = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 0, message = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
         }
 
         [Description("编辑业绩")]
@@ -81,7 +81,7 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "业绩不存在！" }, JsonRequestBehavior.AllowGet);
             }
-
+            Log(entity);
             entity = Mapper.Map<EM_Company_Performance, EM_Company_Performance>(model, entity);
             entity.ModifyDate = DateTime.Now;
             entity.Modifier = ViewHelp.GetUserName();
@@ -105,10 +105,11 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "业绩不存在！" }, JsonRequestBehavior.AllowGet);
             }
+            Log(model);
             companyPerformanceRepo.Delete(model);
             if (companyPerformanceRepo.SaveChanges() > 0)
             {
-                Log(model);
+               
                 return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);

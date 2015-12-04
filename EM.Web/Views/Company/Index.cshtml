@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.Entities
+@using EM.Common;
+@model List<EM_Company>
+@{
+}
+<div class="SearchFrom">
+    <form id="SearchForm" >
+        <input type="text" placeholder="公司名称" name="Name" />
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_List", Model)
+</div>

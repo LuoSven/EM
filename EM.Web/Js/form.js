@@ -9,6 +9,12 @@ Global.Form.Init = function () {
         var url = $form.attr("data-url");
         Global.Form.Valid($form, url)
     })
+    $('#loading').fadeOut();
+    $('*[data-role=returnBtn]').click(function () {
+        var name = $(this).attr("data-name");
+        var url = $(this).attr("data-url");
+        Global.Form.NewIframe(name,url.replace("/","_"),url)
+    })
 }
 Global.Form.FileUploader = function () {
     var b_version = navigator.appVersion
@@ -135,25 +141,35 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
     }
     var url = FormJqOb.attr("action");
     url = url === "" || url == undefined ? "" : url;
-    $.ajax({
+   var layerIndex= layer.open({ type: 3, icon: -1, content: '<a style="font-size: 16px;font-weight: 700;color: #FFF;position: absolute;width: 100px;padding-top: 20px;">数据保存中</a>' })
+   $.ajax({
+           layerIndex:layerIndex,
             type: "post",
             url: url + urlSearch,
             data: FormJqOb.serialize(),
             success: function (a) {
+                layer.close(this.layerIndex);
                 var FunctionResult = true;
                 if (a.code) {
-                    if (sf!=undefined&& sf.isFunction())
-                        FunctionResult = eval(sf)(a);
-                    if (FunctionResult)
+                    if (sf != undefined && sf.isFunction())
                     {
-                        alert("保存成功！");
-                        if (Url != undefined) {
-                            if (Url != "")
-                                location.href = Url;
-                            else
-                                location.href = location.href;
 
+                        FunctionResult = eval(sf)(a);
+                        if (FunctionResult) {
+                            alert("保存成功！");
+                            if (Url != undefined) {
+                                if (Url != "")
+                                    location.href = Url;
+                                else
+                                    location.href = location.href;
+
+                            }
                         }
+                    }
+                    else
+                    {
+
+                        alert("保存成功！");
                     }
                 }
                 else
@@ -169,7 +185,8 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
         return false;
 }
 Global.Form.NewIframe = function (name,id,url) {
-    window.parent.Global.Iframe.OpenIframe(name, id, url, false, true)
+    window.parent.Global.Iframe.OpenIframe(name, id, url, false, false)
+    window.parent.Global.Iframe.AutoIframeHeight();
 }
 Global.Form.CloseIframe = function (id) {
     window.parent.Global.Iframe.CloseIframe(id)
@@ -183,7 +200,7 @@ Global.Form.Delete=function(url,ob,isComfirm)
         $(ob).html("确认删除？")
         $(ob).attr("onclick",'Global.Form.Delete("'+url+'",this, true)')
         setTimeout(function () {
-            if (Global.Form.DeleteFla = 0)
+            if (Global.Form.DeleteFlag == 0)
             {
                 $(ob).html("删除")
                 $(ob).attr("onclick", 'Global.Form.Delete("' + url + '",this, false)')
@@ -204,6 +221,39 @@ Global.Form.Delete=function(url,ob,isComfirm)
                     a=JSON.parse(a)
                 if (!a.code) 
                   alert(a.message)
+                $("form").submit();
+            }
+
+        })
+    }
+}
+Global.Form.ConfirmFlag = 0;
+Global.Form.Confirm = function (url, ob, isComfirm,message) {
+    var alert = Global.Utils.ShowMessage
+    if (!isComfirm) {
+        $(ob).html("确认？")//  $(ob).html("确认" + message + "？")
+        $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, true,"' + message + '")')
+        setTimeout(function () {
+            if (Global.Form.ConfirmFlag == 0) {
+                $(ob).html(message)
+                $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, false,"' + message + '")')
+            }
+        }, 1500)
+    }
+
+    if (isComfirm) {
+        if (Global.Form.ConfirmFlag)
+            $(ob).focus();
+        Global.Form.ConfirmFlag = 1;
+        $(ob).html("正在" + message + "中")
+        $.ajax({
+            url: url,
+            success: function (a) {
+                Global.Form.ConfirmFlag = 0
+                if (typeof a == "string")
+                    a = JSON.parse(a)
+                if (!a.code)
+                    alert(a.message)
                 $("form").submit();
             }
 

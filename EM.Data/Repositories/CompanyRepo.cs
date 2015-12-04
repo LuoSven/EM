@@ -43,11 +43,23 @@ namespace EM.Data.Repositories
             return result ;
         }
 
+        public List<EM_Company> GetListDto(string Name)
+        {
+            var sql="select * from EM_Company";
+             if(!string.IsNullOrEmpty(Name))
+             {
+                 sql+=" and CompanyName like '%'+@Name+'%'";
+             }
+          return  DapperHelper.SqlQuery<EM_Company>(sql, new { Name = Name }).ToList();
+        }
+
     }
 
 
     public interface ICompanyRepo : IRepository<EM_Company>
     {
+        List<EM_Company> GetListDto(string Name);
+
         List<KeyValueVM> GetList(int roleId=0);
 
         string GetCompanyName(int id);

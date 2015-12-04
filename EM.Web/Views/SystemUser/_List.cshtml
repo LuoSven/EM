@@ -44,6 +44,7 @@
                 </td>
                 <td>
                     <a data-commond="edit" onclick="window.parent.Global.Iframe.OpenIframe('编辑用户','SystemUser@(User.UserId)','@Url.Action("Edit", new { Id=@User.UserId })',false)">编辑</a>
+                    <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new { Id = User.UserId })',this,false)">删除</a>      
                 </td>
             </tr>
         }

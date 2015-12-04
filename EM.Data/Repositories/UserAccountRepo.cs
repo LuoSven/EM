@@ -77,13 +77,30 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
         public  Tuple<bool,string> IsRepeat(EM_User_Account model)
         {
             var result = new Tuple<bool, string>(true, "");
-            var userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where Mobile=@Mobile", new { Mobile = model.Mobile }).FirstOrDefault();
+            var userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where Mobile=@Mobile and UserId<>@UserId", model).FirstOrDefault();
             if (userId != 0)
                 return new Tuple<bool, string>(false, "手机号重复，请重新输入"); 
             userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where LoginEmail=@LoginEmail", new { LoginEmail = model.LoginEmail }).FirstOrDefault();
             if (userId != 0)
                 return new Tuple<bool, string>(false, "登陆邮箱重复，请重新输入"); 
             return new Tuple<bool, string>(true, ""); ;
+        }
+        public bool IsEmailRepeat(string LoginEmail, int UserId)
+        {
+            var userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where LoginEmail=@LoginEmail and UserId<>@UserId", new { UserId = UserId, LoginEmail = LoginEmail }).FirstOrDefault();
+            if (userId != 0)
+                return true;
+            return false ;
+        }
+
+
+        public bool IsMobileRepeat(string Mobile, int UserId)
+        {
+            var result = new Tuple<bool, string>(true, "");
+            var userId = Dapper.DapperHelper.SqlQuery<int>("select UserId from EM_User_Account where Mobile=@Mobile and UserId<>@UserId", new { UserId = UserId, Mobile =Mobile}).FirstOrDefault();
+            if (userId != 0)
+                return true;
+            return false;
         }
         public void LogOff(int UserId)
         {
@@ -101,13 +118,12 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
 
         public async Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string  RoleId="")
         {
-            var Sql = @"select top(1)a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status ,c.LoginTime as LastLoginTime from EM_User_Account a
-join EM_User_Role b on a.RoleId=b.id
-join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
+            var Sql = @"select a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status,a.ModifyTime from EM_User_Account a
+left join EM_User_Role b on a.RoleId=b.id ";
             Sql += string.IsNullOrEmpty(UserName) ? "" : " and a.UserName like '%'+@UserName+'%' ";
             Sql += string.IsNullOrEmpty(LoginEmail) ? "" : " and a.LoginEmail like '%'+@LoginEmail+'%' ";
             Sql += string.IsNullOrEmpty(RoleId ) ? "" : " and a.RoleId =@RoleId ";
-           Sql+="order by a.ModifyTime desc,c.LoginTime desc";
+           Sql+="order by a.ModifyTime  desc";
            var result = (await DapperHelper.SqlQueryAsync<AccountDetailDTO>(Sql, new { UserName = UserName, LoginEmail = LoginEmail, RoleId = RoleId })).ToList();
            return result;
 
@@ -150,5 +166,9 @@ join EM_User_Login_Record c on a.UserId=c.UserId  where 1=1 ";
         Task<AccountDetailDTO> GetByIdDto(int UserId);
 
         string ChangePassword(int UserId,string OPassword,string NPassword);
+
+        bool IsEmailRepeat(string LoginEmail, int UserId);
+
+        bool IsMobileRepeat(string Mobile, int UserId);
     }
 }

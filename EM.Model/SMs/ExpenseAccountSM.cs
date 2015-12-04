@@ -18,6 +18,7 @@ namespace EM.Model.SMs
         public string Creater { get; set; }
         public string Modifier { get; set; }
         public string CompanyIds { get; set; }
+        public int? ApproveStatus { get; set; }
 
     }
 }

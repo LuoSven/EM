@@ -33,7 +33,9 @@
     <div class="footer">
         <p>&copy; 2015 - 老婆的报销系统</p>
     </div>
+    @*<div id="loader_container"  style="display:none"><div id="loader"><div align="center">页面加载中，请稍候……</div><div id="loader_bg"><div id="progress"> </div></div></div></div>*@
 
+    
       <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -43,6 +45,7 @@
     <script src="~/Js/common.js" type="text/javascript"></script>
     <script src="~/Js/form.js" type="text/javascript"></script>
     <script src="~/Js/main.js" type="text/javascript"></script>
+    <script src="~/Js/Third/layer-v2.0/layer/layer.js" type="text/javascript"></script>
     <script type="text/javascript">
         Global.Init = function () {
             //刷新页面
@@ -60,15 +63,16 @@
             Global.Menu.MenuHover();
             Global.Form.DatePicker();
             Global.Form.FileUploader();
-            Global.Main.AutoBodyWidth();
             Global.Iframe.AutoIframeHeight();
-
+            Global.Main.AutoBodyWidth();
             // Global.OpenNewIframe(undefined, "/" + BeginTask.split(",")[0] + "/" + BeginTask.split(",")[1])
             //绑定菜单点击事件
             $(".menu>ul>li>ul>li>a").click(function () {
                 Global.Menu.ClickMenu(this); Global.Iframe.OpenIframe(this.innerHTML, this.id, $(this).attr("data-url"))
             })
             $breadcrumb.html(BeginBreadcrumb);
+
+            Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
         }
         $(function () {
             Global.Init();

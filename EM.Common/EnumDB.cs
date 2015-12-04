@@ -132,14 +132,14 @@ namespace EM.Common
         Created = 1,
         [Description("待确认")]
         WaitingApprove ,
-        [Description("已计入预算")]
-        FailApproved,
         [Description("退回")]
+        FailApproved,
+        [Description("已确认")]
         PassApproved,
 
     }
     /// <summary>
-    /// 角色分类-表示操作的是老板，录入员，还是系统管理员
+    /// 角色分类-表示操作的是老板，录入员，还是系统管理员,仅分类不一样
     /// </summary>
     public enum RoleType
     {

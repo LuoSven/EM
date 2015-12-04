@@ -60,6 +60,8 @@ namespace EM.Web.Controllers
                          return RedirectToAction("INDEX/ZJ", "Home");
                      if (result.SystemIds[0] == 2)
                          return RedirectToAction("INDEX/YJ", "Home");
+                     else
+                         return RedirectToAction("INDEX/ZJ", "Home");
                  }
 
                  ModelState.AddModelError("", result.Message);

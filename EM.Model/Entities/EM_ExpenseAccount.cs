@@ -28,5 +28,6 @@ namespace EM.Model.Entities
         public Nullable<int> CompanyId { get; set; }
         public decimal SumMoney { get; set; }
         public int ApproveStatus { get; set; }
+        public string RefusedMessage { get; set; }
     }
 }

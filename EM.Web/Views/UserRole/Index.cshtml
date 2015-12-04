@@ -8,7 +8,7 @@
     <form id="SearchForm" action="@Url.Action("Index", "UserRole")">
         <input type="text" name="UserName" value="" placeholder="名称，描述">
         <button class="searchButton" type="submit">搜索</button>
-
+        <button data-commond="updatesystemprograms" class="searchButton" id="UpdatePrograms" type="button">刷新系统作业</button>
     </form>
 
 </div>
@@ -16,3 +16,15 @@
 <div id="List">
     @Html.Partial("_List", Model)
 </div>
+@section Js{
+    <script>
+        $("#UpdatePrograms").click(function () {
+            $.ajax({
+                url: "@Url.Action("UpdateSystemPrograms")",
+                success: function (a) {
+                    alert(a.message);
+                }
+            })
+        })
+    </script>
+    }

@@ -3,6 +3,7 @@ using EM.Common;
 using EM.Data.Infrastructure;
 using EM.Data.Repositories;
 using EM.Model.DTOs;
+using EM.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace EM.Web.Core
         protected override List<ExpenseAccountDetailListDTO> ResolveCore(int source)
         {
             IExpenseAccountDetailRepo expenseAccountDetailRepo = new ExpenseAccountDetailRepo(new DatabaseFactory());
-            return expenseAccountDetailRepo.GetListByExpenseAccountId(source);
+            return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source);
         }
     }
     public class AccountStatusResolver : ValueResolver<int, string>
@@ -84,6 +85,17 @@ namespace EM.Web.Core
         {
             ICompanyRepo companyRepo = new CompanyRepo(new DatabaseFactory());
             return companyRepo.GetCompanysName(source,",");
+        }
+    }
+
+    public class CompanyCateLimitResolver : ValueResolver<EM_ExpenseAccount_Detail, string>
+    {
+        protected override string ResolveCore(EM_ExpenseAccount_Detail source)
+        {
+            var companyLimitRepo = new CompanyLimitRepo(new DatabaseFactory());
+            var limit=   companyLimitRepo.GetCompanyLimit(source.CompanyId, source.CateId);
+            var result = string.Format("{0}({1}/{2})", limit.CateName, limit.TotalCost, limit.TotalLimit);
+            return result;
         }
     }
 }

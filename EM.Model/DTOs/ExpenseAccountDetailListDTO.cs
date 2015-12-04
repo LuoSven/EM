@@ -26,5 +26,7 @@ namespace EM.Model.DTOs
         public string CateName { get; set; }
         public decimal Money { get; set; }
         public string CompanyName { get; set; }
+
+        public string LimitInfo { get; set; }
     }
 }

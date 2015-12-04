@@ -12,13 +12,13 @@
 <form class="basic-grey">
     <h1>
         查看报销单
-        <button class="btn btn-info btn fr" data-name="我的报销单" data-url="expenseaccount/index" data-role="returnBtn">返回列表</button>
+        <button class="btn btn-info btn fr" data-name="确认报销单" data-url="expenseaccount/approveindex" data-role="returnBtn" >返回列表</button>
         <span></span>
     </h1>
     @Html.HiddenFor(o => o.Id)
     <label>
         <span>当前状态 :</span>
-        <span class="view">@Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription()： @Model.RefusedMessage</span>
+        <span class="view">@Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription() ： @Model.RefusedMessage</span>
     </label>
     <label>
         <span>报销单号 :</span>
@@ -37,7 +37,25 @@
         <span>总金额 :</span>
         <span class="view">@Model.SumMoney</span>
     </label>
-    @Html.Partial("_BodyList")
+    @Html.Partial("_ApproveBodyList")
+    <label data-commond="updataapprovestatus">
+        <span>确认报销单</span>
+        <select id="ApproveStatus">
+            <option value="4">通过</option>
+            <option value="4">通过:超支,扣减下季度费用</option>
+            <option value="3">不通过:额度不足</option>
+            <option value="3">不通过:按沟通要求重新选定费用类别</option>
+        </select>
+
+        <button type="button" style="margin-top: -5px;" onclick="UploadApproveStatus()" class="btn btn-success ">
+            确认
+        </button>
+    </label>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 </form>
 @Html.Partial("_UploadField")
 <div id="DetailUpdate">

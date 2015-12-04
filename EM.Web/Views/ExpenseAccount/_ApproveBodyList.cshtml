@@ -1,0 +1,4 @@
+﻿@using EM.Model.Entities;
+@using EM.Model.DTOs;
+@Html.Partial("_ApproveDetailList", (List<ExpenseAccountDetailListDTO>)ViewBag.Details)
+@Html.Partial("_UploadList", (List<EM_ExpenseAccount_File>)ViewBag.Files)

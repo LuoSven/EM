@@ -28,13 +28,17 @@ namespace EM.Data.Repositories
                   await DapperHelper.SqlExecuteAsync(string.Format(@"update EM_ExpenseAccount_Detail set ExpenseAccountId=@ExpenseAccountId where Id in ({0})",Ids), new { ExpenseAccountId = ExpenseAccountId});
         }
 
-        public  List<ExpenseAccountDetailListDTO> GetListByExpenseAccountId(int ExpenseAccountId)
+        public  List<ExpenseAccountDetailListDTO> GetListDtoByExpenseAccountId(int ExpenseAccountId)
         {
             var result = DapperHelper.SqlQuery<ExpenseAccountDetailListDTO>(@"select a.Id,b.CompanyName,c.CateName,a.Money,a.Remark,a.OccurDate from EM_ExpenseAccount_Detail a
 join EM_Company b on a.CompanyId=b.Id
 join EM_Charge_Cate c on a.CateId=c.Id
-where ExpenseAccountId=@ExpenseAccountId",new{ExpenseAccountId=ExpenseAccountId});
+where ExpenseAccountId=@ExpenseAccountId", new { ExpenseAccountId = ExpenseAccountId });
             return result.ToList();
+        }
+        public List<EM_ExpenseAccount_Detail> GetListByExpenseAccountId(int ExpenseAccountId)
+        {
+            return DataContext.EM_ExpenseAccount_Detail.Where(o => o.ExpenseAccountId == ExpenseAccountId).ToList();
         }
     }
 
@@ -43,6 +47,9 @@ where ExpenseAccountId=@ExpenseAccountId",new{ExpenseAccountId=ExpenseAccountId}
     {
         Task UpdateDetailExpenseAccountId(int ExpenseAccountId, string Ids);
 
-        List<ExpenseAccountDetailListDTO> GetListByExpenseAccountId(int ExpenseAccountId);
+        List<ExpenseAccountDetailListDTO> GetListDtoByExpenseAccountId(int ExpenseAccountId);
+
+        List<EM_ExpenseAccount_Detail> GetListByExpenseAccountId(int ExpenseAccountId);
+
     }
 }

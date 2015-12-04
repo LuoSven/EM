@@ -60,7 +60,7 @@ namespace EM.Web.Controllers
             if (result > 0)
                 return Json(new { code = 1, model = model }, JsonRequestBehavior.AllowGet);
             else
-                return Json(new { code = 0, messgage = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 0, message = "保存失败，请重试" }, JsonRequestBehavior.AllowGet);
         }
 
         [Description("编辑额度")]
@@ -75,11 +75,12 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(EM_Company_Limit model)
         {
             var entity = companyLimitRepo.GetById(model.Id);
+            Log(entity);
             if (model == null)
             {
                 return Json(new { code = 0, message = "额度不存在！" }, JsonRequestBehavior.AllowGet);
             }
-
+           
             entity = Mapper.Map<EM_Company_Limit, EM_Company_Limit>(model, entity);
             entity.ModifyDate = DateTime.Now;
             entity.Modifier = ViewHelp.GetUserName();
@@ -103,6 +104,7 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "额度不存在！" }, JsonRequestBehavior.AllowGet);
             }
+            Log(model);
             companyLimitRepo.Delete(model);
             if (companyLimitRepo.SaveChanges() > 0)
             {
@@ -114,7 +116,7 @@ namespace EM.Web.Controllers
 
         private void InitSelect(int CateId = 0, int CompanyId = 0,int SeasonType =0)
         {
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType());
+            var CateList = changeCateRepo.GetList((int)RoleType.Admin);
             ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
             var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
             ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);

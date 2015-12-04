@@ -36,5 +36,10 @@ namespace EM.Web.Controllers
 
             return View();
         }
+
+        public ActionResult WelCome()
+        {
+            return View();
+        }
     }
 }

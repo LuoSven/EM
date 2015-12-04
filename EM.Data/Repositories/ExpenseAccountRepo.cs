@@ -21,10 +21,10 @@ namespace EM.Data.Repositories
         {
         }
 
-        public async Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize)
+        public async Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize,bool IsFromApprove=false)
         {
-            var dateSql = "and b.{0} >= @SDate and b.{0} <=@EDate";
-            var sql = string.Format(@"select  distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate  from EM_ExpenseAccount a
+            var dateSql = " and b.{0} >= @SDate and b.{0} <=@EDate";
+            var sql = string.Format(@" select  distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate  from EM_ExpenseAccount a
 join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
 where a.Creater='{0}'  ", UserName);
 
@@ -38,6 +38,13 @@ where a.Creater='{0}'  ", UserName);
                 sql += " and a.Name like '%'+@Name+'%' ";
             if (sm.CateId.HasValue)
                 sql += " and a.CateId = @CateId ";
+            if (sm.ApproveStatus.HasValue)
+                sql += " and a.ApproveStatus = @ApproveStatus ";
+
+            if (IsFromApprove)
+            {
+                sql += " and a.ApproveStatus != "+(int)ExpenseAccountApproveStatus.Created;
+            }
 
             sm.SDate = sm.SDate.HasValue ? sm.SDate : DateTime.Now.AddYears(-10);
             sm.EDate = sm.EDate.HasValue ? sm.EDate : DateTime.Now.AddYears(10);
@@ -74,15 +81,57 @@ where a.Creater='{0}'  ", UserName);
             var NewNo="对公"+( MaxNo + 1).ToString();
             return NewNo;
         }
+        public  int UpdataApproveStatus(int Id, int ApproveStatus, string Message,string UserName)
+        {
+            var sql = "update EM_ExpenseAccount set ApproveStatus=@ApproveStatus ";
+            if (ApproveStatus==(int)ExpenseAccountApproveStatus.FailApproved)
+            {
+                sql += " ,RefusedMessage=@Message ";
+            }
+            sql += "where Id=@Id ";
+           var result= DapperHelper.SqlExecute(sql, new {Id,ApproveStatus,Message });
+           if (result>0)
+           {
+               var ApproveHistory = new EM_ExpenseAccount_ApproveHistory() { 
+                   ExpenseAccountId = Id,
+                   Status = ApproveStatus,
+                   FailReason = Message,
+                   Creater = UserName,
+                   Modifier = UserName, 
+                   CreateDate = DateTime.Now, 
+                   ModifyDate = DateTime.Now };
+               ApproveHistory.FailReason = ApproveHistory.FailReason ?? "";
+               DapperHelper.SqlExecute(@"INSERT INTO EM_ExpenseAccount_ApproveHistory
+           (ExpenseAccountId
+           ,Status
+           ,FailReason
+           ,Creater
+           ,Modifier
+           ,CreateDate
+           ,ModifyDate)
+     VALUES
+           (@ExpenseAccountId
+           ,@Status
+           ,@FailReason
+           ,@Creater
+           ,@Modifier
+           ,@CreateDate
+           ,@ModifyDate)", ApproveHistory);
+           }
+           return result;
+        }
     }
 
 
     public interface IExpenseAccountRepo : IRepository<EM_ExpenseAccount>
     {
-        Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize);
+        Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize, bool IsFromApprove=false);
 
         Task<string> GetNewPublicId();
 
 
+        int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName);
+
+   
     }
 }

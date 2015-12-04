@@ -23,7 +23,15 @@ Global.Utils.ClearAllCookie = function () {
     }
 }
 Global.Utils.ShowMessage = function (msg) {
-    alert(msg);
+    var iconId=1;
+    if (msg.indexOf("成功")==-1)
+    {
+        iconId = 5;
+    }
+    layer.msg(msg, {
+        icon: iconId,
+        time: 2000,
+    });
 }
 Global.Log = function (ob)
 {

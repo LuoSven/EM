@@ -22,13 +22,12 @@ namespace EM.Web.Controllers
     public class CompanyController : BaseController
     {
 
-        private readonly IUserRoleRepo userRoleRepo = new UserRoleRepo(new DatabaseFactory());
-        private readonly IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
+        private readonly ICompanyRepo companyRepo = new CompanyRepo(new DatabaseFactory());
         [Description("公司列表")]
         [ActionType(RightType.View)]
-        public async Task< ActionResult> Index()
+        public async Task< ActionResult> Index(string Name="")
         {
-            var Dtos =  userRoleRepo.GetAll().ToList();
+            var Dtos = companyRepo.GetListDto(Name);
             if (Request.IsAjaxRequest())
               return PartialView("_List", Dtos);
             return View(Dtos);
@@ -37,79 +36,58 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> Add()
         {
-            InitSelect();
-            ViewBag.roleList = userRoleRepo.GetList();
-            var accountDetailVM = new AccountDetailVM();
-            return View(accountDetailVM);
+            var model = new EM_Company();
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(AccountDetailVM model)
+        public async Task<ActionResult> Add(EM_Company model)
         {
-            InitSelect();
-            var accountDetailVM = new AccountDetailVM();
-            return View(accountDetailVM);
+            model.KPIValue = model.KPIValue.Value * 10000;
+            model.ModifyDate = DateTime.Now;
+            model.CreateDate = DateTime.Now;
+            model.Modifier = ViewHelp.GetUserName();
+            model.Creater = ViewHelp.GetUserName();
+            companyRepo.Add(model);
+            var result=companyRepo.SaveChanges();
+            if (result > 0)
+                return Json(new { code = 1 });
+            else
+                return Json(new { code = 0, message = "保存失败，请重试" });
         }
 
         [Description("编辑公司")]
         [ActionType(RightType.Form)]
         public async Task<ActionResult> Edit(int Id)
         {
-            InitSelect();
-            var Role =  userRoleRepo.GetById(Id);
-            var Dtos = userRoleRepo.GetPrograms(Id);
-            var Vms = Mapper.Map<List<UserRoleProgramDTO>, List<UserRoleProgramVM>>(Dtos);
-            var Systems = SystemType.YJ.GetEnumList().Where(o=>o.Key!=(int)SystemType.All).Select(o => new UserRoleTreeVM()//两个系统
-            {
-                ParentId=0,
-                Id = o.Key,
-                Name = o.Value,
-                Items = new List<UserRoleTreeVM>()
-            }).ToList();
-            foreach (var system in Systems)//遍历系统
-            {
-                var Controls = Vms.Select(o => o.ControllerDescription).Distinct().Select(o => new UserRoleTreeVM()
-                {
-                    Id = 0,
-                    Name = o,
-                    ParentId=system.Id,
-                    Items = new List<UserRoleTreeVM>()
-                }).ToList();
-                for (int i = 0; i < Controls.Count(); i++)//遍历每个控制器
-                {
-                    var VirtualId=999+i;
-                    Controls[i].Id = VirtualId;
-                    var ItemList = Vms.Where(o => o.ControllerDescription == Controls[i].Name).Select(o => new UserRoleTreeVM()
-                    {
-                        Id = o.Id,
-                        PerMit = o.PerMit,
-                        ParentId=VirtualId,
-                        Name = o.ActionDescription
-                    }).ToList();
-                    Controls[i].Items = ItemList;//最终节点。action
-                }
-                system.Items = Controls;
-            }
-
-            ViewBag.Systems = Systems;
-
-            return View(Role);
+            var model = companyRepo.GetById(Id);
+            model.KPIPercent = Math.Round(model.KPIPercent.Value, 2);
+            model.KPIValue = Math.Round(model.KPIValue.Value/10000, 0);
+            return View(model);
         }
+
         [HttpPost]
-        public async Task<ActionResult> Edit(EM_User_Role model,List<int> Ids)
+        public async Task<ActionResult> Edit(EM_Company model)
         {
-            ViewBag.AccountStatusList = AccountStatus.Allow.GetEnumList();
-            var entity = userRoleRepo.GetById(model.Id);
-            entity = Mapper.Map<EM_User_Role, EM_User_Role>(model, entity);
-            var result = userRoleRepo.SaveChanges();
-           if (result > 0)
+            var entity = companyRepo.GetById(model.Id);
+            Log(entity);
+            entity = Mapper.Map<EM_Company, EM_Company>(model, entity);
+            entity.KPIValue = entity.KPIValue.Value * 10000;
+            entity.ModifyDate = DateTime.Now;
+            entity.Modifier = ViewHelp.GetUserName();
+            var result = companyRepo.SaveChanges();
                return Json(new { code = 1 });
-           else
-               return Json(new { code = 0,messgage="保存失败，请重试" });
         }
-        private void InitSelect()
+
+        [Description("删除公司")]
+        [ActionType(RightType.Form)]
+        public async Task<ActionResult> Delete(int Id)
         {
-            ViewBag.roleList = userRoleRepo.GetList();
+            var model = companyRepo.GetById(Id);
+            Log(model);
+            companyRepo.Delete(model);
+            companyRepo.SaveChanges();
+            return View(model);
         }
 
     }

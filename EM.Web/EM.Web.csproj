@@ -472,9 +472,8 @@
     <Content Include="Views\Shared\_LayoutMain.cshtml" />
     <Content Include="Views\Shared\_LayoutCommon.cshtml" />
     <Content Include="Views\SystemUser\Index.cshtml" />
-    <Content Include="Views\SystemUser\Add.cshtml" />
     <Content Include="Views\UserRole\_List.cshtml" />
-    <Content Include="Views\SystemUser\Edit.cshtml" />
+    <Content Include="Views\SystemUser\AddOrEdit.cshtml" />
     <Content Include="Views\UserRole\Index.cshtml" />
     <Content Include="Views\SystemUser\_List.cshtml" />
     <Content Include="Views\UserRole\AddOrEdit.cshtml" />
@@ -483,7 +482,7 @@
     <Content Include="Views\ExpenseAccount\AddOrEdit.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadList.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
-    <Content Include="Views\ExpenseAccount\ViewFile.cshtml" />
+    <Content Include="Views\ExpenseAccount\BrowseFile.cshtml" />
     <Content Include="Views\Error\NoRight.cshtml" />
     <Content Include="Views\Shared\_Pager.cshtml" />
     <Content Include="Views\CompanyPerformance\Index.cshtml" />
@@ -500,6 +499,17 @@
     <Content Include="Views\CompanyLimit\Index.cshtml" />
     <Content Include="Views\UserRole\_CompanyList.cshtml" />
     <Content Include="Views\SystemUser\ChangePassword.cshtml" />
+    <Content Include="Views\Company\_List.cshtml" />
+    <Content Include="Views\Company\Add.cshtml" />
+    <Content Include="Views\Company\Edit.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\ExpenseAccount\_BrowseDetail.cshtml" />
+    <Content Include="Views\ExpenseAccount\_ApproveList.cshtml" />
+    <Content Include="Views\ExpenseAccount\ApproveIndex.cshtml" />
+    <Content Include="Views\Home\WelCome.cshtml" />
+    <Content Include="Views\ExpenseAccount\_ApproveDetailList.cshtml" />
+    <Content Include="Views\ExpenseAccount\ApproveBrowse.cshtml" />
+    <Content Include="Views\ExpenseAccount\_ApproveBodyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
