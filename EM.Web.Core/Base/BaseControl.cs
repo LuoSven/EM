@@ -72,5 +72,14 @@ namespace EM.Web.Core.Base
             return true;
         }
 
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            // 标记异常已处理
+            filterContext.ExceptionHandled = true;
+            // 跳转到错误页
+            filterContext.Result = View("Error",filterContext.Exception);
+       
+        }
+
     }
 }

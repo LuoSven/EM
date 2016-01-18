@@ -13,6 +13,7 @@
     <h1>
         查看报销单
         <button class="btn btn-info btn fr" data-name="我的报销单" data-url="expenseaccount/index" data-role="returnBtn">返回列表</button>
+        <button class="btn btn-info btn fr" data-name="编辑报销单" data-url="expenseaccount/AddOrEdit/@Model.Id" data-role="returnBtn">编辑</button>
         <span></span>
     </h1>
     @Html.HiddenFor(o => o.Id)

@@ -33,6 +33,30 @@ Global.Utils.ShowMessage = function (msg) {
         time: 2000,
     });
 }
+Global.Utils.RandomColor = function () {
+    return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+}
+Global.Utils.ChangeColor = function (rgbColor, span, length, type ){
+    var rgb = rgbColor.replace("#", "");
+    var r = parseInt(rgb.substr(0, 2), 16);
+    var g = parseInt(rgb.substr(2, 2), 16);
+    var b = parseInt(rgb.substr(4, 2), 16);
+    for (var j = 0; j < length; j++) {
+        if (type == "change")//不同颜色渐变。总是中间值开始变，然后到下限或者上限后再到的值开始变
+        {
+
+        }
+        var rs = r.toString(16).substr(0, 2);
+        var gs = g.toString(16).substr(0, 2);
+        var bs = b.toString(16).substr(0, 2);
+        var colorTemp = "#" + rs + gs + bs;
+        colorList.push(colorTemp);
+    }
+    if (type == "change")
+    {
+    }
+    return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
+}
 Global.Log = function (ob)
 {
     try
@@ -58,6 +82,7 @@ Global.GetBrowser = function () {
     }
     return Sys;
 }
+
 //原型拓展
 Global.Expand = function () {
     //为array加上contains的方法
@@ -196,6 +221,24 @@ Global.Expand = function () {
     String.prototype.getType = function () {
         var _t, o = this;
         return ((_t = typeof (o)) == "object" ? o == null && "null" || Object.prototype.toString.call(o).slice(8, -1) : _t).toLowerCase();
+    };
+
+    Date.prototype.format = function (fmt) { //author: meizz   
+        var o = {
+            "M+": this.getMonth() + 1,                 //月份   
+            "d+": this.getDate(),                    //日   
+            "h+": this.getHours(),                   //小时   
+            "m+": this.getMinutes(),                 //分   
+            "s+": this.getSeconds(),                 //秒   
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+            "S": this.getMilliseconds()             //毫秒   
+        };
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
     };
     String.prototype.isFunction = function () {
       

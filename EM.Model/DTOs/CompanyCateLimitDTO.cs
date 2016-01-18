@@ -11,13 +11,23 @@ using System.Globalization;
 namespace EM.Model.DTOs
 {
 
-    public class UserRoleListDTO
+    public class CompanyCateLimitDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string CompanyIds { get; set; }
-        public int RoleType { get; set; }
+        public decimal TotalCost { get; set; }
+        public decimal ExpectTotalCost { get; set; }
+        public decimal TotalLimit { get; set; }
+
+        public decimal TotalRest
+        {
+            get
+            {
+                return TotalLimit == 0 ? 0 : TotalLimit - (TotalCost + ExpectTotalCost);
+            }
+        }
+
+        public string CateName { get;set; }
+        public List<CompanyCateLimitDateDTO> DateDetails { get; set; }
+        public List<CompanyCateLimitDateDTO> ExpectDateDetails { get; set; }
         
     }
 }

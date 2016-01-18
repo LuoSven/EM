@@ -75,6 +75,11 @@ namespace EM.Web.Core
              return new AccountVM(accountCookie);
 
          }
+
+         public static AccountVM UserInfo()
+         {
+             return GetAccountInfoFromCookie();
+         }
          public static int GetUserId()
          {
              return GetAccountInfoFromCookie().UserId;
@@ -82,6 +87,15 @@ namespace EM.Web.Core
          public static string GetCompanyIds()
          {
              return GetAccountInfoFromCookie().CompanyIds;
+         }
+         /// <summary>
+         /// 根据角色类型,决定明细的公司查看权限:老板角色类型只能看到自己的公司的明细
+         /// </summary>
+         /// <returns></returns>
+         public static string GetDetailCompanyIds()
+         {
+             var companyIds = GetRoleType() == (int)RoleType.CompanyManager ? GetCompanyIds() : string.Empty;
+             return companyIds;
          }
          public static bool IsAdmin()
          {

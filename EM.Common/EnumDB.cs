@@ -151,6 +151,18 @@ namespace EM.Common
         [Description("员工")]
         Staff
     }
+    /// <summary>
+    /// 分类列表的使用来源
+    /// </summary>
+    public enum CateDropType
+    {
+        [Description("查询下拉，包含子类和父类")]
+        Search=1,
+        [Description("表单下拉，仅包含子类")]
+        Form,
+        [Description("报表汇总，仅包含父类")]
+        Report
+    }
 
     #endregion
 

@@ -39,7 +39,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Index(ExpenseAccountSM Sm,int Page=1,int PageSize=20)
         {
             Sm.CompanyIds = ViewHelp.GetCompanyIds();
-            var Dtos = await expenseAccountRepo.GetListByDtoAsync(Sm, ViewHelp.GetUserName(), Page, PageSize);
+            var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
             var Vms = new PagedResult<ExpenseAccountListVM>()
             {
                 CurrentPage = Dtos.CurrentPage,
@@ -54,13 +54,33 @@ namespace EM.Web.Controllers
             InitSearchSelect();
             return View(Vms);
         }
+        [Description("未通过报销单")]
+        [ActionType(RightType.View)]
+        public async Task<ActionResult> FailApproved(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
+        {
+            Sm.CompanyIds = ViewHelp.GetCompanyIds();
+            Sm.ApproveStatus =(int)ExpenseAccountApproveStatus.FailApproved;
+            var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
+            var Vms = new PagedResult<ExpenseAccountListVM>()
+            {
+                CurrentPage = Dtos.CurrentPage,
+                PageSize = Dtos.PageSize,
+                RowCount = Dtos.RowCount,
+                Stats = Dtos.Stats
+            };
+            Vms.Results = Mapper.Map<IList<ExpenseAccountListDTO>, IList<ExpenseAccountListVM>>(Dtos.Results);
+            if (Request.IsAjaxRequest())
+                return PartialView("_List", Vms);
+            InitSearchSelect(false, (int)ExpenseAccountApproveStatus.FailApproved);
+            return View("Index",Vms);
+        }
 
         [Description("确认报销单")]
         [ActionType(RightType.View)]
         public async Task<ActionResult> ApproveIndex(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
         {
             Sm.CompanyIds = ViewHelp.GetCompanyIds();
-            var Dtos = await expenseAccountRepo.GetListByDtoAsync(Sm, ViewHelp.GetUserName(), Page, PageSize,true);
+            var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize,true);
             var Vms = new PagedResult<ExpenseAccountListVM>()
             {
                 CurrentPage = Dtos.CurrentPage,
@@ -86,6 +106,8 @@ namespace EM.Web.Controllers
             model.Name = ViewHelp.GetUserName();
             return View("AddOrEdit",model);
         }
+
+        
 
         [HttpPost]
         public async Task<ActionResult> Add(EM_ExpenseAccount model, string FileIds, string DetailIds)
@@ -247,10 +269,26 @@ namespace EM.Web.Controllers
         {
           
             var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            //发送
             return Json(new { code=1},JsonRequestBehavior.AllowGet);
         }
 
+        [Description("提交报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> SumbitExpenseAccount(int Id, int ApproveStatus, string Message)
+        {
 
+            var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
+        [Description("撤销报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> CancelExpenseAccount(int Id, int ApproveStatus, string Message)
+        {
+
+            var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region 私有函数
@@ -258,23 +296,30 @@ namespace EM.Web.Controllers
 
         private void InitSelect(int CateId=0,int CompanyId=0)
         {
-            var CateList = changeCateRepo.GetList((int)RoleType.Staff);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Form);
           ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
-          var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
+          //录入人和amdin在录入的时候可以录入所有人的公司，
+          //也只有录入人和admin可以编辑和新增，所以目前都是可以选所有的
+          var CompanyList = companyRepo.GetList();
           ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);
         }
 
 
-        private void InitSearchSelect(bool IsFromApprove=false)
+        private void InitSearchSelect(bool IsFromApprove = false, int ApproveStatus=0)
         {
             var DateTypeList = ExpenseAccountDateType.OccurDate.GetEnumList();
             ViewBag.DateTypeList = new SelectList(DateTypeList, "Key", "Value");
-            var CateList = changeCateRepo.GetList((int)RoleType.Staff);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(),CateDropType.Search);
             ViewBag.CateList = new SelectList(CateList, "Key", "Value");
             var ApproveStatusList = ExpenseAccountApproveStatus.Created.GetEnumList();
             if (IsFromApprove)
-               ApproveStatusList= ApproveStatusList.Where(o => o.Key != (int)ExpenseAccountApproveStatus.Created).ToList();
-            ViewBag.ApproveStatusList = new SelectList(ApproveStatusList, "Key", "Value");
+            {
+
+                ApproveStatusList = ApproveStatusList.Where(o => o.Key != (int)ExpenseAccountApproveStatus.Created).ToList();
+            }
+
+            ViewBag.ApproveStatusList = new SelectList(ApproveStatusList, "Key", "Value", ApproveStatus);
+          
             var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
             ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value");
         }
@@ -290,7 +335,7 @@ namespace EM.Web.Controllers
             else
             {
                 ViewBag.Files = expenseAccountFileRepo.GetListByExpenseAccountId(ExpenseAccountId);
-                var entitys = expenseAccountDetailRepo.GetListByExpenseAccountId(ExpenseAccountId);
+                var entitys = expenseAccountDetailRepo.GetListByExpenseAccountId(ExpenseAccountId, ViewHelp.GetDetailCompanyIds());
                 var Details = Mapper.Map<List<EM_ExpenseAccount_Detail>, List<ExpenseAccountDetailListDTO>>(entitys);
                 ViewBag.Details = Details;
 

@@ -6,7 +6,7 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web.UI;
-namespace EM.Common
+namespace EM
 {
     public static class ExtensionHelper
     {
@@ -48,6 +48,27 @@ namespace EM.Common
             return e.ToString();
         }
 
+        public static List<int> ToInts(this string e,char split=',')
+        {
+            if (string.IsNullOrEmpty(e))
+                return new List<int>();
+            var Ids = new List<int>();
+            foreach (var id in e.Split(','))
+            {
+                var tempId = 0;
+                int.TryParse(id, out tempId);
+                Ids.Add(tempId);
+            }
+            return Ids;
+        }
+        public static int ToInt(this string e)
+        {
+            if (string.IsNullOrEmpty(e))
+                return 0;
+            var Id = 0;
+            int.TryParse(e, out Id);
+            return Id;
+        }
         public static List<KeyValuePair<int, string>> GetEnumList(this object em)
         {
             var Type = em.GetType();

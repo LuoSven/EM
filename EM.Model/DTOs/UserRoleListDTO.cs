@@ -11,12 +11,13 @@ using System.Globalization;
 namespace EM.Model.DTOs
 {
 
-    public class CompanyCateLimitDTO
+    public class UserRoleListDTO
     {
-        public int TotalCost { get; set; }
-        public int TotalLimit { get; set; }
-
-        public string CateName { get;set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string CompanyIds { get; set; }
+        public int RoleType { get; set; }
         
     }
 }

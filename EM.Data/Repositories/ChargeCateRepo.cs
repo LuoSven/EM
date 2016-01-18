@@ -21,14 +21,32 @@ namespace EM.Data.Repositories
         {
         }
 
-        public List<KeyValueVM> GetList(int RoleTypeId)
+        public List<KeyValueVM> GetList(int RoleTypeId,CateDropType CateListType)
         {
-            var result = DataContext.EM_Charge_Cate.Where(o=>o.RoleTypes.Contains(RoleTypeId.ToString())).Select(o=>new KeyValueVM(){
+            //仅仅是函数不一样
+            var sql = "select * from dbo.{0}(@RoleTypeId)";
+            switch(CateListType)
+            {
+                 
+                case CateDropType.Form:
+                case CateDropType.Search:
+                sql = string.Format(sql, "FC_GetRoleChildrenCateIds");//包含子项
+                break;
+                case CateDropType.Report:
+                sql = string.Format(sql, "FC_GetRoleParentCateIds");//包含父类
+                break;
+            }
+            var CateList = DapperHelper.SqlQuery<int>(sql, new { RoleTypeId = RoleTypeId }).ToList();
+            var result = DataContext.EM_Charge_Cate.Where(o => CateList.Contains(o.Id)).Select(o => new KeyValueVM()
+            {
                 Value = o.CateName,
-                Key=o.Id.ToString()
+                Key = o.Id.ToString()
             }).ToList();
             return result;
         }
+
+
+
         public string GetCateName(int id)
         {
             var name = DapperHelper.SqlQuery<string>("select CateName from  EM_Charge_Cate where Id=@Id ", new { Id = id }).FirstOrDefault();
@@ -40,7 +58,7 @@ namespace EM.Data.Repositories
 
     public interface IChargeCateRepo : IRepository<EM_Charge_Cate>
     {
-        List<KeyValueVM> GetList(int RoleTypeId);
+        List<KeyValueVM> GetList(int RoleTypeId, CateDropType CateListType);
 
         string GetCateName(int id);
     }

@@ -6,6 +6,41 @@
 @using EM.Common;
 @using EM.Data.Infrastructure;
 @model PagedResult<ExpenseAccountListVM>
+@section Css{
+    <link rel="stylesheet" href="~/Css/Programs/ExpenseAccount.css" type="text/css" />
+}
+@section Js{
+    <script>
+        var ApproveFlag = 0;
+        $(function () {
+            $("body").not(".showApprove").click(function () {
+                if (ApproveFlag)
+                $(".approveHistory").addClass('hidden')
+            })
+            $(".showApprove").mouseleave(function () {
+                ApproveFlag = 1;
+            })
+            $(".showApprove").mouseover(function () {
+                ApproveFlag = 0;
+            })
+        })
+    </script>
+    <script>
+        var ShowApproveHistory = function (ob,IsShow) {
+                $(ob).next().toggleClass('hidden')
+            //$('.approveHistory').addClass('hidden');
+            //$('.approveHistory').prev().each(function () { $(this).attr('onclick', 'ShowApproveHistory(this,true)') });
+            //if (IsShow) {
+            //    $(ob).next().removeClass('hidden')
+            //    $(ob).attr('onclick', 'ShowApproveHistory(this,false)');
+            //}
+            //else {
+            //    $(ob).attr('onclick', 'ShowApproveHistory(this,true)');
+            //    $(ob).next().addClass('hidden')
+            //}
+        }
+    </script>
+    }
 <div class="SearchFrom">
     <form id="SearchForm" action="@Url.Action("ApproveIndex", "ExpenseAccount")">
         <input type="text" name="EANumber" value="" placeholder="单号">

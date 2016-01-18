@@ -13,6 +13,8 @@ namespace EM.Model.VMs
 
          public string Url { get; set; }
 
+         public int Count { get; set; }
+
          public List<MenuVM> Items { get; set; } 
          
     }

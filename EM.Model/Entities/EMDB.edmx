@@ -30,6 +30,7 @@
           <Property Name="ModifyDate" Type="datetime" Nullable="false" />
           <Property Name="Creater" Type="nvarchar" MaxLength="50" />
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="InformUserId" Type="int" />
         </EntityType>
         <EntityType Name="EM_Company_Limit">
           <Key>
@@ -332,6 +333,7 @@
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InformUserId" Type="Int32" />
         </EntityType>
         <EntityType Name="EM_Company_Performance">
           <Key>
@@ -537,6 +539,7 @@
           <EntitySetMapping Name="EM_Company">
             <EntityTypeMapping TypeName="EMDBModel.EM_Company">
               <MappingFragment StoreEntitySet="EM_Company">
+                <ScalarProperty Name="InformUserId" ColumnName="InformUserId" />
                 <ScalarProperty Name="Modifier" ColumnName="Modifier" />
                 <ScalarProperty Name="Creater" ColumnName="Creater" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />

@@ -68,6 +68,15 @@ namespace EM.Data.Dapper
                 return result;
             }
         }
+
+        public static  PagedResult<T> QueryWithPage<T>(string sql, object param, string orders, int page, int pageSize) where T : class
+        {
+            using (var conn = DapperHelper.GetConnection())
+            {
+                var result =  conn.QueryWithPage<T>(sql, param, orders, page, pageSize);
+                return result;
+            }
+        }
         #endregion
 
         #region 执行方法

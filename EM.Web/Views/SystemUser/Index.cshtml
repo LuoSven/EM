@@ -1,21 +1,21 @@
 ﻿@{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutCommon.cshtml"; 
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
-@using  EM.Model.VMs;
+@using EM.Model.VMs;
 @model List<AccountDetailVM>
 @{
     var RoleList = ViewBag.RoleList as List<KeyValueVM>;
 }
-    <div class="SearchFrom">
-        <form id="SearchForm" action="@Url.Action("Index","SystemUser")">
-            <input type="text" name="UserName" value="" placeholder="用户名">
-            <input type="text" name="LoginEmail" value="" placeholder=" 登录账户">
-            @Html.DropDownList("RoleId",new SelectList(RoleList,"Key","Value"),"-请选择-")
-            <button class="searchButton"  type="submit">搜索</button>
-        </form>
+<div class="SearchFrom">
+    <form id="SearchForm" action="@Url.Action("Index","SystemUser")">
+        <input type="text" name="UserName" value="" placeholder="用户名">
+        <input type="text" name="LoginEmail" value="" placeholder=" 登录账户">
+        @Html.DropDownList("RoleId", new SelectList(RoleList, "Key", "Value"), "-请选择-")
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
 
-    </div>
+</div>
 
 <div id="List">
     @Html.Partial("_List", Model)

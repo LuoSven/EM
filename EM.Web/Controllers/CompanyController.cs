@@ -23,6 +23,7 @@ namespace EM.Web.Controllers
     {
 
         private readonly ICompanyRepo companyRepo = new CompanyRepo(new DatabaseFactory());
+        private readonly IUserAccountRepo UserAccountRepo = new UserAccountRepo(new DatabaseFactory());
         [Description("公司列表")]
         [ActionType(RightType.View)]
         public async Task< ActionResult> Index(string Name="")
@@ -37,6 +38,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Add()
         {
             var model = new EM_Company();
+            await InitSelect();
             return View(model);
         }
 
@@ -61,6 +63,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(int Id)
         {
             var model = companyRepo.GetById(Id);
+            await InitSelect(model.InformUserId.HasValue?model.InformUserId.Value:0);
             model.KPIPercent = Math.Round(model.KPIPercent.Value, 2);
             model.KPIValue = Math.Round(model.KPIValue.Value/10000, 0);
             return View(model);
@@ -88,6 +91,13 @@ namespace EM.Web.Controllers
             companyRepo.Delete(model);
             companyRepo.SaveChanges();
             return View(model);
+        }
+
+        private async Task InitSelect(int UserId=0)
+        {
+            var  List= await  UserAccountRepo.GetUserList("","","");
+            var UserList=List.Select(o=>new {Key=o.UserId,Value=o.UserName+"("+o.LoginEmail+","+o.RoleName+")"}).ToList();
+            ViewBag.UserList=new SelectList(UserList,"Key","Value",UserId);
         }
 
     }

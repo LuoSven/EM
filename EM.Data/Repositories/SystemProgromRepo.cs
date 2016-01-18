@@ -29,17 +29,19 @@ namespace EM.Data.Repositories
 
                 DataContext.EM_System_Program.Add(program);
                 var ProgramResult=DataContext.SaveChanges();
-
-                foreach (var id in AdminRoleList)
+                var RoleIds = DataContext.EM_User_Role.Select(o => o.Id).ToList();
+                foreach (var id in RoleIds)
                 {
                         var right = new EM_User_Right()
                         {
                             RoleId = id,
                             ProgramId = program.Id,
-                            Permit = true,
+                            Permit = false,
                             ModifeTime = DateTime.Now,
                             CreateTime = DateTime.Now,
                         };
+                        if (AdminRoleList.Contains(id))
+                            right.Permit = true;
                         DataContext.EM_User_Right.Add(right);
                  ProgramResult+= DataContext.SaveChanges();
                 }
@@ -130,10 +132,11 @@ where a.UserId=@UserId ) and a.Permit=1", new { UserId = UserId, SysTypeId = Sys
             var result = DapperHelper.SqlQuery<int>(sql, new { ControlName = ControlName, ActionName = ActionName, SystemType = SystemTypeId }).Any();
             return result;
         }
+    
+
     }
     public interface ISystemProgromRepo : IRepository<EM_System_Program>
     {
-
 
        int AddOrUpdateProgram(EM_System_Program program);
 

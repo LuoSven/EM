@@ -14,12 +14,20 @@ using System.Threading.Tasks;
 namespace EM.Web.Core
 {
 
+    public class ExpenseAccountApproveHistoryResolver : ValueResolver<int,List< ExpenseAccountApproveHistoryListDTO>>
+    {
+        protected override List<ExpenseAccountApproveHistoryListDTO> ResolveCore(int source)
+        {
+            IExpenseAccountApproveHistoryRepo expenseAccountApproveHistoryRepo = new ExpenseAccountApproveHistoryRepo(new DatabaseFactory());
+            return expenseAccountApproveHistoryRepo.GetListStringByECId(source);
+        }
+    }
     public class ExpenseAccountDetailsResolver : ValueResolver<int, List<ExpenseAccountDetailListDTO>>
     {
         protected override List<ExpenseAccountDetailListDTO> ResolveCore(int source)
         {
             IExpenseAccountDetailRepo expenseAccountDetailRepo = new ExpenseAccountDetailRepo(new DatabaseFactory());
-            return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source);
+            return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source, ViewHelp.GetDetailCompanyIds());
         }
     }
     public class AccountStatusResolver : ValueResolver<int, string>

@@ -11,6 +11,10 @@ namespace EM.Model.VMs
     {
         public string ApproveStatusName { get; set; }
 
-        public List<ExpenseAccountDetailListDTO> List { get; set; } 
+        public List<ExpenseAccountDetailListDTO> List { get; set; }
+
+
+
+        public List<ExpenseAccountApproveHistoryListDTO> ApproveList { get; set; } 
     }
 }

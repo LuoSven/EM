@@ -4,10 +4,10 @@
 }
 @using EM.Model.VMs;
 @model List<MenuVM>
-<div class="message pt5 h40 ">
+<div class="message  h35 ">
     <div class="fl pl10 pt10 hidden  ">当前作业：<span id="breadcrumb"></span></div>
-    <div class="iframeButton w100 fr hp100 pt5">
-        <button class="btn btn-default btn-xs fr" id="refreshIframe" type="button"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>刷新页面</button>
+    <div class="iframeButton w100 fr hp100 pt5 pb5">
+        <button class=" fr" id="refreshIframe" type="button"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>刷新页面</button>
     </div>
 </div>
 <div class="menu  p0  col-xs-1">
@@ -16,12 +16,18 @@
         {
             <li>
                 <a class="wp100 fl size18 fL40 pl25">@Menu.Name</a>
-                <ul class="hidden">
+                <ul class="">
                     @foreach (var program in Menu.Items)
                     {
                         <li>
-                            <a class="wp100 pl30" id="@program.ProgramId" data-url="@program.Url">@program.Name</a>
-                        </li>
+                            <a class="wp100 pl30" data-name="@program.Name" id="@program.ProgramId" data-url="@program.Url">
+                                @program.Name
+                                @if (program.Count != 0)
+                                {
+                                    <i class="count">@program.Count</i>
+                                }
+                            </a>
+                    </li>
                     }
                 </ul>
             </li>
@@ -32,14 +38,12 @@
     <div class="iframeTags h40 ">
         <span class="leftSlice fl size26 curp mr5 hidden"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span></span>
         <div class="TagsCover fl  h40 w300 pRel ">
-            <ul class="p0 m0 fl pAbs">
-            </ul>
+            <ul class="p0 m0 fl pAbs"></ul>
         </div>
         <span class="rightSlice fr size26 curp ml5 hidden"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></span>
     </div>
     <div class="iframeContents hp100 pRel">
-        <ul>
-        </ul>
+        <ul></ul>
     </div>
 </div>
 

@@ -2,6 +2,7 @@
 Global.Form = {};
 Global.Form.Init = function () {
     Global.Form.DatePicker();
+    Global.Form.DateSelecter();
     Global.Form.FileUploader();
     Global.Form.AjaxSearchForm($("#SearchForm"), $("#List"))
     $('form[data-role=form]').each(function(){
@@ -15,6 +16,7 @@ Global.Form.Init = function () {
         var url = $(this).attr("data-url");
         Global.Form.NewIframe(name,url.replace("/","_"),url)
     })
+    Global.Form.HighChartStyle();
 }
 Global.Form.FileUploader = function () {
     var b_version = navigator.appVersion
@@ -71,6 +73,49 @@ Global.Form.DatePicker = function () {
     $(".datepicker").focus(function () {
         WdatePicker({ el: this.id })
     });
+}
+Global.Form.DateSelecter = function ()
+{
+    var dateTypes = ["全部","近七天", "近一月", "近三月", "近半年"];
+    var html = "";
+    for (var i = 0; i < dateTypes.length; i++) {
+        html += "<option value={value} >{name}</option>".format({ value: i, name: dateTypes[i] });
+    }
+    $(".dateselecter").each(function () {
+        var _this = $(this);
+        var dataValue = _this.attr("data-value")
+        _this.html(html).change(function () {
+            var value = $(this).find("option:selected").val()-0;
+            var SDate = new Date(), EDate = new Date();
+            switch (value) {
+                case 0:
+                    SDate = new Date(1999, 12, 11);
+                case 1:
+                    SDate = new Date(EDate.getFullYear(), EDate.getMonth(), EDate.getDate() - 7)
+                    break;
+                case 2:
+                    SDate = new Date(EDate.getFullYear(), EDate.getMonth() - 1, EDate.getDate())
+                    break;
+                case 3:
+                    SDate = new Date(EDate.getFullYear(), EDate.getMonth() - 3, EDate.getDate())
+                    break;
+                case 4:
+                    SDate = new Date(EDate.getFullYear(), EDate.getMonth() - 6, EDate.getDate())
+                    break;
+            };
+            $(this).parent().find("#SDate").val(SDate.format("yyyy/MM/dd"))
+            $(this).parent().find("#EDate").val(EDate.format("yyyy/MM/dd"))
+        });
+
+        if (dataValue != "" && !isNaN(dataValue)) {
+            $("option[value=" + dataValue + "]", _this).attr("selected", "selected");
+        }
+         
+    })
+   
+
+
+   
 }
 Global.Form.DeleteConfirm = function (url) {
     if (confirm("确认删除？"))
@@ -305,4 +350,78 @@ Global.Form.Valid = function (ob, url) {
       
     } 
     })
+}
+Global.Form.HighChartStyle = function () {
+    if (!typeof Highcharts == undefined )
+    {
+        Highcharts.createElement('link', {
+            href: 'http://fonts.googleapis.com/css?family=Dosis:400,600',
+            rel: 'stylesheet',
+            type: 'text/css'
+        }, null, document.getElementsByTagName('head')[0]);
+
+        Highcharts.theme = {
+            colors: ["#7cb5ec", "#f7a35c", "#90ee7e", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+                "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+            chart: {
+                backgroundColor: null,
+                style: {
+                    fontFamily: "sans-serif"
+                }
+            },
+            title: {
+                style: {
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase'
+                }
+            },
+            tooltip: {
+                borderWidth: 0,
+                backgroundColor: 'rgba(219,219,216,0.8)',
+                shadow: false
+            },
+            legend: {
+                itemStyle: {
+                    fontWeight: 'bold',
+                    fontSize: '13px'
+                }
+            },
+            xAxis: {
+                gridLineWidth: 1,
+                labels: {
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yAxis: {
+                minorTickInterval: 'auto',
+                title: {
+                    style: {
+                        textTransform: 'uppercase'
+                    }
+                },
+                labels: {
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
+            },
+            plotOptions: {
+                candlestick: {
+                    lineColor: '#404048'
+                }
+            },
+
+
+            // General
+            background2: '#F0F0EA'
+
+        };
+
+        // Apply the theme
+        Highcharts.setOptions(Highcharts.theme);
+    }
+   
 }

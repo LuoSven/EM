@@ -27,7 +27,7 @@ namespace EM.Web.Controllers
             var message = "";
             if(string.IsNullOrEmpty(remark))
             {
-                return Json(new { code = 0, message = "必须填写附件说明" });
+                return Json(new { code = 0, message = "必须填写附件说明" }, "text/html;charset=utf-8");
             }
             var FilePathId = id == 0 ? "temp" : id.ToString();
             if (Request.Files.Count > 0)
@@ -61,11 +61,11 @@ namespace EM.Web.Controllers
                     expenseAccountFileRepo.Add(model);
                     expenseAccountFileRepo.SaveChanges();
 
-                    return Json(new { code = 1, model = new { Id = model.Id, FileName = model.FileName, CreateDate=model.CreateDate.ToString("yyyy-MM-dd HH:mm:ss") } });
+                    return Json(new { code = 1, model = new { Id = model.Id, FileName = model.FileName, CreateDate = model.CreateDate.ToString("yyyy-MM-dd HH:mm:ss") } }, "text/html;charset=utf-8");
                 }
 
             }
-            return Json(new { code = 0, message = message });
+            return Json(new { code = 0, message = message }, "text/html;charset=utf-8");
         }
 
         public string CheckFileType(string FileType)

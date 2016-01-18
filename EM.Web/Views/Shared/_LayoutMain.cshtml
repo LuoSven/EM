@@ -1,6 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="zh">
 <head>
+    @using EM.Common;
+    @using EM.Web.Core;
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <title>浙江区财务系统</title>
@@ -9,7 +13,7 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="~/Css/base.css" type="text/css" />
-    @if(Request.QueryString["style"]=="black")
+    @if (Request.QueryString["style"] == "black")
     {
         
     <link rel="stylesheet" href="~/Css/Main-Black.css" type="text/css" />
@@ -68,11 +72,39 @@
             // Global.OpenNewIframe(undefined, "/" + BeginTask.split(",")[0] + "/" + BeginTask.split(",")[1])
             //绑定菜单点击事件
             $(".menu>ul>li>ul>li>a").click(function () {
-                Global.Menu.ClickMenu(this); Global.Iframe.OpenIframe(this.innerHTML, this.id, $(this).attr("data-url"))
+                Global.Menu.ClickMenu(this);
+                $.easing['easeInQuint'] = function (p, t, b, c, d) {
+                    return c * Math.pow(t / d, 4) + b;
+                };
+                $("i", this).addClass("countMove")
+                     .animate(
+                    {
+                        left: 500,
+                        opacity: 0.0
+                    }, 2000, 'easeInQuint', function () {
+                        $(this).remove();
+                    })
+                var _this = this;
+                setTimeout(function () {
+                    Global.Iframe.OpenIframe($(_this).attr("data-name"), _this.id, $(_this).attr("data-url"))
+                },300)
+
+                    //.slideUp(1000, 'easeInQuint', function () {
+                    //    $(this).remove();
+                    //})
+
+              
             })
             $breadcrumb.html(BeginBreadcrumb);
-
-            Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
+            @{
+                if (ViewHelp.GetRoleType() == (int)RoleType.Staff)
+                {
+                   @: Global.Iframe.OpenIframe("我的报销单", "expenseaccount_index", "expenseaccount/index", false, false);
+                }else
+                {
+                    @:Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
+                }
+            }
         }
         $(function () {
             Global.Init();

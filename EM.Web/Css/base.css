@@ -117,7 +117,15 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .c666{color:#666;}
 .c999{color:#999;}
 .cCCC{color:#CCC;}
+.cDDD{color:#DDD;}
 .cFFF{color:#FFF;}
+
+.bc000{background:#000;}
+.bc333{background:#666;}
+.bc666{background:#666;}
+.bc999{background:#999;}
+.bcCCC{background:#CCC;}
+.bcFFF{background:#FFF;}
 
 /*--边距--*/
 .m0{margin:0px}
@@ -350,3 +358,9 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .h295{height:295px;}
 .h300{height:300px;}
 .hp100{height:100%}
+
+
+.bra5 {
+    border-radius: 5px;
+}
+

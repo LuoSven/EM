@@ -21,15 +21,44 @@ namespace EM.Data.Repositories
         {
         }
 
-        public async Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize,bool IsFromApprove=false)
+        public  PagedResult<ExpenseAccountListDTO> GetListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize, bool IsFromApprove = false)
         {
+         
             var dateSql = " and b.{0} >= @SDate and b.{0} <=@EDate";
-            var sql = string.Format(@" select  distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate  from EM_ExpenseAccount a
+            var sql =@" select  distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate  from EM_ExpenseAccount a
 join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
-where a.Creater='{0}'  ", UserName);
+where 1=1 ";
+            //不是管理员只能看到自己公司的
+            if(UserInfo.RoleType!=(int)RoleType.Admin)
+            {
+              sql+=string.Format("and  b.CompanyId='{0}'  ", UserInfo.CompanyIds);
+            }
+
+            //根据角色进行分类的过滤
+            //老板只能看5大类汇总
+            //录入人和admin能看所有(admin是拥有父类的权限，录入人只有子类的权限，父类可以同时查看报表)
+            sql += @" and b.CateId in (select * from dbo.FC_GetRoleChildrenCateIds('" + UserInfo.RoleType + "')) ";
+
+            //公司权限
+            //admin和分总都是只能看到自己角色的公司 或者 员工并且选了公司 
+            if (UserInfo.RoleType != (int)RoleType.Staff || (UserInfo.RoleType == (int)RoleType.Staff && sm.CompanyId.HasValue))
+            {
+                sql += " and b.CompanyId in ("+UserInfo.CompanyIds+") ";
+            }
+            else
+            {
+                //录入人
+                //If(未选择公司)
+                if (!sm.CompanyId.HasValue)
+                {
+                    //{对应的公司Ids 或 自己录入的单据}
+                    sql += " and ( b.CompanyId in (" + UserInfo.CompanyIds + ") or a.Creater='"+UserInfo.UserName+"' ) ";
+                }
+
+            }
 
             if (sm.CompanyId.HasValue)
-                sql += " and a.CompanyId = @CompanyId ";
+                sql += " and b.CompanyId = @CompanyId ";
             if (!string.IsNullOrEmpty(sm.Creater))
                 sql += " and a.Creater like '%'+@Creater+'%' ";
             if (!string.IsNullOrEmpty(sm.EANumber))
@@ -37,10 +66,11 @@ where a.Creater='{0}'  ", UserName);
             if (!string.IsNullOrEmpty(sm.Name))
                 sql += " and a.Name like '%'+@Name+'%' ";
             if (sm.CateId.HasValue)
-                sql += " and a.CateId = @CateId ";
+                sql += " and b.CateId In (select * from [dbo].[FC_GetChildCateIds](@CateId)) ";
             if (sm.ApproveStatus.HasValue)
                 sql += " and a.ApproveStatus = @ApproveStatus ";
 
+            //审核的是不能看到草稿箱的
             if (IsFromApprove)
             {
                 sql += " and a.ApproveStatus != "+(int)ExpenseAccountApproveStatus.Created;
@@ -68,7 +98,7 @@ where a.Creater='{0}'  ", UserName);
 
 
 
-            var list = await DapperHelper.QueryWithPageAsync<ExpenseAccountListDTO>(sql, sm, " ModifyDate desc ", Page, PageSize);
+            var list =  DapperHelper.QueryWithPage<ExpenseAccountListDTO>(sql, sm, " ModifyDate desc ", Page, PageSize);
             return list;
         }
 
@@ -125,7 +155,7 @@ where a.Creater='{0}'  ", UserName);
 
     public interface IExpenseAccountRepo : IRepository<EM_ExpenseAccount>
     {
-        Task<PagedResult<ExpenseAccountListDTO>> GetListByDtoAsync(ExpenseAccountSM sm, string UserName, int Page, int PageSize, bool IsFromApprove=false);
+        PagedResult<ExpenseAccountListDTO> GetListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize, bool IsFromApprove = false);
 
         Task<string> GetNewPublicId();
 

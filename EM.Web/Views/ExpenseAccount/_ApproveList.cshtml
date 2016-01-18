@@ -50,8 +50,25 @@
                 <td class="taR">
                     @EA.ModifyDate.ToShortDateString()
                 </td>
-                <td class="taR">
-                    @EA.ApproveStatusName
+                <td class="taR pRel">
+                    <a href="javascript:;" onclick="ShowApproveHistory(this,true)" class="showApprove">@EA.ApproveStatusName</a>
+                    @if (EA.ApproveList != null && EA.ApproveList.Count > 0)
+                    {
+                        <div class="approveHistory hidden  pAbs pr5 cDDD bcFFF bra5 w300">
+                            <ul class="ml5 mr5">
+                                @foreach (var item in EA.ApproveList)
+                                {
+                                    <li class="fl fL20 wp100 taL">
+                                        <span class="c000 mr5">@item.Creater</span>在<span class="ml5 mr5">@item.CreateDateName</span><span class="@item.StatusClass mr5">@item.StatusName</span>
+                                        @if (!string.IsNullOrEmpty(item.FailReason))
+                                        {
+                                            <br><span class="fl ">@item.FailReason</span>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
                 </td>
                 <td class="taR">
                     <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id = EA.Id, IsApprove=true })')">查看</a>

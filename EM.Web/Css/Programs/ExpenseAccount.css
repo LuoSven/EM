@@ -1,0 +1,15 @@
+﻿.approveHistory{
+      border: 1px #C5C5C5 solid;
+        top: 0px;
+        right: 50px;
+}
+.approveHistory .fail{color:red}
+.approveHistory .approved{color:green}
+.approveHistory .pullback{color:burlywood}
+.approveHistory .submit{color: rgb(192, 195, 255);}
+.approveHistory li{
+
+}
+
+
+

@@ -27,7 +27,8 @@ namespace EM.Web.Core
 
             Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>()
             .ForMember(dest => dest.ApproveStatusName, source => source.ResolveUsing<ApproveStatusResolver>().FromMember(o => o.ApproveStatus))
-            .ForMember(dest => dest.List, source => source.ResolveUsing<ExpenseAccountDetailsResolver>().FromMember(o => o.Id));
+            .ForMember(dest => dest.List, source => source.ResolveUsing<ExpenseAccountDetailsResolver>().FromMember(o => o.Id))
+            .ForMember(dest => dest.ApproveList, source => source.ResolveUsing<ExpenseAccountApproveHistoryResolver>().FromMember(o => o.Id));
 
 
             Mapper.CreateMap<CompanyLimitDTO, CompanyLimitVM>()
