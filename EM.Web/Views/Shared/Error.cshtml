@@ -1,4 +1,4 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model Exception
 
 @{
     ViewBag.Title = "错误";
@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
 
-<hgroup class="title">
-    <h1 class="error">错误。</h1>
-    <h2 class="error">处理你的请求时出错。</h2>
-</hgroup>
+<div class="size20">页面还在施工中。。。</div>
+<div style="display:none">
+    @Html.DisplayForModel(Model)
+</div>

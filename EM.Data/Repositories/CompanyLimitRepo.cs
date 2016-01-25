@@ -69,6 +69,8 @@ and a.OccurDate >@SDate and a.OccurDate<@EDate
 and b.ApproveStatus=4
 group by a.OccurDate", SM).ToList();
 
+
+            //根据每个日期预计合计金额,下方报表用
             var DateExpectCostList = DapperHelper.SqlQuery<CompanyCateLimitDateDTO>(@"select case when SUM(Money) is null then 0 else SUM(Money) end  as Money  ,a.OccurDate 
 from EM_ExpenseAccount_Detail a
 join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
@@ -76,6 +78,10 @@ where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select 
 and a.OccurDate >@SDate and a.OccurDate<@EDate
 and b.ApproveStatus<>4
 group by a.OccurDate", SM).ToList();
+            //获取公司类型，获取绩效额度的时候不一样
+            var NowCompanyType = DapperHelper.SqlQuery<int?>("select a.CompanyType from EM_Company a where a.Id=@CompanyId", SM).FirstOrDefault();
+
+
             var TotalCost = DateCostList.Sum(o => o.Money);
             var ExpectTotalCost = DateExpectCostList.Sum(o => o.Money);
             //获取大类的额度类型和名称
@@ -86,10 +92,28 @@ group by a.OccurDate", SM).ToList();
             switch (cateType)
             {
                 case CateTypeEnum.KPIAbout:
-                    //汇总KPI额度
-                    var KpiSum = GetPerformance(SM.CompanyId.ToString());
-                    //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
-                    TotalLimit = Math.Round((KpiSum.FinishPerformance / (decimal)2000000) * 400000,2);;
+                    switch (NowCompanyType) {
+                        case null:
+                        case (int)CompanyType.Other:  //汇总KPI额度
+                            var KpiSum = GetPerformance(SM.CompanyId.ToString());
+                            //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
+                            TotalLimit = Math.Round((KpiSum.FinishPerformance / (decimal)2010000) * 400000, 2); ;
+                            break;
+                        case (int)CompanyType.City:  //汇总KPI额度
+                            //获取城市公司的子公司
+                            var ChildrenCompanyIdList = DapperHelper.SqlQuery<int>("select a.Id from EM_Company a where a.ParentCompanyId=@CompanyId", SM);
+                            var KpiSumChildren = (decimal)0;
+                            //汇总kpi
+                            foreach (var ChildrenCompanyId in ChildrenCompanyIdList)
+                            {
+                                KpiSumChildren += GetPerformance(ChildrenCompanyId.ToString()).FinishPerformance;
+                            }
+                            //得出报销额/10
+                            //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
+                            TotalLimit = Math.Round((KpiSumChildren / (decimal)2010000) * 400000, 2) / 10;
+                            break;
+                    }
+                  
                     break;
                 case CateTypeEnum.YearlyLimit:
                     //年度额度=当前公司，当前大类，所有季度额度的汇总，因为上季度用不掉的会延续到下季度，所以不需要判断时间
@@ -133,7 +157,11 @@ group by a.OccurDate", SM).ToList();
             return result;
         }
 
-
+        /// <summary>
+        /// 获取传入的公司业绩
+        /// </summary>
+        /// <param name="CompanyIds"></param>
+        /// <returns></returns>
         public CompanyPerformanceSumDTO GetPerformance(string CompanyIds)
         {
             var result = new CompanyPerformanceSumDTO();
@@ -143,7 +171,8 @@ group by a.OccurDate", SM).ToList();
   where Id in ({0}) ", CompanyIds)).FirstOrDefault();
             if (Performances != null && Performances.Count > 0)
             {
-                var KpiSum = Performances.Sum(o => o.SalesPerformance);
+                //根据每个公司分组，拿每组的最后一个业绩，再合成
+                var KpiSum = Performances.GroupBy(o=>o.CompanyId).Select(o => o.ToList().Last().SalesPerformance).Sum();
                 var EndDate = Performances.Last().UploadDate;
                 result.EndDate = EndDate;
                 result.FinishPerformance = KpiSum;

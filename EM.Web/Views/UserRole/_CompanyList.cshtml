@@ -24,13 +24,13 @@
                     @company.CompanyName
                 </td>
                 <td>
-                    <a onclick="$(this).parent().parent().remove()">删除</a>
+                    <a onclick="DeleteCompany(@company.Id)">删除</a>
                 </td>
             </tr>
         }
         <tr id="AddRow">
             <td colspan="3">
-                @Html.DropDownList("CompanyList") <button type="button" class="btn btn-xs" onclick="AddCompany()">添加</button>
+                @Html.DropDownList("CompanySelect") <button type="button" class="btn btn-xs" onclick="AddCompany()">添加</button>
             </td>
         </tr>
     </tbody>

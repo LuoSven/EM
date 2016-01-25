@@ -1,0 +1,9 @@
+﻿<input type="text" name="EANumber" value="" placeholder="单号">
+<input type="text" name="Name" value="" placeholder="报销人">
+@Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "费用大类")
+@Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
+@Html.DropDownList("ApproveStatus", (SelectList)ViewBag.ApproveStatusList, "报销单状态")
+@Html.DropDownList("DateType", (SelectList)ViewBag.DateTypeList, "时间筛选")
+<input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+<input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+<button class="searchButton" type="submit">搜索</button>

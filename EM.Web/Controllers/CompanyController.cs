@@ -63,7 +63,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(int Id)
         {
             var model = companyRepo.GetById(Id);
-            await InitSelect(model.InformUserId.HasValue?model.InformUserId.Value:0);
+            await InitSelect(model.InformUserId.HasValue ? model.InformUserId.Value : 0, model.CompanyType,model.ParentCompanyId);
             model.KPIPercent = Math.Round(model.KPIPercent.Value, 2);
             model.KPIValue = Math.Round(model.KPIValue.Value/10000, 0);
             return View(model);
@@ -93,11 +93,16 @@ namespace EM.Web.Controllers
             return View(model);
         }
 
-        private async Task InitSelect(int UserId=0)
+        private async Task InitSelect(int UserId = 0, int? CompanyTypeId = null, int? ParentCompanyId=null)
         {
             var  List= await  UserAccountRepo.GetUserList("","","");
             var UserList=List.Select(o=>new {Key=o.UserId,Value=o.UserName+"("+o.LoginEmail+","+o.RoleName+")"}).ToList();
             ViewBag.UserList=new SelectList(UserList,"Key","Value",UserId);
+            var CompanyTypeList = CompanyType.City.GetEnumList();
+            ViewBag.CompanyTypeList = new SelectList(CompanyTypeList, "Key", "Value", CompanyTypeId);
+
+            var ParentCompanyIdList = companyRepo.GetList(ViewHelp.GetRoleId(), CompanyType.City);
+            ViewBag.ParentCompanyIdList = new SelectList(ParentCompanyIdList, "Key", "Value", ParentCompanyId);
         }
 
     }

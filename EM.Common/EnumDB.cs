@@ -163,7 +163,18 @@ namespace EM.Common
         [Description("报表汇总，仅包含父类")]
         Report
     }
-
+    /// <summary>
+    /// 分类列表的使用来源
+    /// </summary>
+    public enum CompanyType
+    {
+        [Description("区域")]
+        Area = 1,
+        [Description("城市公司")]
+        City,
+        [Description("分公司")]
+        Other
+    }
     #endregion
 
 

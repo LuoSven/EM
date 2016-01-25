@@ -212,6 +212,7 @@
     <Content Include="Css\Form.css" />
     <Content Include="Css\Main-2015-11-21.css" />
     <Content Include="Css\Main-Black.css" />
+    <Content Include="Css\Main.css" />
     <Content Include="Css\Programs\CompanyMHome.css" />
     <Content Include="Css\Programs\ExpenseAccount.css" />
     <Content Include="Css\Third\dtree\dtree.css" />
@@ -239,6 +240,7 @@
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
     <Content Include="Js\ajaxPager.js" />
+    <Content Include="Js\table.js" />
     <Content Include="Js\jquery.validate.messages_cn.js" />
     <Content Include="Js\form.js" />
     <Content Include="Js\common.js" />
@@ -303,7 +305,6 @@
     <Content Include="Content\Third\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\Third\bootstrap\bootstrap.min.css" />
     <Content Include="Css\base.css" />
-    <Content Include="Css\Main.css" />
     <Content Include="Css\Login.css" />
     <Content Include="Css\Site.css" />
     <Content Include="Css\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -443,6 +444,8 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Third\bootstrap\bootstrap.min.js" />
+    <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
+    <Content Include="Views\Home\CompanyManagerWelcome.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -493,7 +496,6 @@
     <Content Include="Views\ExpenseAccount\_List.cshtml" />
     <Content Include="Views\ExpenseAccount\AddOrEdit.cshtml" />
     <Content Include="Views\ExpenseAccount\_UploadList.cshtml" />
-    <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
     <Content Include="Views\ExpenseAccount\BrowseFile.cshtml" />
     <Content Include="Views\Error\NoRight.cshtml" />
     <Content Include="Views\Shared\_Pager.cshtml" />
@@ -522,7 +524,9 @@
     <Content Include="Views\ExpenseAccount\_ApproveDetailList.cshtml" />
     <Content Include="Views\ExpenseAccount\ApproveBrowse.cshtml" />
     <Content Include="Views\ExpenseAccount\_ApproveBodyList.cshtml" />
-    <Content Include="Views\Home\CompanyManagerWelcome.cshtml" />
+    <Content Include="Views\Home\AdminWelcome.cshtml" />
+    <Content Include="Views\Home\_List.cshtml" />
+    <Content Include="Views\ExpenseAccount\_SM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

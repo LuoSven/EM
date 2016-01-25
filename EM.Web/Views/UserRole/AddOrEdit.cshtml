@@ -70,16 +70,35 @@
 }
 @section Js{
     <script>
-        var  AddCompany=function(){
-            var option=  $("#CompanyList option:selected");
+        var DeleteCompany=function(id){
+          var dr=$("#CompanyList *[data-id="+ id+"]");
             var ob={};
-             ob.id=option.val();
-             ob.name=option.html();
-             var ids={};
-             if($("#CompanyList *[data-id="+ ob.id+"]").length==0)
-             {
-                 $("#AddRow").before('<tr data-id="{id}"><td>{id}</td><td>{name}</td><td><a onclick="$(this).parent().parent().remove()">删除</a></td></tr>'.format(ob))
-             }
+            ob.id=id;
+            ob.name=dr.find("td:eq(1)").html();
+            $("#CompanySelect").append('<option value="{id}">{name}</option>'.format(ob))
+            $('#CompanySelect option').sort(function(a,b){  
+                var aText = parseInt( a.value);  
+                var bText = parseInt( b.value);
+                if(aText>bText) return 1;  
+                if(aText<bText) return -1;  
+                return 0;  
+            }).appendTo('#CompanySelect')
+            dr.remove();
+        }
+        var  AddCompany=function(){
+            var option=  $("#CompanySelect option:selected");
+            if(option.length>0){
+                var ob={};
+                ob.id=option.val();
+                ob.name=option.html();
+                var ids={};
+                if($("#CompanyList *[data-id="+ ob.id+"]").length==0)
+                {
+                    $("#AddRow").before('<tr data-id="{id}"><td>{id}</td><td>{name}</td><td><a onclick="DeleteCompany({id})">删除</a></td></tr>'.format(ob))
+                }
+                $("#CompanySelect option[value="+ob.id+"]").remove();
+            }
+            
         }
         var  BeforeSave=function(){
             $("#ProgramList li").remove();

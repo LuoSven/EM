@@ -24,5 +24,7 @@ namespace EM.Model.Entities
         public string Creater { get; set; }
         public string Modifier { get; set; }
         public Nullable<int> InformUserId { get; set; }
+        public Nullable<int> CompanyType { get; set; }
+        public Nullable<int> ParentCompanyId { get; set; }
     }
 }

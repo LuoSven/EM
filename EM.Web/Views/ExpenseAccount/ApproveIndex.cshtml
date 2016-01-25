@@ -10,19 +10,21 @@
     <link rel="stylesheet" href="~/Css/Programs/ExpenseAccount.css" type="text/css" />
 }
 @section Js{
+
+<script src="~/Js/Program/ExpenseAccount.js"></script>
     <script>
         var ApproveFlag = 0;
         $(function () {
-            $("body").not(".showApprove").click(function () {
-                if (ApproveFlag)
-                $(".approveHistory").addClass('hidden')
-            })
-            $(".showApprove").mouseleave(function () {
-                ApproveFlag = 1;
-            })
-            $(".showApprove").mouseover(function () {
-                ApproveFlag = 0;
-            })
+            //$("body").not(".showApprove").click(function () {
+            //    if (ApproveFlag)
+            //    $(".approveHistory").addClass('hidden')
+            //})
+            //$(".showApprove").mouseleave(function () {
+            //    ApproveFlag = 1;
+            //})
+            //$(".showApprove").mouseover(function () {
+            //    ApproveFlag = 0;
+            //})
         })
     </script>
     <script>
@@ -43,16 +45,10 @@
     }
 <div class="SearchFrom">
     <form id="SearchForm" action="@Url.Action("ApproveIndex", "ExpenseAccount")">
-        <input type="text" name="EANumber" value="" placeholder="单号">
-        <input type="text" name="Name" value="" placeholder="报销人">
-        <input type="text" name="CompanyID" value="" placeholder="公司名称">
-        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "请选择")
-        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "请选择")
-        @Html.DropDownList("DateType", (SelectList)ViewBag.DateTypeList, "请选择")
-        @Html.DropDownList("ApproveStatus", (SelectList)ViewBag.ApproveStatusList, "请选择")
-        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
-        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
-        <button class="searchButton" type="submit">搜索</button>
+
+        <button class="searchButton" data-commond="updataapprovestatuss" onclick="Global.Form.Confirms('@Url.Action("UpdataApproveStatuss", new { ApproveStatus = (int)ExpenseAccountApproveStatus.PassApproved })',$('table'),'批量通过报销单',MultiCheck)" type="button">通过</button>
+        <button class="searchButton" data-commond="updataapprovestatuss" onclick="Global.Form.Confirms('@Url.Action("UpdataApproveStatuss", new { ApproveStatus = (int)ExpenseAccountApproveStatus.FailApproved })',$('table'),'批量不通过报销单',MultiCheck)" type="button">不通过</button>
+        @Html.Partial("_SM")
     </form>
 
 </div>
@@ -60,3 +56,4 @@
 <div id="List">
     @Html.Partial("_ApproveList", Model)
 </div>
+

@@ -1,0 +1,37 @@
+﻿@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<CompanyCateLimitVM>
+@{
+    var Cates = (List<KeyValueVM>)ViewBag.Cates;
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="w40 taC">公司</th>
+            @foreach (var Cate in Cates)
+            {
+                <th class="w40 taC">@Cate.Value</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var CCVM in Model.Results)
+        {
+            <tr data-id="@CCVM.CompanyId">
+                <td class="taC">
+                    @CCVM.CompanyName
+                </td>
+                @foreach (var CCl in CCVM.CompanyCateLimits)
+                {
+                    <td class=" taC">
+                     @CCl.TotalCost.ToString().Replace(".00","")/@CCl.TotalLimit.ToString().Replace(".00", "") (@CCl.TotalRest.ToString().Replace(".00", ""))
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })

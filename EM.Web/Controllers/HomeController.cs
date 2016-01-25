@@ -66,9 +66,47 @@ namespace EM.Web.Controllers
             return View();
         }
 
-        public ActionResult AdminWelcome()
+        public ActionResult AdminWelcome(AdminWelcomeSM SM, int Page = 1, int PageSize = 40)
         {
-            return View();
+            var CompanyLimits = new List<CompanyCateLimitVM>();
+            //公司列表
+            var Companys = companyRepo.GetListDto();
+            if(SM.CompanyId.HasValue)
+            {
+                Companys = Companys.Where(o => o.Id == SM.CompanyId).ToList();
+            }
+            //分类列表
+            var Cates = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            if (SM.CateId.HasValue)
+            {
+                Cates = Cates.Where(o => o.Key == SM.CateId.ToString()).ToList();
+            }
+            ViewBag.Cates=Cates;
+            foreach (var Company in Companys)
+            {
+                var CompanyLimit = new CompanyCateLimitVM();
+                CompanyLimit.CompanyId = Company.Id;
+                CompanyLimit.CompanyName = Company.CompanyName;
+                CompanyLimit.CompanyCateLimits = new List<CompanyCateLimitDTO>();
+                foreach (var Cate in Cates)
+                {
+                   CompanyLimit.CompanyCateLimits.Add(companyLimitRepo.GetCompanyLimit(Company.Id, Cate.Key.ToInt()));
+                }
+                CompanyLimits.Add(CompanyLimit);
+            }
+
+            var Vms = new PagedResult<CompanyCateLimitVM>()
+            {
+                CurrentPage = Page,
+                PageSize = PageSize,
+                RowCount = CompanyLimits.Count,
+                Results = CompanyLimits.Skip((Page-1)*PageSize).Take(PageSize).ToList()
+
+            };
+            if (Request.IsAjaxRequest())
+                return PartialView("_List", Vms);
+            InitSearchSelect();
+            return View(Vms);
         }
         public ActionResult CompanyManagerWelcome(DateTime? SDate=null,DateTime? EDate=null)
         {
@@ -101,20 +139,27 @@ namespace EM.Web.Controllers
             for (int i = 0; i < Items.Count; i++)
             {
                 var item = Items[i];
-                switch(item.ProgramId)
+                switch (item.ProgramId)
                 {
+                    case "expenseaccount_approveindex":
+                        item.Count = expenseAccountRepo.GetListByDto(new ExpenseAccountSM() { ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove }, ViewHelp.UserInfo(), 1, 100).RowCount;
+                        break;
                     case "expenseaccount_failapproved":
-                        var sm=new ExpenseAccountSM();
-                        var result=expenseAccountRepo.GetListByDto(sm,ViewHelp.UserInfo(),1,100);
-                        item.Count = result.RowCount;//result.RowCount;
-                            break;
-
+                        item.Count = expenseAccountRepo.GetListByDto(new ExpenseAccountSM() { ApproveStatus = (int)ExpenseAccountApproveStatus.FailApproved }, ViewHelp.UserInfo(), 1, 100).RowCount;
+                        break;
                 };
                 Items[i] = item;
             }
             return Items;
         }
 
+        private void InitSearchSelect()
+        {
+            var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
+            ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value");
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            ViewBag.CateList = new SelectList(CateList, "Key", "Value");
+        }
 
     }
 }

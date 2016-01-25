@@ -31,7 +31,7 @@ where 1=1 ";
             //不是管理员只能看到自己公司的
             if(UserInfo.RoleType!=(int)RoleType.Admin)
             {
-              sql+=string.Format("and  b.CompanyId='{0}'  ", UserInfo.CompanyIds);
+              sql+=string.Format("and  b.CompanyId in ({0})  ", UserInfo.CompanyIds);
             }
 
             //根据角色进行分类的过滤
@@ -40,7 +40,7 @@ where 1=1 ";
             sql += @" and b.CateId in (select * from dbo.FC_GetRoleChildrenCateIds('" + UserInfo.RoleType + "')) ";
 
             //公司权限
-            //admin和分总都是只能看到自己角色的公司 或者 员工并且选了公司 
+            //管理员和分总都是只能看到自己角色的公司 或者 员工并且选了公司 
             if (UserInfo.RoleType != (int)RoleType.Staff || (UserInfo.RoleType == (int)RoleType.Staff && sm.CompanyId.HasValue))
             {
                 sql += " and b.CompanyId in ("+UserInfo.CompanyIds+") ";
@@ -122,16 +122,25 @@ where 1=1 ";
            var result= DapperHelper.SqlExecute(sql, new {Id,ApproveStatus,Message });
            if (result>0)
            {
-               var ApproveHistory = new EM_ExpenseAccount_ApproveHistory() { 
-                   ExpenseAccountId = Id,
-                   Status = ApproveStatus,
-                   FailReason = Message,
-                   Creater = UserName,
-                   Modifier = UserName, 
-                   CreateDate = DateTime.Now, 
-                   ModifyDate = DateTime.Now };
-               ApproveHistory.FailReason = ApproveHistory.FailReason ?? "";
-               DapperHelper.SqlExecute(@"INSERT INTO EM_ExpenseAccount_ApproveHistory
+               AddApproveHistory(Id, ApproveStatus, Message, UserName);
+           }
+           return result;
+        }
+
+        public void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName)
+        {
+            var ApproveHistory = new EM_ExpenseAccount_ApproveHistory()
+            {
+                ExpenseAccountId = Id,
+                Status = ApproveStatus,
+                FailReason = Message,
+                Creater = UserName,
+                Modifier = UserName,
+                CreateDate = DateTime.Now,
+                ModifyDate = DateTime.Now
+            };
+            ApproveHistory.FailReason = ApproveHistory.FailReason ?? "";
+            DapperHelper.SqlExecute(@"INSERT INTO EM_ExpenseAccount_ApproveHistory
            (ExpenseAccountId
            ,Status
            ,FailReason
@@ -147,8 +156,6 @@ where 1=1 ";
            ,@Modifier
            ,@CreateDate
            ,@ModifyDate)", ApproveHistory);
-           }
-           return result;
         }
     }
 
@@ -161,7 +168,14 @@ where 1=1 ";
 
 
         int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName);
-
+        /// <summary>
+        /// 添加变更记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="ApproveStatus"></param>
+        /// <param name="Message"></param>
+        /// <param name="UserName"></param>
+        void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName);
    
     }
 }

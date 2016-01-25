@@ -23,6 +23,14 @@
         @Html.TextBoxFor(o => o.KPIValue, new { @class = "required" }) 万元
     </label>
     <label>
+        <span>公司类型 :</span>
+        @Html.DropDownListFor(o => o.CompanyType, (SelectList)ViewBag.CompanyTypeList, new { @class = "required" })
+    </label>
+    <label>
+        <span>行政公司 :</span>
+        @Html.DropDownListFor(o => o.ParentCompanyId, (SelectList)ViewBag.ParentCompanyIdList)
+    </label>
+    <label>
         <span>通知对象 :</span>
         @Html.DropDownListFor(o => o.InformUserId, (SelectList)ViewBag.UserList, new { @class = "required" })
     </label>

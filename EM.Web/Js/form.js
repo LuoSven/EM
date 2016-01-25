@@ -137,7 +137,8 @@ Global.Form.GetKeyWords = function (content) {
     //抓取关键词算法
     content.split("。")
 }
-Global.Form.AutoTextarea = function () {
+Global.Form.Auto3
+Textarea = function () {
     $("textarea").each(function () {
         var t = this.scrollHeight + "px";
         this.style.height = t;
@@ -154,9 +155,11 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb) {
             data: FormJqOb.serialize(),
             success: function (a) {
                 TargetJqOb.html(a)
+                //要重新绑定全选事件
+                Global.Table.Init();
             },
-            error: function (a, b, c) {
-                Global.Log(a);
+            error: function (a, b, c) { 
+                Global.Log(a.responseText);
                 Global.Log(b);
                 Global.Log(c);
                 alert("服务器发生错误，请联系工作人员")
@@ -165,7 +168,12 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb) {
             }
         })
         return false;
-    })
+    });
+    $("select", FormJqOb).each(function () {
+        $(this).change(function () {
+            FormJqOb.submit();
+        })
+    });
 }
 Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
     var alert = Global.Utils.ShowMessage
@@ -305,6 +313,52 @@ Global.Form.Confirm = function (url, ob, isComfirm,message) {
         })
     }
 }
+Global.Form.Confirms = function (url, tableJqOb, message,beforeCheck) {
+    var alert = Global.Utils.ShowMessage;
+    var Message = "当前选中了{length}项，确认" + message+"?";
+    var Ids = tableJqOb.selectedVals();
+    if (Ids.length == 0)
+    {
+        alert("未选中任何项！");
+        return
+    }
+    if (beforeCheck != undefined)
+    {
+        var messageCheck = beforeCheck.call(tableJqOb,url)
+        if (messageCheck != "")
+        {
+            alert(messageCheck);
+            return;
+        }
+        
+    } else
+    {
+        alert("请先完善数据验证！");
+        return
+    }
+   
+    Message = Message.format({ length: Ids.length});
+    if (confirm(Message))
+    {
+        var ajaxConfig = {
+            url: url,
+            data: { Ids: Ids.join(",") },
+            success: function (a) {
+                if (typeof a == "string")
+                    a = JSON.parse(a)
+                if (!a.code)
+                    alert(a.message)
+                $("form").submit();
+            }
+        }
+        Global.Log(ajaxConfig);
+        
+        $.ajax(ajaxConfig)
+    }
+  
+
+}
+
 Global.Form.FilterAction=function(actions)
 {
     console.log(actions)

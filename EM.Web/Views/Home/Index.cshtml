@@ -16,7 +16,7 @@
         {
             <li>
                 <a class="wp100 fl size18 fL40 pl25">@Menu.Name</a>
-                <ul class="">
+                <ul class="hidden">
                     @foreach (var program in Menu.Items)
                     {
                         <li>
@@ -27,7 +27,7 @@
                                     <i class="count">@program.Count</i>
                                 }
                             </a>
-                    </li>
+                        </li>
                     }
                 </ul>
             </li>

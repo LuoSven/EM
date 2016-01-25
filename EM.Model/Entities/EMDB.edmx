@@ -21,7 +21,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="KPIPercent" Type="decimal" Precision="10" Scale="6" />
           <Property Name="KPIValue" Type="decimal" Precision="18" Scale="6" />
@@ -31,6 +31,8 @@
           <Property Name="Creater" Type="nvarchar" MaxLength="50" />
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" />
           <Property Name="InformUserId" Type="int" />
+          <Property Name="CompanyType" Type="int" />
+          <Property Name="ParentCompanyId" Type="int" />
         </EntityType>
         <EntityType Name="EM_Company_Limit">
           <Key>
@@ -78,6 +80,7 @@
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ApproveStatus" Type="int" Nullable="false" />
           <Property Name="RefusedMessage" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsPublic" Type="bit" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_ApproveHistory">
           <Key>
@@ -277,7 +280,6 @@
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" />
           <EntitySet Name="EM_System_Program" EntityType="EMDBModel.EM_System_Program" />
           <EntitySet Name="EM_Charge_Cate" EntityType="EMDBModel.EM_Charge_Cate" />
-          <EntitySet Name="EM_Company" EntityType="EMDBModel.EM_Company" />
           <EntitySet Name="EM_Company_Performance" EntityType="EMDBModel.EM_Company_Performance" />
           <EntitySet Name="EM_ExpenseAccount" EntityType="EMDBModel.EM_ExpenseAccount" />
           <EntitySet Name="EM_System_ActionLog" EntityType="EMDBModel.EM_System_ActionLog" />
@@ -291,6 +293,7 @@
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
+          <EntitySet Name="EM_Company" EntityType="EMDBModel.EM_Company" />
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -319,21 +322,6 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="RoleTypes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="EM_Company">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="KPIPercent" Type="Decimal" Precision="10" Scale="6" />
-          <Property Name="KPIValue" Type="Decimal" Precision="18" Scale="6" />
-          <Property Name="IsDelete" Type="Boolean" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InformUserId" Type="Int32" />
         </EntityType>
         <EntityType Name="EM_Company_Performance">
           <Key>
@@ -367,6 +355,7 @@
           <Property Name="SumMoney" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="ApproveStatus" Type="Int32" Nullable="false" />
           <Property Name="RefusedMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsPublic" Type="Boolean" />
         </EntityType>
         <EntityType Name="EM_System_ActionLog">
           <Key>
@@ -474,6 +463,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EM_Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="KPIPercent" Type="Decimal" Precision="10" Scale="6" />
+          <Property Name="KPIValue" Type="Decimal" Precision="18" Scale="6" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Modifier" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InformUserId" Type="Int32" />
+          <Property Name="CompanyType" Type="Int32" />
+          <Property Name="ParentCompanyId" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -536,22 +542,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EM_Company">
-            <EntityTypeMapping TypeName="EMDBModel.EM_Company">
-              <MappingFragment StoreEntitySet="EM_Company">
-                <ScalarProperty Name="InformUserId" ColumnName="InformUserId" />
-                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
-                <ScalarProperty Name="Creater" ColumnName="Creater" />
-                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
-                <ScalarProperty Name="KPIValue" ColumnName="KPIValue" />
-                <ScalarProperty Name="KPIPercent" ColumnName="KPIPercent" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EM_Company_Performance">
             <EntityTypeMapping TypeName="EMDBModel.EM_Company_Performance">
               <MappingFragment StoreEntitySet="EM_Company_Performance">
@@ -569,6 +559,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RefusedMessage" ColumnName="RefusedMessage" />
                 <ScalarProperty Name="ApproveStatus" ColumnName="ApproveStatus" />
                 <ScalarProperty Name="SumMoney" ColumnName="SumMoney" />
@@ -681,6 +672,24 @@
                 <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_Company">
+            <EntityTypeMapping TypeName="EMDBModel.EM_Company">
+              <MappingFragment StoreEntitySet="EM_Company">
+                <ScalarProperty Name="ParentCompanyId" ColumnName="ParentCompanyId" />
+                <ScalarProperty Name="CompanyType" ColumnName="CompanyType" />
+                <ScalarProperty Name="InformUserId" ColumnName="InformUserId" />
+                <ScalarProperty Name="Modifier" ColumnName="Modifier" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="KPIValue" ColumnName="KPIValue" />
+                <ScalarProperty Name="KPIPercent" ColumnName="KPIPercent" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

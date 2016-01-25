@@ -101,9 +101,11 @@
     <Compile Include="Entities\EM_User_Role.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SMs\AdminWelcomeSM.cs" />
     <Compile Include="SMs\CompanyCateLimitSM.cs" />
     <Compile Include="SMs\CompanyLimitSM.cs" />
     <Compile Include="SMs\CompanyPerformanceSM.cs" />
+    <Compile Include="VMs\CompanyCateLimitVM.cs" />
     <Compile Include="VMs\CompanyManagerWelcomeVM.cs" />
     <Compile Include="VMs\CompanyLimitVM.cs" />
     <Compile Include="VMs\CompanyPerformanceVM.cs" />

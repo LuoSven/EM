@@ -8,7 +8,6 @@
 @{
     var Title = Model.Id == 0 ? "新增报销单" : "编辑报销单";
     var action = Model.Id == 0 ? "Add" : "Edit";
-    var IsPublic = Model.EANumber!=null&&Model.EANumber.Contains("对公") ? "checked" : "";
 }
 @model EM_ExpenseAccount
 <form method="post" data-role="form" action="@action" data-url="" data-beforesave="BeforeSave" data-success="SuccessFunction" class="basic-grey">
@@ -19,7 +18,8 @@
     @Html.HiddenFor(o => o.Id)
     <label>
         <span>报销单号 :</span>
-        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })<a class="checkTitle">对公</a><input type="checkbox" @IsPublic id="IsPublic" />
+        @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })
+        <a class="checkTitle">对公</a> @Html.CheckBox("IsPublic",Model.IsPublic.HasValue&&Model.IsPublic.Value?true:false, new { id = "IsPublic" })
     </label>
     <label>
         <span>申请日期 :</span>

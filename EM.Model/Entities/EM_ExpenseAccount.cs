@@ -29,5 +29,6 @@ namespace EM.Model.Entities
         public decimal SumMoney { get; set; }
         public int ApproveStatus { get; set; }
         public string RefusedMessage { get; set; }
+        public Nullable<bool> IsPublic { get; set; }
     }
 }

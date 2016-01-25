@@ -19,6 +19,8 @@ AjaxPager.Bind = function () {
                             $("#" + pager.target).html(a)
                             AjaxPager.Bind();
                             window.scrollTo(0, 0);
+                            //绑定报表全选事件
+                            Global.Table.Init();
                         }
                     })
                     return false;

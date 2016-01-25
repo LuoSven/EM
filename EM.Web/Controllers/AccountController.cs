@@ -30,8 +30,8 @@ namespace EM.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if(ViewHelp.GetUserId()!=0)
-                return RedirectToLocal(returnUrl);
+            //if(ViewHelp.GetUserId()!=0)
+            //    return RedirectToLocal(returnUrl);
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

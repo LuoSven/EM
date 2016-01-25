@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "WelCome";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@section Css{
+    <link rel="stylesheet" href="~/Css/Programs/CompanyMHome.css" />
+}
+<div class="wp100 peiField">
+    <div class="peiTitle mb5 wp100 taR p5">
+        <form id="searchChart">
+            <div class="EACount fl size14 mt5 ml10">
+                已确认报销单：<span id="CostCount" class="pr10 size16"></span>
+                确认中:<span id="ExpectCount" class="pl5 size16"></span>
+                @*当前颜色<span id="Color"></span>*@
+            </div>
+            <input type="text" class="datepicker hidden" id="SDate" name="SDate" value="@DateTime.Now.AddDays(-90).ToString("yyyy/MM/dd")" placeholder="开始日期">
+            <input type="text" class="datepicker hidden" id="EDate" name="EDate" value="@DateTime.Now.ToString("yyyy/MM/dd")" placeholder="结束日期">
+            <select data-value="0" class="dateselecter hidden"> </select>
+            <button type="button" onclick="SubmitForm()">刷新</button>
+        </form>
+    </div>
+    <div class="lineContent ">
+        <div id="lineChart" class=" hp100">
+
+        </div>
+    </div>
+    <div class="peiContent ">
+        <div id="peiChart" class=" hp100">
+
+        </div>
+    </div>
+</div>
+<div>
+
+</div>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="~/Js/Program/CompanyMHome.js"></script>
+<script>
+    $(function () {
+        SubmitForm();
+
+    })
+    var SubmitForm = function () {
+        $.ajax({
+            url: "@Url.Action("GetCompanyLimit")",
+            data: $("#searchChart").serialize(),
+            success: function (a) {
+                CompanyCateLimits = a.CompanyCateLimits;
+                var CostCount = 0;
+                var ExpectCount = 0;
+                $(CompanyCateLimits).each(function () {
+                    CostCount += this.DateDetails.length;
+                    ExpectCount += this.ExpectDateDetails.length;
+                })
+                $("#CostCount").html(CostCount + "笔");
+                $("#ExpectCount").html(ExpectCount + "笔");
+                var barLimitChart = new BarLimitChart($("#peiChart"), a.CompanyCateLimits);
+                barLimitChart.Init();
+                var barPerformanceChart = new BarPerformanceChart($("#lineChart")[0], a.Performance)
+                barPerformanceChart.Init();
+            }
+
+        })
+    }
+</script>

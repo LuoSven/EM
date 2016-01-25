@@ -140,6 +140,35 @@ Global.Expand = function () {
     Array.prototype.last = function () {
         return this[this.length - 1];
     }
+    //
+    Array.prototype.removeIndex = function (dx) {
+        if (isNaN(dx) || dx > this.length) { return false; }
+        for (var i = 0, n = 0; i < this.length; i++) {
+            if (this[i] != this[dx]) {
+                this[n++] = this[i]
+            }
+        }
+        this.length -= 1
+    }
+    Array.prototype.remove = function (ob) {
+        this.removeIndex(this.indexOf(ob));
+        return this;
+    }
+    //根据jq对象返回对象的属性列表
+    Array.prototype.attrs = function (attr) {
+        var attrs = [];
+        for (var i = 0; i < this.length; i++)
+        {
+            var jqobject = $(this[i]);
+            var prop=jqobject.attr(attr);
+            if(prop!=undefined)
+            {
+                attrs.push(prop)
+            }
+
+        }
+        return attrs;
+    }
     //为num加上变成百分比的方法
     Number.prototype.toPercent = function () {
         return (Math.round(this * 10000) / 100).toFixed(2) + '%';
@@ -265,6 +294,19 @@ Global.Expand = function () {
             });
             return serializeObj;
         };
+        $.fn.attrs = function (attr) {
+            var attrs = [];
+            for (var i = 0; i < this.length; i++) {
+                var jqobject = $(this[i]);
+                var prop = jqobject.attr(attr);
+                if (prop != undefined) {
+                    attrs.push(prop)
+                }
+
+            }
+            return attrs
+        };
+  
     })(jQuery);
 }
 Global.UiBlockAll = function () {

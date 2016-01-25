@@ -59,6 +59,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> FailApproved(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
         {
             Sm.CompanyIds = ViewHelp.GetCompanyIds();
+            if (!Request.IsAjaxRequest())
             Sm.ApproveStatus =(int)ExpenseAccountApproveStatus.FailApproved;
             var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
             var Vms = new PagedResult<ExpenseAccountListVM>()
@@ -79,6 +80,8 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> ApproveIndex(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
         {
+            if (!Request.IsAjaxRequest())
+                Sm.ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove;
             Sm.CompanyIds = ViewHelp.GetCompanyIds();
             var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize,true);
             var Vms = new PagedResult<ExpenseAccountListVM>()
@@ -92,7 +95,7 @@ namespace EM.Web.Controllers
             Vms.Results = Mapper.Map<IList<ExpenseAccountListDTO>, IList<ExpenseAccountListVM>>(Dtos.Results);
             if (Request.IsAjaxRequest())
                 return PartialView("_ApproveList", Vms);
-            InitSearchSelect(true);
+            InitSearchSelect(true, Sm.ApproveStatus.Value);
             return View(Vms);
         }
         [Description("新增报销单")]
@@ -118,6 +121,8 @@ namespace EM.Web.Controllers
             model.Modifier = ViewHelp.GetUserName();
             expenseAccountRepo.Add(model);
             var result = expenseAccountRepo.SaveChanges();
+                //添加状态变更记录
+            expenseAccountRepo.AddApproveHistory(model.Id,model.ApproveStatus,"",ViewHelp.GetUserName());
             if (result > 0)
             {
                 //更新单身
@@ -151,6 +156,8 @@ namespace EM.Web.Controllers
             entity.ModifyDate = DateTime.Now;
             entity.Modifier = ViewHelp.GetUserName();
             var result = expenseAccountRepo.SaveChanges();
+            //添加状态变更记录
+            expenseAccountRepo.AddApproveHistory(model.Id, model.ApproveStatus, "", ViewHelp.GetUserName());
             if (result > 0)
             {
                 //更新单身
@@ -163,23 +170,7 @@ namespace EM.Web.Controllers
                 return Json(new { code = 0, message = "保存失败，请重试" });
         }
 
-        [Description("删除报销单")]
-        [ActionType(RightType.Form, "Index")]
-        public async Task<ActionResult> Delete(int Id)
-        {
-            var model = expenseAccountRepo.GetById(Id);
-            if (model == null)
-            {
-                return Json(new { code = 0, message = "报销单不存在！" }, JsonRequestBehavior.AllowGet);
-            }
-            expenseAccountRepo.Delete(model);
-            if (expenseAccountRepo.SaveChanges() > 0)
-            {
-                Log(model);
-                return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);
-        }
+
 
 
         [Description("查看报销单")]
@@ -262,31 +253,114 @@ namespace EM.Web.Controllers
             return View(Vm);
         }
 
+        #endregion
+
+
+        #region 表单操作
+        [Description("删除报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> Delete(int Id)
+        {
+            var model = expenseAccountRepo.GetById(Id);
+            if (model == null)
+            {
+                return Json(new { code = 0, message = "报销单不存在！" }, JsonRequestBehavior.AllowGet);
+            }
+            expenseAccountRepo.Delete(model);
+            if (expenseAccountRepo.SaveChanges() > 0)
+            {
+                Log(model);
+                return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);
+        }
 
         [Description("审核报销单")]
-        [ActionType(RightType.Form, "Index")]
-        public async Task<ActionResult> UpdataApproveStatus(int Id,int ApproveStatus,string Message )
+        [ActionType(RightType.Form, "ApproveIndex")]
+        public async Task<ActionResult> UpdataApproveStatus(int Id, int ApproveStatus, string Message)
         {
-          
+
             var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
             //发送
-            return Json(new { code=1},JsonRequestBehavior.AllowGet);
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
 
         [Description("提交报销单")]
         [ActionType(RightType.Form, "Index")]
-        public async Task<ActionResult> SumbitExpenseAccount(int Id, int ApproveStatus, string Message)
+        public async Task<ActionResult> SumbitExpenseAccount(int Id)
         {
 
-            var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            var result = expenseAccountRepo.UpdataApproveStatus(Id, (int)ExpenseAccountApproveStatus.WaitingApprove, "", ViewHelp.GetUserName());
             return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
+
         [Description("撤销报销单")]
         [ActionType(RightType.Form, "Index")]
-        public async Task<ActionResult> CancelExpenseAccount(int Id, int ApproveStatus, string Message)
+        public async Task<ActionResult> CancelExpenseAccount(int Id)
         {
 
-            var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            var result = expenseAccountRepo.UpdataApproveStatus(Id,(int) ExpenseAccountApproveStatus.Created, "", ViewHelp.GetUserName());
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+      
+        #region 批量操作
+        [Description("批量删除报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> Deletes(string  Ids)
+        {
+            var IdsInt = Ids.ToInts();
+            foreach (var Id in IdsInt)
+            {
+                var model = expenseAccountRepo.GetById(Id);
+                if (model == null)
+                {
+                    return Json(new { code = 0, message = "报销单不存在！,单据号" + model.EANumber }, JsonRequestBehavior.AllowGet);
+                }
+                expenseAccountRepo.Delete(model);
+                if (expenseAccountRepo.SaveChanges() > 0)
+                {
+                    Log(model);
+                }
+            }
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        [Description("批量审核报销单")]
+        [ActionType(RightType.Form, "ApproveIndex")]
+        public async Task<ActionResult> UpdataApproveStatuss(string Ids, int ApproveStatus, string Message)
+        {
+            var IdsInt = Ids.ToInts();
+            foreach (var Id in IdsInt)
+            { 
+              var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            }
+            //发送
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Description("批量提交报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> SumbitExpenseAccounts(string Ids)
+        {
+            var IdsInt = Ids.ToInts();
+            foreach (var Id in IdsInt)
+            {
+             var result = expenseAccountRepo.UpdataApproveStatus(Id,(int) ExpenseAccountApproveStatus.WaitingApprove, "", ViewHelp.GetUserName());
+            }
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Description("批量撤销报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> CancelExpenseAccounts(string Ids)
+        {
+            var IdsInt = Ids.ToInts();
+            foreach (var Id in IdsInt)
+            {
+                var result = expenseAccountRepo.UpdataApproveStatus(Id,(int) ExpenseAccountApproveStatus.Created, "", ViewHelp.GetUserName());
+            }
             return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
         #endregion

@@ -8,16 +8,10 @@
 @model PagedResult<ExpenseAccountListVM>
 <div class="SearchFrom">
     <form id="SearchForm" action="@Url.Action("Index", "ExpenseAccount")">
-        <input type="text" name="EANumber" value="" placeholder="单号">
-        <input type="text" name="Name" value="" placeholder="报销人">
-        <input type="text" name="CompanyID" value="" placeholder="公司名称">
-        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "请选择")
-        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "请选择")
-        @Html.DropDownList("DateType", (SelectList)ViewBag.DateTypeList, "请选择")
-        @Html.DropDownList("ApproveStatus", (SelectList)ViewBag.ApproveStatusList, "请选择")
-        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
-        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
-        <button class="searchButton" type="submit">搜索</button>
+        <button class="searchButton" data-commond="deletes" onclick="Global.Form.Confirms('@Url.Action("Deletes")',$('table'),'批量删除报销单',MultiCheck)" type="button">删除</button>
+        <button class="searchButton" data-commond="sumbitexpenseaccounts" onclick="Global.Form.Confirms('@Url.Action("SumbitExpenseAccounts")',$('table'),'批量提交报销单',MultiCheck)" type="button">提交</button>
+        <button class="searchButton" data-commond="cancelexpenseaccounts" onclick="Global.Form.Confirms('@Url.Action("CancelExpenseAccounts")',$('table'),'批量撤销报销单',MultiCheck)" type="button">撤销</button>
+        @Html.Partial("_SM")
     </form>
 
 </div>
@@ -25,3 +19,7 @@
 <div id="List">
     @Html.Partial("_List", Model)
 </div>
+@section Js
+{
+    <script src="~/Js/Program/ExpenseAccount.js"></script>}
+

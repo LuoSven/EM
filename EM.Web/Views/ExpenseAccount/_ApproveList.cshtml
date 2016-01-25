@@ -6,6 +6,8 @@
 <table class="table table-hover">
     <thead>
         <tr>
+
+            <th class="w20 taL"><input type="checkbox" id="selectAll" /></th>
             <th class="w150">单号</th>
             <th class="w70 taR">报销人</th>
             <th class=" taR">公司名称</th>
@@ -22,7 +24,8 @@
     <tbody>
         @foreach (var EA in Model.Results)
         {
-            <tr data-id="@EA.Id" >
+            <tr data-id="@EA.Id" data-status="@EA.ApproveStatus">
+                <td class="w20 taL"><input type="checkbox" /></td>
                 <td>
                     @EA.EANumber
                 </td>
@@ -30,16 +33,16 @@
                     @EA.Name
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CompanyName)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CompanyName)))
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CateName)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CateName)))
                 </td>
                 <td class="taR">
                     @Html.Raw(string.Join("<br>", EA.List.Select(o => o.OccurDate.ToShortDateString())))
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.Money)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.Money)))
                 </td>
                 <td class="taR">
                     @EA.SumMoney
@@ -52,6 +55,7 @@
                 </td>
                 <td class="taR pRel">
                     <a href="javascript:;" onclick="ShowApproveHistory(this,true)" class="showApprove">@EA.ApproveStatusName</a>
+
                     @if (EA.ApproveList != null && EA.ApproveList.Count > 0)
                     {
                         <div class="approveHistory hidden  pAbs pr5 cDDD bcFFF bra5 w300">

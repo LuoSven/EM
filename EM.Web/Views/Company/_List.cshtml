@@ -23,7 +23,7 @@
                     @company.CompanyName
                 </td>
                 <td class="taR">
-                     @(company.KPIPercent.Value.ToString("f2"))%
+                     @((company.KPIPercent.Value*100).ToString("f2"))%
                 </td>
                 <td class="taR">
                      @((company.KPIValue/10000).Value.ToString("f0"))

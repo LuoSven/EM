@@ -27,6 +27,7 @@
     <script src="~/Js/Third/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
     <script src="~/Js/common.js" type="text/javascript"></script>
     <script src="~/Js/form.js" type="text/javascript"></script>
+    <script src="~/Js/table.js" type="text/javascript"></script>
     <script src="~/Js/Third/layer-v2.0/layer/layer.js" type="text/javascript"></script>
     <script src="~/Js/jquery.validate.js" type="text/javascript"></script>
     <script src="~/Js/jquery.validate.messages_cn.js" type="text/javascript"></script>
@@ -36,6 +37,7 @@
         Global.Init = function () {
             Global.Form.Init();
             Global.Form.FilterAction(@ViewBag.actionOb);
+            Global.Table.Init();
         }
 
         $(function () {

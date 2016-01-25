@@ -5,6 +5,7 @@
 @using EM.Model.Entities;
 @using EM.Model.DTOs;
 @using EM.Common;
+@using EM;
 @{
    
 }
@@ -19,6 +20,7 @@
     <label>
         <span>当前状态 :</span>
         <span class="view">@Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription() ： @Model.RefusedMessage</span>
+        <a class="checkTitle">对公</a> @Html.CheckBox("IsPublic", Model.IsPublic.HasValue && Model.IsPublic.Value ? true : false, new { id = "IsPublic",@readonly="readonly" })
     </label>
     <label>
         <span>报销单号 :</span>

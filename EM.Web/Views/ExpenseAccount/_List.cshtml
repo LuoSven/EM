@@ -6,6 +6,8 @@
 <table class="table table-hover">
     <thead>
         <tr>
+
+            <th class="w20 taL"><input type="checkbox" id="selectAll" /></th>
             <th class="w150">单号</th>
             <th class="w80 taR">报销人</th>
             <th class=" taR">公司名称</th>
@@ -22,7 +24,8 @@
     <tbody>
         @foreach (var EA in Model.Results)
         {
-            <tr data-id="@EA.Id" >
+            <tr data-id="@EA.Id" data-status="@EA.ApproveStatus">
+                <td class="w20 taL"><input type="checkbox" /></td>
                 <td>
                     @EA.EANumber
                 </td>
@@ -30,19 +33,19 @@
                     @EA.Name
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CompanyName)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CompanyName)))
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.CateName)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CateName)))
                 </td>
                 <td class="taR">
                     @Html.Raw(string.Join("<br>", EA.List.Select(o => o.OccurDate.ToShortDateString())))
                 </td>
                 <td class="taR">
-                    @Html.Raw(string.Join("<br>",EA.List.Select(o=>o.Money)))
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.Money)))
                 </td>
                 <td class="taR">
-                    @(EA.List.Sum(o=>o.Money))
+                    @(EA.List.Sum(o => o.Money))
                 </td>
                 <td class="taR">
                     @EA.ApplyDate.ToShortDateString()
@@ -58,11 +61,11 @@
                     {
                         <a data-commond="edit" onclick="Global.Form.NewIframe('编辑报销单','editexpenseaccount_@(EA.Id)','@Url.Action("Edit", new { id=EA.Id })')">编辑</a>
                         <a data-commond="delete" onclick="Global.Form.Delete('@Url.Action("Delete", new {Id=EA.Id })',this,false)">删除</a>
-                        <a data-commond="sumbitexpenseaccount" onclick="Global.Form.Confirm('@Url.Action("SumbitExpenseAccount", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove })',this,false,'提交')">提交</a>
+                        <a data-commond="sumbitexpenseaccount" onclick="Global.Form.Confirm('@Url.Action("SumbitExpenseAccount", new { Id = EA.Id })',this,false,'提交')">提交</a>
                     }
                     else if (EA.ApproveStatus == (int)ExpenseAccountApproveStatus.WaitingApprove)
                     {
-                        <a data-commond="cancelexpenseaccount" onclick="Global.Form.Confirm('@Url.Action("CancelExpenseAccount", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.Created })',this,false,'撤销')">撤销</a>
+                        <a data-commond="cancelexpenseaccount" onclick="Global.Form.Confirm('@Url.Action("CancelExpenseAccount", new { Id = EA.Id})',this,false,'撤销')">撤销</a>
                     }
                     <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id=EA.Id })')">查看</a>
                 </td>

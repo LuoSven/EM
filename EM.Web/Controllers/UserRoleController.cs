@@ -63,7 +63,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(int Id)
         {
             var model = userRoleRepo.GetById(Id);
-            InitSelect(model.RoleType);
+            InitSelect(model.RoleType, model.CompanyIds);
             InitBody(Id,model.CompanyIds);
             return View("AddOrEdit", model);
         }
@@ -124,9 +124,20 @@ namespace EM.Web.Controllers
             return Json(new { code = 1, message = messageAll }, JsonRequestBehavior.AllowGet);
         }
 
-        private void InitSelect(int roleType=0)
+        private void InitSelect(int roleType = 0, string CompanyIds = "")
         {
-            ViewBag.CompanyList = new SelectList(CompanyRepo.GetList(),"Key","Value");
+            var List=CompanyRepo.GetList();
+            if (CompanyIds != "")
+            {
+                var  ids = CompanyIds.Split(',');
+                var ListTemp =new List<KeyValueVM>();
+                foreach (var CompanyId in  List.Where(o => !CompanyIds.Contains(o.Key)))
+                {
+                    ListTemp.Add(CompanyId);
+                }
+                List = ListTemp;
+            }
+            ViewBag.CompanySelect = new SelectList(List, "Key", "Value");
             ViewBag.RoleTypeList = new SelectList(RoleType.Admin.GetEnumList(), "Key", "Value", roleType);
 
             

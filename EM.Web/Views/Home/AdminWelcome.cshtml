@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "AdminWelcome";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs
+@using EM.Common;
+@using EM.Data.Infrastructure;
+@model PagedResult<CompanyCateLimitVM>
+<div class="SearchFrom">
+    <form id="SearchForm" action="@Url.Action("AdminWelcome", "Home")">
+        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
+        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "分类")
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_List", Model)
+</div>
