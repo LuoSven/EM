@@ -7,7 +7,7 @@
 @model List<CompanyLimitVM>
 @{
 }
-<div class="SearchFrom">
+<div class="SearchForm">
     <form id="SearchForm" action="@Url.Action("Index", "CompanyLimit")">
         @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "请选择")
         @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "请选择")

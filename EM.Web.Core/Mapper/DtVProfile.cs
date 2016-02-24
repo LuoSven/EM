@@ -76,6 +76,14 @@ namespace EM.Web.Core
             .ForMember(o => o.CreateDate, s => s.Ignore());
 
 
+            Mapper.CreateMap<ExpenseAccountMonthCateDTO, ExpenseAccountMonthCateVM>();
+
+            Mapper.CreateMap<ExpenseAccountExcelDTO, ExpenseAccountExcelVM>();
+
+            Mapper.CreateMap<KeyValuePair<string, string>, KeyValueVM>()
+            .ForMember(o => o.Key, s => s.MapFrom(sm => sm.Key))
+            .ForMember(o => o.Value, s => s.MapFrom(sm => sm.Value))
+            ;
 
         }
     }

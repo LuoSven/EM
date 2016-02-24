@@ -32,6 +32,7 @@ namespace EM.Web.Controllers
         {
             //if(ViewHelp.GetUserId()!=0)
             //    return RedirectToLocal(returnUrl);
+            CookieHelper.DeleteCookie(StaticKey.CookieAccountKey);
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -51,7 +52,7 @@ namespace EM.Web.Controllers
                  if (string.IsNullOrEmpty(result.Message))
                  {
                       var acconutCookieE = result.SetCookie();
-                     CookieHelper.WriteCookie(StaticKey.CookieAccountKey, acconutCookieE, model.RememberMe);
+                     CookieHelper.WriteCookie(StaticKey.CookieAccountKey, acconutCookieE, false);
                      if(result.SystemIds==null||result.SystemIds.Count==0)
                          return RedirectToAction("INDEX/ZJ","Home");
                      if (result.SystemIds.Count > 1)

@@ -21,7 +21,7 @@ namespace EM.Model.DTOs
         {
             get
             {
-                return TotalLimit == 0 ? 0 : TotalLimit - (TotalCost + ExpectTotalCost);
+                return TotalLimit - TotalCost;
             }
         }
 

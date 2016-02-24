@@ -3,6 +3,9 @@
 <head>
     @using EM.Common;
     @using EM.Web.Core;
+    @{
+      var SystemName = ViewHelp.GetUserName() == "李邓馨" ? "老婆" : "浙江区";
+    }
     <!-- 避免IE使用兼容模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -28,6 +31,7 @@
 <body>
     <div class="header m10  p10 pl30 ">
         <a>浙江区财务系统</a>
+        
         @Html.Partial("_LoginPartial")
     </div>
     <div class="body m10">
@@ -35,7 +39,7 @@
         @RenderBody()
     </div>
     <div class="footer">
-        <p>&copy; 2015 - 老婆的报销系统</p>
+        <p>&copy; 2015 - @(SystemName)报销系统</p>
     </div>
     @*<div id="loader_container"  style="display:none"><div id="loader"><div align="center">页面加载中，请稍候……</div><div id="loader_bg"><div id="progress"> </div></div></div></div>*@
 
@@ -97,12 +101,12 @@
             })
             $breadcrumb.html(BeginBreadcrumb);
             @{
-                if (ViewHelp.GetRoleType() == (int)RoleType.Staff)
+                if (ViewHelp.GetRoleType() == (int)RoleType.Staff || ViewHelp.GetRoleType() == (int)RoleType.Area)
                 {
-                   @: Global.Iframe.OpenIframe("我的报销单", "expenseaccount_index", "expenseaccount/index", false, false);
+            @: Global.Iframe.OpenIframe("我的报销单", "expenseaccount_index", "expenseaccount/index", false, false);
                 }else
                 {
-                    @:Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
+                     @:Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
                 }
             }
         }

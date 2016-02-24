@@ -94,7 +94,7 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form)]
         public ActionResult UpdateSystemPrograms()
         {
-            var Programs = ViewHelp.GetAllActionByAssembly();
+            var Programs = ViewHelp.GetAllActionByAssembly(AppDomain.CurrentDomain.BaseDirectory+"\\bin");
             var messageAll = "";
             ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
             messageAll+=string.Format("共发现{0}个作业\r\n", Programs.Count);

@@ -358,7 +358,10 @@ Global.Form.Confirms = function (url, tableJqOb, message,beforeCheck) {
   
 
 }
-
+Global.Form.ToExcel=function(FormJqOb,url)
+{
+    location.href = url+"?" + FormJqOb.serialize();
+}
 Global.Form.FilterAction=function(actions)
 {
     console.log(actions)

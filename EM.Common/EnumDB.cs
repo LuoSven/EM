@@ -148,8 +148,10 @@ namespace EM.Common
         Admin=0,
         [Description("公司总经理")]
         CompanyManager,
-        [Description("员工")]
-        Staff
+        [Description("分公司录入员")]
+        Staff,
+        [Description("区域录入员")]
+        Area
     }
     /// <summary>
     /// 分类列表的使用来源
@@ -174,6 +176,18 @@ namespace EM.Common
         City,
         [Description("分公司")]
         Other
+    }
+
+
+    /// <summary>
+    /// 列表类型
+    /// </summary>
+    public enum ExcelRowType
+    {
+        H1 = 1,
+        H2,
+        H3,
+        B1
     }
     #endregion
 

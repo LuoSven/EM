@@ -10,6 +10,7 @@
             <th class="w20 taL"><input type="checkbox" id="selectAll" /></th>
             <th class="w150">单号</th>
             <th class="w70 taR">报销人</th>
+            <th class="w70 taR">录入人</th>
             <th class=" taR">公司名称</th>
             <th class="taR">费用大类</th>
             <th class="taR w80">报销日期</th>
@@ -31,6 +32,9 @@
                 </td>
                 <td class="taR">
                     @EA.Name
+                </td>
+                <td class="taR">
+                    @EA.Creater
                 </td>
                 <td class="taR">
                     @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CompanyName)))

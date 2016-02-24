@@ -69,6 +69,24 @@ namespace EM
             int.TryParse(e, out Id);
             return Id;
         }
+        /// <summary>
+        /// 获取月份名称，碰到1月就会返回年，主要是下拉和报表用
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        public static string GetMonthName(this DateTime e)
+        {
+            var MonthName="";
+            if (e.Month != 1)
+            {
+                MonthName = e.Month.ToString() + "月";
+            }
+            else
+            {
+                MonthName = e.Year + "年" + e.Month.ToString() + "月";
+            }
+            return MonthName;
+        }
         public static List<KeyValuePair<int, string>> GetEnumList(this object em)
         {
             var Type = em.GetType();

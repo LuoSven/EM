@@ -75,27 +75,33 @@
             var ob={};
             ob.id=id;
             ob.name=dr.find("td:eq(1)").html();
+            //先在选项中添加进去，然后再删除html
             $("#CompanySelect").append('<option value="{id}">{name}</option>'.format(ob))
+            //添加完毕后排序，按照id降序排，看起来舒服
             $('#CompanySelect option').sort(function(a,b){  
                 var aText = parseInt( a.value);  
                 var bText = parseInt( b.value);
-                if(aText>bText) return 1;  
-                if(aText<bText) return -1;  
+                if(aText>bText) return -1;  
+                if(aText<bText) return 1;  
                 return 0;  
             }).appendTo('#CompanySelect')
             dr.remove();
         }
+        //添加公司
         var  AddCompany=function(){
             var option=  $("#CompanySelect option:selected");
+            //判断是否有选项，否则到了没有还添加
             if(option.length>0){
                 var ob={};
                 ob.id=option.val();
                 ob.name=option.html();
                 var ids={};
+                //没有的项才插入，防止重复插入
                 if($("#CompanyList *[data-id="+ ob.id+"]").length==0)
                 {
-                    $("#AddRow").before('<tr data-id="{id}"><td>{id}</td><td>{name}</td><td><a onclick="DeleteCompany({id})">删除</a></td></tr>'.format(ob))
+                    $("#AddRow").after('<tr data-id="{id}"><td>{id}</td><td>{name}</td><td><a onclick="DeleteCompany({id})">删除</a></td></tr>'.format(ob))
                 }
+                //插入之后列表里面的值就删除
                 $("#CompanySelect option[value="+ob.id+"]").remove();
             }
             

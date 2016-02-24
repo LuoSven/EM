@@ -6,7 +6,7 @@
 @using EM.Common;
 @using EM.Data.Infrastructure;
 @model PagedResult<CompanyCateLimitVM>
-<div class="SearchFrom">
+<div class="SearchForm">
     <form id="SearchForm" action="@Url.Action("AdminWelcome", "Home")">
         @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
         @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "分类")
@@ -18,3 +18,15 @@
 <div id="List">
     @Html.Partial("_List", Model)
 </div>
+
+@section Js{
+    <script>
+        
+        var ShowRestDetail = function (ob) {
+            $(ob).next().removeClass('hidden',200)
+        }
+        var HiddenRestDetail = function (ob) {
+            $(ob).next().addClass('hidden')
+        }
+    </script>
+    }

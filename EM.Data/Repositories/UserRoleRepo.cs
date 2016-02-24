@@ -28,11 +28,15 @@ namespace EM.Data.Repositories
         }
         public List<UserRoleProgramDTO> GetPrograms(int RoleId=0)
         {
+           
+
             var sql = @"select c.Id,c.ActionDescription ,c.RightType,c.ControllerDescription,b.Permit from EM_User_Role a 
 join EM_User_Right b on b.RoleId=a.id
-join EM_System_Program c on c.Id=b.ProgramId ";
-            if (RoleId != 0)
-                sql += "where a.id=@RoleId";
+join EM_System_Program c on c.Id=b.ProgramId  where a.id=@RoleId";
+            if(RoleId==0)
+            {
+                sql = "select c.Id,c.ActionDescription ,c.RightType,c.ControllerDescription,0 as Permit from  EM_System_Program c";
+            }
             var list = DapperHelper.SqlQuery<UserRoleProgramDTO>(sql, new { RoleId = RoleId });
           return list.ToList();
         }

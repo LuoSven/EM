@@ -30,15 +30,15 @@ join EM_Company b on a.CompanyId=b.Id
 
             if (sm.CompanyId != 0)
             {
-                sql += "and a.CompanyId=@CompanyId";
+                sql += " and a.CompanyId=@CompanyId ";
             }
             if (sm.SDate.HasValue)
             {
-                sql += "and a.UploadDate>=@SDate";
+                sql += " and a.UploadDate>=@SDate ";
             }
             if (sm.EDate.HasValue)
             {
-                sql += "and a.UploadDate<=@EDate";
+                sql += " and a.UploadDate<=@EDate ";
             }
             var result = DapperHelper.SqlQuery<CompanyPerformanceDTO>(sql, sm).ToList();
             return result;

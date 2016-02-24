@@ -61,6 +61,7 @@ namespace EM.Web.Controllers
                 case RoleType.CompanyManager:
                     return RedirectToAction("CompanyManagerWelcome");
                 case RoleType.Staff:
+                case RoleType.Area:
                     return RedirectToAction("StaffWelcome");
             }
             return View();
@@ -123,9 +124,9 @@ namespace EM.Web.Controllers
             {
                 var Limit = companyLimitRepo.GetCompanysLimit(ViewHelp.GetCompanyIds(), Cate.Key.ToInt(), SDate, EDate);
                 model.CompanyCateLimits.Add(Limit);
-                model.Performance = companyLimitRepo.GetPerformance(ViewHelp.GetCompanyIds());
             }
 
+            model.Performance = companyLimitRepo.GetPerformance(ViewHelp.GetCompanyIds());
             return  Json(model,JsonRequestBehavior.AllowGet);
         }
 

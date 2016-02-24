@@ -7,42 +7,44 @@
 
 
 
-    <div class="loginContent pAbs p10  taC pt30 ">
+    <div class="loginContent   ">
+
+        <img src="/Images/Icons/Logo-Small.JPG" class="commonBC  pAbs">
         <div class="loginForm">
                
                     <form action="@Url.Action("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl })" method="post"   class="form-horizontal">
                         @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <div class="col-sm-12  ">
-                                <span class="size26">浙江区财务系统</span>
+                        <div class="form-group mb30">
+                            <div class="col-sm-offset-2 col-sm-8 fl">
+                                <span class="size26 fl c000">浙江区财务系统</span>
                             </div>
                         </div>                   
                              @Html.ValidationSummary(true)
-                        <div class="form-group">
-                            <label for="UserName" class="col-sm-2 control-label">账号</label>
+                        <div class="form-group mb20">
+                            <label for="UserName" class="col-sm-2 control-label c333">账号</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="UserName" id="UserName" placeholder="账号">
+                                <input type="text" class="form-control w200" name="UserName" id="UserName" placeholder="账号">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="Password" class="col-sm-2 control-label">密码</label>
+                        <div class="form-group mb20">
+                            <label for="Password" class="col-sm-2 control-label c333">密码</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" name="Password" id="Password" placeholder="密码">
+                                <input type="password" class="form-control w200" name="Password" id="Password" placeholder="密码">
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <div class="checkbox col-sm-offset-2 col-sm-8 taL">
                                 <label>
                                     @Html.CheckBoxFor(m => m.RememberMe)
                                     记住我
                                 </label>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-8">
-                                <button type="submit" class="form-control btn btn-default">登录</button>
+                                <button type="submit" class="form-control btn btn-default w200 fl">登录</button>
                             </div>
                         </div>
                     </form>

@@ -66,7 +66,7 @@ from EM_ExpenseAccount_Detail a
 join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
 where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select * from dbo.FC_GetChildCateIds(@CateId) )
 and a.OccurDate >@SDate and a.OccurDate<@EDate
-and b.ApproveStatus=4
+and b.ApproveStatus=4 and b.IsNotAccount <>1
 group by a.OccurDate", SM).ToList();
 
 
@@ -76,7 +76,7 @@ from EM_ExpenseAccount_Detail a
 join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
 where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select * from dbo.FC_GetChildCateIds(@CateId) )
 and a.OccurDate >@SDate and a.OccurDate<@EDate
-and b.ApproveStatus<>4
+and b.ApproveStatus<>4 and b.IsNotAccount <>1
 group by a.OccurDate", SM).ToList();
             //获取公司类型，获取绩效额度的时候不一样
             var NowCompanyType = DapperHelper.SqlQuery<int?>("select a.CompanyType from EM_Company a where a.Id=@CompanyId", SM).FirstOrDefault();
@@ -97,7 +97,7 @@ group by a.OccurDate", SM).ToList();
                         case (int)CompanyType.Other:  //汇总KPI额度
                             var KpiSum = GetPerformance(SM.CompanyId.ToString());
                             //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
-                            TotalLimit = Math.Round((KpiSum.FinishPerformance / (decimal)2010000) * 400000, 2); ;
+                            TotalLimit = Math.Round((KpiSum.FinishPerformance / (decimal)1900000) * 700000, 2); ;
                             break;
                         case (int)CompanyType.City:  //汇总KPI额度
                             //获取城市公司的子公司
@@ -165,7 +165,7 @@ group by a.OccurDate", SM).ToList();
         public CompanyPerformanceSumDTO GetPerformance(string CompanyIds)
         {
             var result = new CompanyPerformanceSumDTO();
-            var Performances = DapperHelper.SqlQuery<EM_Company_Performance>(string.Format(@"select SalesPerformance,UploadDate from EM_Company_Performance 
+            var Performances = DapperHelper.SqlQuery<EM_Company_Performance>(string.Format(@" select CompanyId,SalesPerformance,UploadDate from EM_Company_Performance 
   where CompanyId in ({0}) order by UploadDate ",CompanyIds)).ToList();
             var KPIValue = DapperHelper.SqlQuery<decimal>(string.Format(@"select Sum(KPIValue) from EM_Company 
   where Id in ({0}) ", CompanyIds)).FirstOrDefault();

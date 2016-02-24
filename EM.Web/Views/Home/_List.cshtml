@@ -8,15 +8,22 @@
 }
 <table class="table table-hover">
     <thead>
-        <tr>
-            <th class="w40 taC">公司</th>
+        <tr class="">
+            <th class="w100  taC">公司</th>
             @foreach (var Cate in Cates)
             {
-                <th class="w40 taC">@Cate.Value</th>
+                <th class="w100   taC">@Cate.Value</th>
             }
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td class="w100 taC"></td>
+            @foreach (var Cate in Cates)
+            {
+                <td class="w100 taC"></td>
+            }
+        </tr>
         @foreach (var CCVM in Model.Results)
         {
             <tr data-id="@CCVM.CompanyId">
@@ -25,8 +32,10 @@
                 </td>
                 @foreach (var CCl in CCVM.CompanyCateLimits)
                 {
-                    <td class=" taC">
-                     @CCl.TotalCost.ToString().Replace(".00","")/@CCl.TotalLimit.ToString().Replace(".00", "") (@CCl.TotalRest.ToString().Replace(".00", ""))
+                    var Redlass =CCl.TotalRest<0?"cRed":"";
+                    <td class="@Redlass taC  ">
+                        <span class="curp" onmouseover="ShowRestDetail(this)" onmouseout="HiddenRestDetail(this)">@CCl.TotalRest.ToString().Replace(".00", "")</span> <br> 
+                        <span class="hidden">@CCl.TotalCost.ToString().Replace(".00", "")-@CCl.TotalLimit.ToString().Replace(".00", "")</span> 
                     </td>
                 }
 

@@ -14,6 +14,11 @@
         </tr>
     </thead>
     <tbody>
+        <tr id="AddRow">
+            <td colspan="3">
+                @Html.DropDownList("CompanySelect") <button type="button" class="btn btn-xs" onclick="AddCompany()">添加</button>
+            </td>
+        </tr>
         @foreach (var company in Model)
         {
             <tr data-id="@company.Id">
@@ -28,11 +33,6 @@
                 </td>
             </tr>
         }
-        <tr id="AddRow">
-            <td colspan="3">
-                @Html.DropDownList("CompanySelect") <button type="button" class="btn btn-xs" onclick="AddCompany()">添加</button>
-            </td>
-        </tr>
     </tbody>
 </table>
 

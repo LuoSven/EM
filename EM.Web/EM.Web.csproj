@@ -198,6 +198,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompanyLimitController.cs" />
     <Compile Include="Controllers\CompanyPerformanceController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExpenseAccountController.cs" />
@@ -236,10 +237,13 @@
     <Content Include="Css\Third\dtree\img\plusbottom.gif" />
     <Content Include="Css\Third\dtree\img\question.gif" />
     <Content Include="Css\Third\dtree\img\trash.gif" />
+    <Content Include="Images\Icons\Logo-Small.JPG" />
+    <Content Include="Images\Icons\Logo.JPG" />
     <Content Include="Images\Icons\select_close.png" />
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
     <Content Include="Js\ajaxPager.js" />
+    <Content Include="Js\Program\MonthExpenseStatistics.js" />
     <Content Include="Js\table.js" />
     <Content Include="Js\jquery.validate.messages_cn.js" />
     <Content Include="Js\form.js" />
@@ -527,6 +531,7 @@
     <Content Include="Views\Home\AdminWelcome.cshtml" />
     <Content Include="Views\Home\_List.cshtml" />
     <Content Include="Views\ExpenseAccount\_SM.cshtml" />
+    <Content Include="Views\Report\MonthExpenseStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -536,6 +541,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EM.Business\EM.Business.csproj">
+      <Project>{73aeeb16-0f4f-4700-91d1-ee18fc8f213e}</Project>
+      <Name>EM.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EM.Common\EM.Common.csproj">
       <Project>{b3fcb199-48a0-4aaa-8539-548111bd8b43}</Project>
       <Name>EM.Common</Name>

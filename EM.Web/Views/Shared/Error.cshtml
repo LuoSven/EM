@@ -5,8 +5,13 @@
 
     Layout = "~/Views/Shared/_LayoutCommon.cshtml";
 }
+@section Js{
+<script>
+    $("#message").click(function () { $(this).next().toggle()})
+</script>
 
-<div class="size20">页面还在施工中。。。</div>
-<div style="display:none">
+    }
+<div id="message" class="size20">页面还在施工中。。。</div>
+<div style="">
     @Html.DisplayForModel(Model)
 </div>

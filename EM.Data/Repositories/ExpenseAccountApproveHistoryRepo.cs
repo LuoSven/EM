@@ -22,7 +22,7 @@ namespace EM.Data.Repositories
         }
         public   List<ExpenseAccountApproveHistoryListDTO> GetListStringByECId(int Id)
         {
-            var list = DapperHelper.SqlQuery<ExpenseAccountApproveHistoryListDTO>("select * from EM_ExpenseAccount_ApproveHistory where ExpenseAccountId=@Id", new { Id }).ToList();
+            var list = DapperHelper.SqlQuery<ExpenseAccountApproveHistoryListDTO>("select * from EM_ExpenseAccount_ApproveHistory where ExpenseAccountId=@Id ", new { Id }).ToList();
             return list;
         }
     }

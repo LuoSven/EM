@@ -57,6 +57,8 @@
     <Compile Include="DTOs\CompanyPerformanceDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountApproveHistoryListDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountDetailListDTO.cs" />
+    <Compile Include="DTOs\ExpenseAccountExcelDTO.cs" />
+    <Compile Include="DTOs\ExpenseAccountMonthCateDTO.cs" />
     <Compile Include="DTOs\UserRoleListDTO.cs" />
     <Compile Include="DTOs\CompanyCateLimitDTO.cs" />
     <Compile Include="Entities\EM_Charge_Cate.cs">
@@ -105,6 +107,7 @@
     <Compile Include="SMs\CompanyCateLimitSM.cs" />
     <Compile Include="SMs\CompanyLimitSM.cs" />
     <Compile Include="SMs\CompanyPerformanceSM.cs" />
+    <Compile Include="SMs\MouthExpenseStatisticsSM.cs" />
     <Compile Include="VMs\CompanyCateLimitVM.cs" />
     <Compile Include="VMs\CompanyManagerWelcomeVM.cs" />
     <Compile Include="VMs\CompanyLimitVM.cs" />
@@ -136,6 +139,8 @@
     <Compile Include="VMs\AccountDetailVM.cs" />
     <Compile Include="VMs\AccountVM.cs" />
     <Compile Include="VMs\ExpenseAccountSubmitVM.cs" />
+    <Compile Include="VMs\ExpenseAccountExcelVM.cs" />
+    <Compile Include="VMs\ExpenseAccountMonthCateVM.cs" />
     <Compile Include="VMs\ExpenseAccountVM.cs" />
     <Compile Include="VMs\KeyValueVM.cs" />
     <Compile Include="VMs\UserRoleListVM.cs" />

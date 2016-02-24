@@ -19,7 +19,10 @@
     <label>
         <span>报销单号 :</span>
         @Html.TextBoxFor(o => o.EANumber, new { placeholder = "单据的报销单号", @class = "required" })
-        <a class="checkTitle">对公</a> @Html.CheckBox("IsPublic",Model.IsPublic.HasValue&&Model.IsPublic.Value?true:false, new { id = "IsPublic" })
+        <div class="pAbs checkContent">
+            @Html.CheckBox("IsPublic", Model.IsPublic.HasValue && Model.IsPublic.Value ? true : false, new { id = "IsPublic" })  <a class="checkTitle">对公</a>
+            @Html.CheckBox("IsNotAccount", Model.IsNotAccount.HasValue && Model.IsNotAccount.Value ? true : false, new { id = "IsPublic" })  <a class="checkTitle">不计入费用</a>
+        </div>  
     </label>
     <label>
         <span>申请日期 :</span>

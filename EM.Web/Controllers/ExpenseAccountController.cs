@@ -15,6 +15,8 @@ using EM.Model.DTOs;
 using System.Threading.Tasks;
 using EM.Model.Entities;
 using EM.Model.SMs;
+using System.IO;
+using EM.Business;
 
 namespace EM.Web.Controllers
 {
@@ -115,6 +117,17 @@ namespace EM.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(EM_ExpenseAccount model, string FileIds, string DetailIds)
         {
+            var IsRepeat = expenseAccountRepo.GetMany(o => o.EANumber == model.EANumber).Any();
+            if (IsRepeat)
+            {
+                return Json(new { code = 0, message = "报销单号已存在，请修改报销单号" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (string.IsNullOrEmpty(DetailIds))
+            {
+                return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
+            }
+
             model.CreateDate = DateTime.Now;
             model.Creater = ViewHelp.GetUserName();
             model.ModifyDate = DateTime.Now;
@@ -151,7 +164,15 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "报销单不存在！" }, JsonRequestBehavior.AllowGet);
             }
-
+            var IsRepeat = expenseAccountRepo.GetMany(o => o.EANumber == model.EANumber&&o.Id!=model.Id).Any();
+            if (IsRepeat)
+            {
+                return Json(new { code = 0, message = "报销单号已存在，请修改报销单号" }, JsonRequestBehavior.AllowGet);
+            }
+            if (string.IsNullOrEmpty(DetailIds))
+            {
+                return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
+            }
             entity = Mapper.Map<EM_ExpenseAccount, EM_ExpenseAccount>(model, entity);
             entity.ModifyDate = DateTime.Now;
             entity.Modifier = ViewHelp.GetUserName();
@@ -184,12 +205,21 @@ namespace EM.Web.Controllers
                 return View("ApproveBrowse", model);
             return View(model);
         }
-
+        /// <summary>
+        /// 删除附件
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> DeleteFile(int Id)
         {
             var result = await expenseAccountFileRepo.UpdateDeleteStatus(Id);
             return Json(new { code = result ? 1 : 0 }, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 删除明细
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> DeleteDetail(int Id)
         {
             var result = 1;
@@ -251,6 +281,24 @@ namespace EM.Web.Controllers
                 return RedirectToAction("noright", "error");
             var Vm = Mapper.Map<ExpenseAccountFileVM>(Dto);
             return View(Vm);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="ActionResult"></typeparam>
+        /// <param name="?"></param>
+        /// <returns></returns> 
+        [Description("导出报销单")]
+        [ActionType(RightType.Form, "Index")]
+        public async Task<ActionResult> ToExcel(ExpenseAccountSM Sm)
+        {
+            Sm.CompanyIds = ViewHelp.GetCompanyIds();
+            var Dtos = expenseAccountRepo.GetExcelListByDto(Sm, ViewHelp.UserInfo());
+            var Vms = Mapper.Map<List<ExpenseAccountExcelVM>>(Dtos);
+            var FilePath = ExpenseAccountManager.Instance.ToExcel(Vms);
+            Log(Vms, "路径:" + FilePath);
+            return File(new FileStream(FilePath, FileMode.Open), "application/octet-stream","报销清单_"+ViewHelp.GetUserName() +"_" +DateTime.Now.ToString("yyyyMMddss")+".xls");
         }
 
         #endregion

@@ -34,7 +34,7 @@ namespace EM.Common
         /// </summary>
         /// <param name="strName">cookie name</param>
         /// <param name="strValue">cookie value</param>
-        public static void WriteCookie(string cookieName, string cookieValue, bool rememberMe, int expiresDays=3)
+        public static void WriteCookie(string cookieName, string cookieValue, bool rememberMe, int expiresDays=1)
         {
             if (string.IsNullOrEmpty(cookieName)) return;
             //删除旧的同名Cookie
@@ -43,12 +43,13 @@ namespace EM.Common
                 cookie.Domain = HttpContext.Current.Request.Url.Host;
                 cookie.Secure = false;
                 cookie.Value = cookieValue;
-            if (rememberMe)
-            {
-                if (expiresDays == 0)
-                    expiresDays = 365; //Remember me forever
                 cookie.Expires = DateTime.Now.AddDays(expiresDays);
-            }
+                if (rememberMe)
+                {
+                    if (expiresDays == 0)
+                        expiresDays = 365; //Remember me forever
+                    cookie.Expires = DateTime.Now.AddDays(expiresDays);
+                }
             HttpContext.Current.Response.AppendCookie(cookie);
         }
 

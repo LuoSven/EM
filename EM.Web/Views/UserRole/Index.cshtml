@@ -4,7 +4,7 @@
 }
 @using EM.Model.VMs
 @model List<UserRoleListVM>
-<div class="SearchFrom">
+<div class="SearchForm">
     <form id="SearchForm" action="@Url.Action("Index", "UserRole")">
         <input type="text" name="UserName" value="" placeholder="名称，描述">
         <button class="searchButton" type="submit">搜索</button>

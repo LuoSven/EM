@@ -43,7 +43,7 @@
         }
     </script>
     }
-<div class="SearchFrom">
+<div class="SearchForm">
     <form id="SearchForm" action="@Url.Action("ApproveIndex", "ExpenseAccount")">
 
         <button class="searchButton" data-commond="updataapprovestatuss" onclick="Global.Form.Confirms('@Url.Action("UpdataApproveStatuss", new { ApproveStatus = (int)ExpenseAccountApproveStatus.PassApproved })',$('table'),'批量通过报销单',MultiCheck)" type="button">通过</button>

@@ -30,5 +30,6 @@ namespace EM.Model.Entities
         public int ApproveStatus { get; set; }
         public string RefusedMessage { get; set; }
         public Nullable<bool> IsPublic { get; set; }
+        public Nullable<bool> IsNotAccount { get; set; }
     }
 }

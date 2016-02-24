@@ -13,6 +13,8 @@ using EM.Utils;
 using EM.Model.VMs;
 using EM.Model.Entities;
 using System.Configuration;
+using System.Web.Mvc;
+using AutoMapper;
 
 namespace EM.Web.Core
 {
@@ -20,11 +22,11 @@ namespace EM.Web.Core
     {
         private static readonly IUserRightRepo userRightRepo = new UserRightRepo(new DatabaseFactory());
         private static readonly ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
-         public static List<EM_System_Program> GetAllActionByAssembly()
+        public static List<EM_System_Program> GetAllActionByAssembly(string FilePath)
          {
              var result = new List<EM_System_Program>();
-
-             var types = Assembly.LoadFile(ConfigurationManager.AppSettings["WebBinPath"]+ "EM.Web.dll").GetTypes();
+             FilePath = FilePath + "\\EM.Web.dll";
+             var types = Assembly.LoadFile(FilePath).GetTypes();
 
              foreach (var type in types)
              {
@@ -89,12 +91,12 @@ namespace EM.Web.Core
              return GetAccountInfoFromCookie().CompanyIds;
          }
          /// <summary>
-         /// 根据角色类型,决定明细的公司查看权限:老板角色类型只能看到自己的公司的明细
+         /// 根据角色类型,决定明细的公司查看权限:老板和员工角色类型只能看到自己的公司的明细
          /// </summary>
          /// <returns></returns>
          public static string GetDetailCompanyIds()
          {
-             var companyIds = GetRoleType() == (int)RoleType.CompanyManager ? GetCompanyIds() : string.Empty;
+             var companyIds = GetRoleType() == (int)RoleType.CompanyManager || GetRoleType() == (int)RoleType.Staff ? GetCompanyIds() : string.Empty;
              return companyIds;
          }
          public static bool IsAdmin()
@@ -128,10 +130,24 @@ namespace EM.Web.Core
                  return true;
              return actions.Contains(ActionName);
          }
-         
+         /// <summary>
+         /// 获取当前登陆人的当前控制器的actions
+         /// </summary>
+         /// <param name="ControllerName"></param>
+         /// <returns></returns>
          public static List<string> GetActions(string ControllerName)
          {
              return userRightRepo.GetActions(GetUserId(), ControllerName);
+         }
+
+         /// <summary>
+         /// 获取最近几个月的枚举
+         /// </summary>
+         /// <returns></returns>
+         public static SelectList GetRecentlyMonthList()
+         {
+             var MonthList = Mapper.Map<List<KeyValuePair<string, string>>, List<KeyValueVM>>(DateHepler.GetMonthListByBeforeCount());
+             return  new SelectList(MonthList, "Key", "Value");
          }
     }
 }

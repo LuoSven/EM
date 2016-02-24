@@ -81,6 +81,7 @@
           <Property Name="ApproveStatus" Type="int" Nullable="false" />
           <Property Name="RefusedMessage" Type="nvarchar" MaxLength="500" />
           <Property Name="IsPublic" Type="bit" />
+          <Property Name="IsNotAccount" Type="bit" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_ApproveHistory">
           <Key>
@@ -356,6 +357,7 @@
           <Property Name="ApproveStatus" Type="Int32" Nullable="false" />
           <Property Name="RefusedMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsPublic" Type="Boolean" />
+          <Property Name="IsNotAccount" Type="Boolean" />
         </EntityType>
         <EntityType Name="EM_System_ActionLog">
           <Key>
@@ -559,6 +561,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="IsNotAccount" ColumnName="IsNotAccount" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RefusedMessage" ColumnName="RefusedMessage" />
                 <ScalarProperty Name="ApproveStatus" ColumnName="ApproveStatus" />
