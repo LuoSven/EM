@@ -54,6 +54,7 @@
     <Compile Include="Attribute\ActionType.cs" />
     <Compile Include="Base\BaseControl.cs" />
     <Compile Include="Helper\PagerHelper.cs" />
+    <Compile Include="Helper\SelectHelper.cs" />
     <Compile Include="Mapper\Configuration.cs" />
     <Compile Include="Mapper\DtVProfile.cs" />
     <Compile Include="Mapper\MapResolvers.cs" />

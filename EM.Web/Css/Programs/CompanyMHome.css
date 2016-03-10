@@ -1,35 +1,8 @@
-﻿
-.peiField {
-}
-.peiField .peiTitle {
-    border: 1px solid #E9E9E9;
-}
-.peiField .peiTitle input[type=text] {
-    padding: 5px;
-    border: 1px solid #D1D1D1;
-}
-
-.peiField .peiTitle select {
-    padding: 5px;
-    border: 1px solid #D1D1D1;
-}
-.peiField .peiTitle button {
-    padding: 5px;
-    border: 1px solid #D1D1D1;
-    color: #525252;
-}
-.peiField .peiContent{
-    height:250px;
-
-}
-.peiField .lineContent{
-    height:200px;
-
-}
-#CostCount{
-    color:#E34520
-}
-#ExpectCount{
-    color:#D0C08D;
-}
-
+﻿.peiField .peiTitle{border:1px solid #E9E9E9}
+.peiField .peiTitle input[type=text]{padding:5px;border:1px solid #D1D1D1}
+.peiField .peiTitle select{padding:5px;border:1px solid #D1D1D1}
+.peiField .peiTitle button{padding:5px;border:1px solid #D1D1D1;color:#525252}
+.peiField .peiContent{height:250px}
+.peiField .lineContent{height:200px}
+#CostCount{color:#E34520}
+#ExpectCount{color:#D0C08D}

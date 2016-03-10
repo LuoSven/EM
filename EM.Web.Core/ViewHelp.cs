@@ -149,5 +149,33 @@ namespace EM.Web.Core
              var MonthList = Mapper.Map<List<KeyValuePair<string, string>>, List<KeyValueVM>>(DateHepler.GetMonthListByBeforeCount());
              return  new SelectList(MonthList, "Key", "Value");
          }
+
+         /// <summary>
+         /// 绑定查看报销单的Onclick
+         /// </summary>
+         /// <param name="id"></param>
+         /// <param name="EANumber"></param>
+         /// <returns></returns>
+         public static string BindEAViewClick(int id,string EANumber)
+         {
+             var format=@"Global.Form.NewIframe('查看报销单_{1}','browseexpenseaccount_{0}','/ExpenseAccount/Browse?id={0}')";
+             format= string.Format(format, id, EANumber);
+             format = "onclick=" + format;
+             return format;
+         }
+
+         /// <summary>
+         /// 绑定额度使用明细的Onclick
+         /// </summary>
+         /// <param name="id"></param>
+         /// <param name="EANumber"></param>
+         /// <returns></returns>
+         public static string BindCompanyLimitDetailClick(int CompanyId, int CateId)
+         {
+             var format = @"Global.Form.NewIframe('额度使用明细','companylimitdetailreport','/report/companylimitdetail?CompanyId={0}&CateId={1}')";
+             format = string.Format(format, CompanyId, CateId);
+             format = "onclick=" + format;
+             return format;
+         }
     }
 }

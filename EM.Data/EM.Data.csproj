@@ -109,6 +109,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CompanyLimitRepo.cs" />
     <Compile Include="Repositories\CompanyPerformanceRepo.cs" />
+    <Compile Include="Repositories\SystemAlertMessageRepo.cs" />
+    <Compile Include="Repositories\SystemFeedbackRepo.cs" />
     <Compile Include="Repositories\SystemRepo.cs" />
     <Compile Include="Repositories\CompanyRepo.cs" />
     <Compile Include="Repositories\ChargeCateRepo.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Repositories\ExpenseAccountApproveHistoryRepo.cs" />
     <Compile Include="Repositories\SystemProgromRepo.cs" />
     <Compile Include="Repositories\ExpenseAccountRepo.cs" />
+    <Compile Include="Repositories\UserLoginRecordRepo.cs" />
     <Compile Include="Repositories\UserRoleRepo.cs" />
     <Compile Include="Repositories\UserRightRepo.cs" />
     <Compile Include="Repositories\UserAccountRepo.cs" />

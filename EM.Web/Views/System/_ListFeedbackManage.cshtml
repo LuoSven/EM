@@ -1,0 +1,43 @@
+﻿@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<SystemFeedbackVM>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="w60 taR">反馈人</th>
+            <th class="w100 taR">反馈时间</th>
+            <th class="w100 taR">反馈信息</th>
+            <th class="w90 taR">Url</th>
+            <th class="w50 taR">紧急度</th>
+            <th class="w70 taR">是否回复</th>
+            <th class="w80 taR">回复时间</th>
+            <th class="w80 taR">回复内容</th>
+            <th class="w80 taR">操作</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Results.Count == 0)
+        {
+            <tr><td colspan="8" class="size18 taC fL20">暂无数据</td></tr>
+        }
+        @foreach (var Fd in Model.Results)
+        {
+            <tr>
+                <td class="taR">@Fd.UserName</td>
+                <td class="taR">@Fd.CreateDate</td>
+                <td class="taR">@Fd.Message</td>
+                <td class="taR">@Fd.Url</td>
+                <td class="taR">@Fd.Priority</td>
+                <td class="taR">@(Fd.IsReply?"是":"否")</td>
+                <td class="taR">@Fd.ReplyDate</td>
+                <td class="taR">@Fd.ReplyMessage</td>
+                <td><a>回复</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })
+

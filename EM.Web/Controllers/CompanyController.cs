@@ -14,6 +14,7 @@ using EM.Model.VMs;
 using EM.Model.DTOs;
 using System.Threading.Tasks;
 using EM.Model.Entities;
+using EM.Model.SMs;
 
 namespace EM.Web.Controllers
 {
@@ -95,7 +96,7 @@ namespace EM.Web.Controllers
 
         private async Task InitSelect(int UserId = 0, int? CompanyTypeId = null, int? ParentCompanyId=null)
         {
-            var  List= await  UserAccountRepo.GetUserList("","","");
+            var  List= await  UserAccountRepo.GetUserList(new SystemUserSM());
             var UserList=List.Select(o=>new {Key=o.UserId,Value=o.UserName+"("+o.LoginEmail+","+o.RoleName+")"}).ToList();
             ViewBag.UserList=new SelectList(UserList,"Key","Value",UserId);
             var CompanyTypeList = CompanyType.City.GetEnumList();

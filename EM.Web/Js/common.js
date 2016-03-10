@@ -33,6 +33,16 @@ Global.Utils.ShowMessage = function (msg) {
         time: 2000,
     });
 }
+Global.Utils.ConfirmMessage = function (msg) {
+    var iconId = 1;
+    if (msg.indexOf("成功") == -1) {
+        iconId = 5;
+    }
+    layer.msg(msg, {
+        icon: iconId,
+        time: 2000,
+    });
+}
 Global.Utils.RandomColor = function () {
     return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
 }
@@ -82,7 +92,39 @@ Global.GetBrowser = function () {
     }
     return Sys;
 }
-
+Global.Utils.AlertMessage = function () {
+    var messageFormat = '<div id="systemAlertMessage_{Id}" class="alertMessage p5 w300 pFx"><div class="alertMessage-title taC size14 wp100 fl fwB mb5"><span class="glyphicon glyphicon-info-sign pr5" aria-hidden="true"></span>消息<span class="glyphicon glyphicon-remove-circle fr size18 fL18 curp" aria-hidden="true"></span></div><div class="alertMessage-sender">{Sender}</div><div class="alertMessage-content size14">{Message}</div></div>';
+    $.ajax({
+        url: "/system/alertmessage?t=" + new Date().getTime(),
+        success:function(a)
+        {
+            if (a.messages.length > 0)
+            {
+                for (var i = 0; i < a.messages.length; i++) {
+                    var message = a.messages[i];
+                    if (message.MessagType == 1) {
+                        var html = messageFormat.format(message);
+                        $("body").append(html);
+                        var alertMessage = $("#systemAlertMessage_" + message.Id);
+                        alertMessage.animate({ opacity: 1, bottom: "5px" },2000,"swing")
+                        $(".glyphicon-remove-circle", alertMessage).click(function () {
+                            $(this).parents(".alertMessage").animate({ opacity: 0, bottom: "300px" }, 1000, "swing", function () { $(".alertMessage:last").remove() })
+                        })
+                    }
+                    else {
+                        layer.confirm(message.Message, {
+                            btn: ['确认'],
+                            title: '系统通知'
+                        }, function (a) {
+                            layer.close(a);
+                        });
+                    }
+                }
+            }
+            
+        }
+    })
+}
 //原型拓展
 Global.Expand = function () {
     //为array加上contains的方法

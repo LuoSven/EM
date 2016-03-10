@@ -28,7 +28,7 @@
     </label>
     <label>
         <span>行政公司 :</span>
-        @Html.DropDownListFor(o => o.ParentCompanyId, (SelectList)ViewBag.ParentCompanyIdList)
+        @Html.DropDownListFor(o => o.ParentCompanyId, (SelectList)ViewBag.ParentCompanyIdList, "-无行政公司-")
     </label>
     <label>
         <span>通知对象 :</span>

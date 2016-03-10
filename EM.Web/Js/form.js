@@ -212,7 +212,8 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
                             alert("保存成功！");
                             if (Url != undefined) {
                                 if (Url != "")
-                                    location.href = Url;
+
+                                    Global.Form.CloseIframe();
                                 else
                                     location.href = location.href;
 
@@ -221,9 +222,18 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
                     }
                     else
                     {
-
                         alert("保存成功！");
+                        if (Url != undefined) {
+                            if (Url != "")
+                                Global.Form.CloseIframe();
+                            else
+                                location.href = location.href;
+
+                        }
+
+                      
                     }
+
                 }
                 else
                     alert(a.message);
@@ -238,11 +248,17 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
         return false;
 }
 Global.Form.NewIframe = function (name,id,url) {
-    window.parent.Global.Iframe.OpenIframe(name, id, url, false, false)
+    window.parent.Global.Iframe.OpenIframe(name, id, url, false, true)
     window.parent.Global.Iframe.AutoIframeHeight();
 }
 Global.Form.CloseIframe = function (id) {
-    window.parent.Global.Iframe.CloseIframe(id)
+    if (id == undefined){
+        window.parent.Global.Iframe.CloseIframeNow();
+    }
+    else {
+
+        window.parent.Global.Iframe.CloseIframe(id)
+    }
 }
 Global.Form.DeleteFlag = 0;
 Global.Form.Delete=function(url,ob,isComfirm)

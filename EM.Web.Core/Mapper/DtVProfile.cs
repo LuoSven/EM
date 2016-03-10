@@ -27,7 +27,7 @@ namespace EM.Web.Core
 
             Mapper.CreateMap<ExpenseAccountListDTO, ExpenseAccountListVM>()
             .ForMember(dest => dest.ApproveStatusName, source => source.ResolveUsing<ApproveStatusResolver>().FromMember(o => o.ApproveStatus))
-            .ForMember(dest => dest.List, source => source.ResolveUsing<ExpenseAccountDetailsResolver>().FromMember(o => o.Id))
+            .ForMember(dest => dest.List, source => source.ResolveUsing<ExpenseAccountDetailsResolver>())
             .ForMember(dest => dest.ApproveList, source => source.ResolveUsing<ExpenseAccountApproveHistoryResolver>().FromMember(o => o.Id));
 
 
@@ -49,9 +49,6 @@ namespace EM.Web.Core
             .ForMember(o => o.Creater, s => s.Ignore())
             .ForMember(o => o.CreateTime, s => s.Ignore());
 
-            Mapper.CreateMap<EM_ExpenseAccount_Detail, EM_ExpenseAccount_Detail>()
-            .ForMember(o => o.Creater, s => s.Ignore())
-            .ForMember(o => o.CreateTime, s => s.Ignore());
 
             Mapper.CreateMap<EM_Company_Limit, EM_Company_Limit>()
             .ForMember(o => o.Creater, s => s.Ignore())
@@ -84,6 +81,23 @@ namespace EM.Web.Core
             .ForMember(o => o.Key, s => s.MapFrom(sm => sm.Key))
             .ForMember(o => o.Value, s => s.MapFrom(sm => sm.Value))
             ;
+
+            Mapper.CreateMap<EM_ExpenseAccount_Detail, CompanyLimitDetailDTO>()
+                .ForMember(d => d.CateName, source => source.ResolveUsing<CateNameResolver>().FromMember(s => s.CateId))
+                .ForMember(d => d.EANumber, source => source.ResolveUsing<EANumberResolver>().FromMember(s => s.ExpenseAccountId))
+                .ForMember(d => d.CompanyName, source => source.ResolveUsing<CompanyNameResolver>().FromMember(s => s.CompanyId));
+
+            //mirkmf110@163.com‖lsw13003213417‖180.155.79.192‖Windows 8‖Chrome41.0
+            Mapper.CreateMap<UserLoginRecordDTO, UserLoginRecordVM>()
+                .ForMember(o => o.LoginEmail, s => s.MapFrom(sm => string.IsNullOrEmpty(sm.LoginInfo) ? "" : sm.LoginInfo.Split('‖')[0]))
+                .ForMember(o => o.Password, s => s.MapFrom(sm => string.IsNullOrEmpty(sm.LoginInfo) ? "" : sm.LoginInfo.Split('‖')[1]))
+                .ForMember(o => o.LoginIp, s => s.MapFrom(sm => string.IsNullOrEmpty(sm.LoginInfo) ? "" : sm.LoginInfo.Split('‖')[2]))
+                .ForMember(o => o.LoginSystem, s => s.MapFrom(sm => string.IsNullOrEmpty(sm.LoginInfo) ? "" : sm.LoginInfo.Split('‖')[3]))
+                .ForMember(o => o.LoginBrower, s => s.MapFrom(sm => string.IsNullOrEmpty(sm.LoginInfo) ? "" : sm.LoginInfo.Split('‖')[4]));
+
+
+            Mapper.CreateMap<SystemFeedbackDTO, SystemFeedbackVM>()
+                .ForMember(o => o.IsReply, s => s.MapFrom(sm =>sm.ReplyDate.HasValue || !string.IsNullOrEmpty(sm.ReplyMessage)?true:false));
 
         }
     }

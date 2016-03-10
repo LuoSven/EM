@@ -49,7 +49,6 @@ namespace EM.Data.Dapper
         {
             try
             {
-
                 int startIndex = (page - 1) * pageSize + 1;
                 int endIndex = page * pageSize;
                 string pagedSql = string.Format("with queryData as ({0}) " +

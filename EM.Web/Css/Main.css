@@ -1,45 +1,11 @@
 ﻿/*旋转特效*/
-@-webkit-keyframes rotate{
-from{-webkit-transform:rotate(0deg)}
-to{-webkit-transform:rotate(720deg)}
-}
-@-moz-keyframes rotate{
-from{-moz-transform:rotate(0deg)}
-to{-moz-transform:rotate(720deg)}
-}
-@-ms-keyframes rotate{
-from{-ms-transform:rotate(0deg)}
-to{-ms-transform:rotate(720deg)}
-}
-@-o-keyframes rotate{
-from{-o-transform:rotate(0deg)}
-to{-o-transform:rotate(720deg)}
-}
+@-webkit-keyframes rotate{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(720deg)}}@-moz-keyframes rotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(720deg)}}@-ms-keyframes rotate{from{-ms-transform:rotate(0)}to{-ms-transform:rotate(720deg)}}@-o-keyframes rotate{from{-o-transform:rotate(0)}to{-o-transform:rotate(720deg)}}
 
 /*停止旋转*/
-@-webkit-keyframes norotate{
-from{-webkit-transform:rotate(0deg)}
-to{-webkit-transform:rotate(360deg)}
-}
-@-moz-keyframes norotate{
-from{-moz-transform:rotate(0deg)}
-to{-moz-transform:rotate(360deg)}
-}
-@-ms-keyframes norotate{
-from{-ms-transform:rotate(0deg)}
-to{-ms-transform:rotate(360deg)}
-}
-@-o-keyframes norotate{
-from{-o-transform:rotate(0deg)}
-to{-o-transform:rotate(360deg)}
-}
+@-webkit-keyframes norotate{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}@-moz-keyframes norotate{from{-moz-transform:rotate(0)}to{-moz-transform:rotate(360deg)}}@-ms-keyframes norotate{from{-ms-transform:rotate(0)}to{-ms-transform:rotate(360deg)}}@-o-keyframes norotate{from{-o-transform:rotate(0)}to{-o-transform:rotate(360deg)}}
 
 /*滚动特效*/
-@-webkit-keyframes move{
-from{-o-transform:rotate(0deg),}
-to{-o-transform:rotate(360deg)}
-
-}
+@-webkit-keyframes move{from{-o-transform:rotate(0),}to{-o-transform:rotate(360deg)}}
 
 
 .header{background: #A58D57;padding:10px 10px 10px 30px;margin-bottom:0}
@@ -49,7 +15,7 @@ to{-o-transform:rotate(360deg)}
 .footer{position:fixed;bottom:5px;right:10px}
 .validation-summary-errors{color:#ff0;font-size:13px;margin:5px;text-align:left;padding-left:60px}
 .body{float:left;width:99%;margin-top:0}
-.iframeButton button{padding: 2px;background: #D8D3FF;border: 1px solid #D8D3FF;padding: 2px;color: #FFFFFF;}
+.iframeButton button{background: #FF0000;border: 0px solid #1D00FF;color: #FFFFFF;border-radius: 3px;padding: 3px;}
 .iframeButton button:hover{padding: 2px;background: #BEB6FF;border: 1px solid #2500FF;padding: 2px;color: #FFFFFF;}
 .menu{width:10%}
 .menu>ul>li>a{color: #000000;background-color: #F8F8F8;border-top:1px solid #efefef;border-bottom:1px solid #e1e1e1;/* text-shadow:1px 1px 1px #FFF */}
@@ -84,6 +50,19 @@ to{-o-transform:rotate(360deg)}
 .loading{width:150px;height:25px;border: 1px solid #C5C5C5;border-top:none;background-color: #EBEBEB;position:absolute;top:0;left:50%;margin-left:-75px;text-align:center;line-height:25px;font-size:12px;font-weight:700;color: rgb(168, 143, 86);}
 .loadingCover{top: 0px;background: #FEFEFE;}
 
+.feedback {bottom: 30px;border-radius: 5px;background-color: #FFFFFF;left: 10px;border: 1px solid #959595;}
+.feedback span{color: #F9AC00;}
+.feedback-content .feedback-history{overflow:auto;border:1px solid #EEE;border-width:0 0 2px 0}
+.feedback-content .feedback-history .replyed{background:#dfdfdf}
+.feedback-content .feedback-history .historyMessage{padding:2px 5px;color:#3d8b30}
+.feedback-content .feedback-history .historyReply{padding:2px 5px;color:#cfa200}
+.feedback-content .feedback-history li{border-bottom:1px solid #e1e1e1}
+.feedback-content .feedback-history li:last-child{border-bottom:0 solid #e1e1e1}
+
+.alertMessage{right:5px;z-index:999;padding:5px;width:300px;border:1px solid #AFAFAF;border-radius:3px;background:#FFF;opacity: 0;  bottom: -500px;}
+.alertMessage .alertMessage-title{margin-bottom:5px;padding:2px;border-radius:2px;background:#A58D57;color:#fff;text-align:center;font-weight:800;font-size:14px;width: 100%;}
+.alertMessage .alertMessage-sender{padding:2px;color:#999}
+.alertMessage .alertMessage-content{padding:3px;color: #000000;font-size:14px}
 
 
 

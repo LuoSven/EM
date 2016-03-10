@@ -15,6 +15,7 @@ using EM.Model.DTOs;
 using System.Threading.Tasks;
 using EM.Model.Entities;
 using EM.Utils;
+using EM.Model.SMs;
 
 namespace EM.Web.Controllers
 {
@@ -27,9 +28,9 @@ namespace EM.Web.Controllers
         private readonly IUserRoleRepo userRoleRepo = new UserRoleRepo(new DatabaseFactory());
         [Description("用户列表")]
         [ActionType(RightType.View)]
-        public async Task< ActionResult> Index(string UserName = "", string LoginEmail = "", string RoleId = "")
+        public async Task< ActionResult> Index(SystemUserSM sm)
         {
-          var Dtos= await  userAccountRepo.GetUserList(UserName, LoginEmail, RoleId);
+          var Dtos= await  userAccountRepo.GetUserList(sm);
           var Vms = Mapper.Map<List<AccountDetailDTO>, List<AccountDetailVM>>(Dtos);
             
           if (Request.IsAjaxRequest())

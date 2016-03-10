@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "CompanyLimitDetail";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs  
+@using EM.Common;
+@using EM.Data.Infrastructure;
+@model PagedResult<ExpenseAccountListVM>
+<style>
+.costInfo .costTitle{color:#D2D2D2}.costInfo .costNumber{color:#1F1F1F}
+</style>
+<div class="SearchForm">
+    <form id="SearchForm" action="@Url.Action("CompanyLimitDetail", "Report")">
+        @Html.DropDownList("CateId", (SelectList)ViewBag.CateList)
+        @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList)
+        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_CompanyLimitDetailList", Model)
+</div>

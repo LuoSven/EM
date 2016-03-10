@@ -175,7 +175,9 @@ namespace EM.Common
         [Description("城市公司")]
         City,
         [Description("分公司")]
-        Other
+        Other,
+        [Description("所有分公司")]
+        All
     }
 
 
@@ -187,10 +189,46 @@ namespace EM.Common
         H1 = 1,
         H2,
         H3,
-        B1
+        B1,
+        //数字格式
+        D2
     }
+    /// <summary>
+    /// FeedBack优先级
+    /// </summary>
+    public enum FeedBackPriority
+    {
+        L0,
+        L1,
+        L2,
+        L3,
+        L4,
+        L5,
+    }
+
+    public enum MessagType
+    {
+        [Description("提示信息")]
+        Alert = 1,
+        [Description("系统通知")]
+        Notification,
+    }
+
     #endregion
 
+
+    public enum SelectType
+    {
+        [Description("用户下拉")]
+        User,
+        [Description("分类下拉")]
+        Cate,
+        [Description("公司下拉")]
+        Company,
+        [Description("季度下拉")]
+        Season,
+        
+    }
 
 
 

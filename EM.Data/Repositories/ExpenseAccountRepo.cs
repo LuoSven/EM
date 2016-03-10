@@ -23,9 +23,9 @@ namespace EM.Data.Repositories
 
         public  PagedResult<ExpenseAccountListDTO> GetListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize, bool IsFromApprove = false)
         {
-         
-      
-            var sql = @" select   distinct a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate,a.Creater  from EM_ExpenseAccount a
+
+
+            var sql = @" select    distinct  case when @CompanyId is null then null else @CompanyId end as SearchCompanyId,a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate,a.Creater ,a.IsNotAccount,a.IsPublic from EM_ExpenseAccount a
 left join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
 where 1=1 ";
             sql += GetWhere(sm, UserInfo, IsFromApprove);
@@ -116,12 +116,12 @@ and a.CompanyId in ({0}) ";
         {
 
 
-            var sql = @" select  b.OccurDate,  a.EANumber,c.CateName,b.Remark,b.Money  from EM_ExpenseAccount a
+            var sql = @" select  b.OccurDate,a.Name,a.EANumber,c.CateName,b.Remark,b.Money  from EM_ExpenseAccount a
 left join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
 left join EM_Charge_Cate c on b.CateId=c.Id
 where 1=1 ";
             sql += GetWhere(sm, UserInfo, false);
-            sql += " order by b.OccurDate,a.EANumber desc ";
+            sql += " order by a.EANumber,b.Id   ";
             var list = DapperHelper.SqlQuery<ExpenseAccountExcelDTO>(sql, sm).ToList();
             return list;
         }
@@ -161,6 +161,16 @@ where 1=1 ";
             sql += sm.SearchSql;
             return sql;
         }
+        public bool IsCreater(string Ids,string userName)
+        {
+            return !DapperHelper.SqlQuery<int>(string.Format("select* from EM_ExpenseAccount where Creater <>@userName and Id in ({0})", Ids), new { userName }).Any();
+        }
+
+        public string GetEANumber(int Id)
+        {
+            return DapperHelper.SqlQuery<string>("select EANumber from EM_ExpenseAccount where   Id  =@Id", new { Id }).FirstOrDefault();
+       
+        }
     }
 
 
@@ -177,6 +187,7 @@ where 1=1 ";
 
         Task<string> GetNewPublicId();
 
+        bool IsCreater(string Ids, string userName);
 
         int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName);
         /// <summary>
@@ -188,7 +199,17 @@ where 1=1 ";
         /// <param name="UserName"></param>
         void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName);
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <returns></returns>
         List<ExpenseAccountMonthCateDTO> GetMonthCateList(MonthExpenseStatisticsSM sm);
+        /// <summary>
+        /// 根据Id获取报销号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        string GetEANumber(int Id);
     }
 }

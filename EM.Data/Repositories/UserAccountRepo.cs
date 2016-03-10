@@ -10,6 +10,7 @@ using EM.Utils;
 using EM.Common;
 using EM.Model.DTOs;
 using EM.Data.Dapper;
+using EM.Model.SMs;
 namespace EM.Data.Repositories
 {
     public class UserAccountRepo : RepositoryBase<EM_User_Account>, IUserAccountRepo
@@ -116,15 +117,15 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
             DataContext.SaveChanges();
         }
 
-        public async Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string  RoleId="")
+        public async Task<List<AccountDetailDTO>> GetUserList(SystemUserSM sm)
         {
-            var Sql = @"select a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status,a.ModifyTime from EM_User_Account a
+            var sql = @"select a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status,a.ModifyTime from EM_User_Account a
 left join EM_User_Role b on a.RoleId=b.id ";
-            Sql += string.IsNullOrEmpty(UserName) ? "" : " and a.UserName like '%'+@UserName+'%' ";
-            Sql += string.IsNullOrEmpty(LoginEmail) ? "" : " and a.LoginEmail like '%'+@LoginEmail+'%' ";
-            Sql += string.IsNullOrEmpty(RoleId ) ? "" : " and a.RoleId =@RoleId ";
-           Sql+="order by a.ModifyTime  desc";
-           var result = (await DapperHelper.SqlQueryAsync<AccountDetailDTO>(Sql, new { UserName = UserName, LoginEmail = LoginEmail, RoleId = RoleId })).ToList();
+            sql += string.IsNullOrEmpty(sm.UserName) ? "" : " and a.UserName like '%'+@UserName+'%' ";
+            sql += string.IsNullOrEmpty(sm.LoginEmail) ? "" : " and a.LoginEmail like '%'+@LoginEmail+'%' ";
+            sql += string.IsNullOrEmpty(sm.RoleId) ? "" : " and a.RoleId =@RoleId ";
+            sql += " order by b.RoleType,a.UserId ";
+           var result = (await DapperHelper.SqlQueryAsync<AccountDetailDTO>(sql,sm)).ToList();
            return result;
 
         }
@@ -146,6 +147,14 @@ left join EM_User_Role b on a.RoleId=b.id ";
             }
             return "旧密码错误，请重新输入";
         }
+
+        public List<KeyValueVM> GetSelectList()
+        {
+            var Sql = @"select a.UserId as [Key], a.UserName+'('+a.LoginEmail+')' as Value from EM_User_Account a ";
+            Sql += " order by  a.UserId ";
+            var result =  DapperHelper.SqlQuery<KeyValueVM>(Sql).ToList();
+            return result;
+        }
     }
     public interface IUserAccountRepo : IRepository<EM_User_Account>
     {
@@ -162,7 +171,7 @@ left join EM_User_Role b on a.RoleId=b.id ";
 
         Tuple<bool, string> IsRepeat(EM_User_Account model);
 
-        Task<List<AccountDetailDTO>> GetUserList(string UserName = "", string LoginEmail = "", string RoleId = "");
+        Task<List<AccountDetailDTO>> GetUserList(SystemUserSM sm);
         Task<AccountDetailDTO> GetByIdDto(int UserId);
 
         string ChangePassword(int UserId,string OPassword,string NPassword);
@@ -170,5 +179,7 @@ left join EM_User_Role b on a.RoleId=b.id ";
         bool IsEmailRepeat(string LoginEmail, int UserId);
 
         bool IsMobileRepeat(string Mobile, int UserId);
+
+        List<KeyValueVM> GetSelectList();
     }
 }

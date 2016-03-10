@@ -33,6 +33,7 @@ del{font-family:\5B8B\4F53;}/*避免删除线造成数字8视觉上为0*/
 .dI{display:inline-block;}
 .pRel{position:relative;}
 .pAbs{position:absolute;}
+.pFx{position:fixed;}
 .curp {cursor: pointer;}
 .bN{border:none;}
 .fl{float:left;_display:inline;}

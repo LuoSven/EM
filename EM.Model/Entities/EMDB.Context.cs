@@ -12,6 +12,8 @@ namespace EM.Model.Entities
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class EMDB : DbContext
     {
@@ -39,5 +41,114 @@ namespace EM.Model.Entities
         public virtual DbSet<EM_User_Right> EM_User_Right { get; set; }
         public virtual DbSet<EM_User_Role> EM_User_Role { get; set; }
         public virtual DbSet<EM_Company> EM_Company { get; set; }
+        public virtual DbSet<EM_System_Feedback> EM_System_Feedback { get; set; }
+        public virtual DbSet<EM_System_AlertMessage> EM_System_AlertMessage { get; set; }
+    
+        [DbFunction("EMDB", "FC_GetChildCateIds")]
+        public virtual IQueryable<Nullable<int>> FC_GetChildCateIds(Nullable<int> cateId)
+        {
+            var cateIdParameter = cateId.HasValue ?
+                new ObjectParameter("CateId", cateId) :
+                new ObjectParameter("CateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[EMDB].[FC_GetChildCateIds](@CateId)", cateIdParameter);
+        }
+    
+        [DbFunction("EMDB", "FC_GetParentCateId")]
+        public virtual IQueryable<Nullable<int>> FC_GetParentCateId(Nullable<int> cateId)
+        {
+            var cateIdParameter = cateId.HasValue ?
+                new ObjectParameter("CateId", cateId) :
+                new ObjectParameter("CateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[EMDB].[FC_GetParentCateId](@CateId)", cateIdParameter);
+        }
+    
+        [DbFunction("EMDB", "FC_GetParentCateInfo")]
+        public virtual IQueryable<FC_GetParentCateInfo_Result> FC_GetParentCateInfo(Nullable<int> cateId)
+        {
+            var cateIdParameter = cateId.HasValue ?
+                new ObjectParameter("CateId", cateId) :
+                new ObjectParameter("CateId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<FC_GetParentCateInfo_Result>("[EMDB].[FC_GetParentCateInfo](@CateId)", cateIdParameter);
+        }
+    
+        [DbFunction("EMDB", "FC_GetRoleAllCateIds")]
+        public virtual IQueryable<Nullable<int>> FC_GetRoleAllCateIds(string roleType)
+        {
+            var roleTypeParameter = roleType != null ?
+                new ObjectParameter("RoleType", roleType) :
+                new ObjectParameter("RoleType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[EMDB].[FC_GetRoleAllCateIds](@RoleType)", roleTypeParameter);
+        }
+    
+        [DbFunction("EMDB", "FC_GetRoleChildrenCateIds")]
+        public virtual IQueryable<Nullable<int>> FC_GetRoleChildrenCateIds(string roleType)
+        {
+            var roleTypeParameter = roleType != null ?
+                new ObjectParameter("RoleType", roleType) :
+                new ObjectParameter("RoleType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[EMDB].[FC_GetRoleChildrenCateIds](@RoleType)", roleTypeParameter);
+        }
+    
+        [DbFunction("EMDB", "FC_GetRoleParentCateIds")]
+        public virtual IQueryable<Nullable<int>> FC_GetRoleParentCateIds(string roleType)
+        {
+            var roleTypeParameter = roleType != null ?
+                new ObjectParameter("RoleType", roleType) :
+                new ObjectParameter("RoleType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[EMDB].[FC_GetRoleParentCateIds](@RoleType)", roleTypeParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_CreateCompanyManange(string companyName, string userName, string email)
+        {
+            var companyNameParameter = companyName != null ?
+                new ObjectParameter("CompanyName", companyName) :
+                new ObjectParameter("CompanyName", typeof(string));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_CreateCompanyManange", companyNameParameter, userNameParameter, emailParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_CreateCompanyStaff(string companyName, string userName, string email, string moible)
+        {
+            var companyNameParameter = companyName != null ?
+                new ObjectParameter("CompanyName", companyName) :
+                new ObjectParameter("CompanyName", typeof(string));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var moibleParameter = moible != null ?
+                new ObjectParameter("Moible", moible) :
+                new ObjectParameter("Moible", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_CreateCompanyStaff", companyNameParameter, userNameParameter, emailParameter, moibleParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> SP_GetRoleCateIds(string roleType)
+        {
+            var roleTypeParameter = roleType != null ?
+                new ObjectParameter("RoleType", roleType) :
+                new ObjectParameter("RoleType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("SP_GetRoleCateIds", roleTypeParameter);
+        }
     }
 }

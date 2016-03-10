@@ -22,6 +22,14 @@ namespace EM.Common
               return bc.Browser + bc.Version;
           }
 
+          public static bool IsIE8() {
+
+              HttpBrowserCapabilities bc = HttpContext.Current.Request.Browser;
+              if (bc.Browser.ToLower() == "ie" && bc.Version.ToDecimal() <= 8)
+              return true;
+              return false;
+          }
+
           #endregion
 
           #region 获取操作系统版本号

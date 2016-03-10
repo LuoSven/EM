@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "FeedbackManage";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<SystemFeedbackVM>
+<div class="SearchForm">
+    <form id="SearchForm" action="@Url.Action("FeedbackManage", "System")">
+        @Html.DropDownList("UserId", (SelectList)ViewBag.userList, "登陆用户")
+        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+        <select name="IsRepert">
+            <option>回复状态</option>
+            <option value="1">已回复</option>
+            <option value="0">待回复</option>
+        </select>
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_ListFeedbackManage", Model)
+</div>
+
+

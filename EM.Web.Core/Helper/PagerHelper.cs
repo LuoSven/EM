@@ -12,7 +12,7 @@ namespace EM.Web.Core
          {
              var list = new List<int>();
              var maxPager = (int)Math.Ceiling((double)model.RecCount / model.PageSize);
-             for (int i = 1; i <= maxPager; i++)
+             for (int i = model.CurrentPage; i <= maxPager||i<=model.CurrentPage+5; i++)
              {
                  list.Add(i);
              }

@@ -9,33 +9,34 @@
 <table class="table table-hover">
     <thead>
         <tr class="">
-            <th class="w100  taC">公司</th>
+            <th class="w100  taR">公司</th>
             @foreach (var Cate in Cates)
             {
-                <th class="w100   taC">@Cate.Value</th>
+                <th class="w100   taR">@Cate.Value</th>
             }
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="w100 taC"></td>
+            <td class="w100 taR"></td>
             @foreach (var Cate in Cates)
             {
-                <td class="w100 taC"></td>
+                <td class="w100 taR"></td>
             }
         </tr>
         @foreach (var CCVM in Model.Results)
         {
             <tr data-id="@CCVM.CompanyId">
-                <td class="taC">
-                    @CCVM.CompanyName
-                </td>
+                <td class="taR">@CCVM.CompanyName</td>
                 @foreach (var CCl in CCVM.CompanyCateLimits)
                 {
-                    var Redlass =CCl.TotalRest<0?"cRed":"";
-                    <td class="@Redlass taC  ">
-                        <span class="curp" onmouseover="ShowRestDetail(this)" onmouseout="HiddenRestDetail(this)">@CCl.TotalRest.ToString().Replace(".00", "")</span> <br> 
-                        <span class="hidden">@CCl.TotalCost.ToString().Replace(".00", "")-@CCl.TotalLimit.ToString().Replace(".00", "")</span> 
+                    var Redlass = CCl.TotalRest < 0 ? "cRed" : "";
+                    <td class="@Redlass taR pRel  ">
+                        <span class="curp" onmouseover="ShowRestDetail(this)" onclick="ShowRestDetailList(this,@(CCVM.CompanyId),@(CCl.CateId))" onmouseout="HiddenRestDetail(this)">@CCl.TotalRest.ToString().Replace(".00", "")</span>
+                        <div class="hidden adminCompanyLimit">
+                            <span>已使用：@CCl.TotalCost.ToString().Replace(".00", "")</span> <br>
+                            <span> 总额度：@CCl.TotalLimit.ToString().Replace(".00", "")</span>
+                        </div>
                     </td>
                 }
 

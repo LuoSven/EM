@@ -11,6 +11,10 @@ namespace EM.Model.DTOs
     {
         public int Id { get; set; }
         public string EANumber { get; set; }
+        /// <summary>
+        /// 当前查询的公司Id
+        /// </summary>
+        public int? SearchCompanyId  { get; set; }
         public string CompanyName { get; set; }
         public string Name { get; set; }
         public decimal Money { get; set; }
@@ -22,5 +26,12 @@ namespace EM.Model.DTOs
         public System.DateTime ModifyDate { get; set; }
         public string Creater { get; set; }
         public int ApproveStatus { get; set; }
+
+        public bool? IsPublic { get; set; }
+        
+        /// <summary>
+        /// 不计入费用
+        /// </summary>
+        public bool? IsNotAccount { get; set; }
     }
 }

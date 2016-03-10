@@ -4,6 +4,7 @@ using EM.Data.Infrastructure;
 using EM.Data.Repositories;
 using EM.Model.DTOs;
 using EM.Model.Entities;
+using EM.Model.VMs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,19 @@ namespace EM.Web.Core
             return expenseAccountApproveHistoryRepo.GetListStringByECId(source);
         }
     }
-    public class ExpenseAccountDetailsResolver : ValueResolver<int, List<ExpenseAccountDetailListDTO>>
+    public class ExpenseAccountDetailsResolver : ValueResolver<ExpenseAccountListDTO, List<ExpenseAccountDetailListDTO>>
     {
-        protected override List<ExpenseAccountDetailListDTO> ResolveCore(int source)
+        protected override List<ExpenseAccountDetailListDTO> ResolveCore(ExpenseAccountListDTO source)
         {
             IExpenseAccountDetailRepo expenseAccountDetailRepo = new ExpenseAccountDetailRepo(new DatabaseFactory());
-            return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source, ViewHelp.GetDetailCompanyIds());
+            if (source.SearchCompanyId.HasValue)
+            {
+                return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source.Id, source.SearchCompanyId.Value.ToString(), ViewHelp.GetUserName());
+            }
+            else
+            {  
+              return expenseAccountDetailRepo.GetListDtoByExpenseAccountId(source.Id, ViewHelp.GetDetailCompanyIds(),ViewHelp.GetUserName());
+            }
         }
     }
     public class AccountStatusResolver : ValueResolver<int, string>
@@ -106,4 +114,17 @@ namespace EM.Web.Core
             return result;
         }
     }
+
+    public class EANumberResolver : ValueResolver<int, string>
+    {
+        protected override string ResolveCore(int source)
+        {
+            var expenseAccountRepo = new ExpenseAccountRepo(new DatabaseFactory());
+            var EANumber = expenseAccountRepo.GetEANumber(source);
+            return EANumber;
+        }
+    }
+
+
+
 }

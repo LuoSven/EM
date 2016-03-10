@@ -1,0 +1,67 @@
+﻿
+@using EM.Model.DTOs;
+@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<ExpenseAccountListVM>
+@{
+    var limit = ViewBag.limit as CompanyCateLimitDTO;
+}
+<div class="costInfo fl wp100 mt5"><span class="costTitle size18">当前额度：</span><span class="costNumber size14 mr10">@limit.TotalLimit</span><span class="costTitle size18">剩余额度：</span><span class="costNumber size14 mr10">@limit.TotalRest</span></div>
+<div class="costInfo fl wp100 mt5"><span class="costTitle size18">费用总计：</span><span class="costNumber size14 mr10">@limit.TotalCost</span></div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+
+            <th class="w80">单号</th>
+            <th class="w50 taR">报销人</th>
+            <th class="w80 taR">公司名称</th>
+            <th class="taR w90">费用大类</th>
+            <th class="taR w200">事由说明</th>
+            <th class="taR w60">报销日期</th>
+            <th class="taR w60">金额</th>
+            <th class="taR w60">总金额</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Results.Count==0)
+        {
+               <tr ><td colspan="8" class="size18 taC fL20" >暂无数据</td></tr>
+        }
+        @foreach (var EA in Model.Results)
+        {
+            <tr @(ViewHelp.BindEAViewClick(EA.Id, EA.EANumber))  class="curp">
+                <td>
+                    @if (EA.IsPublic.HasValue && EA.IsPublic.Value)
+                    {
+                        <span class="glyphicon glyphicon-flag cRed" aria-hidden="true"></span>
+                    }
+                    @EA.EANumber
+                </td>
+                <td class="taR">
+                    @EA.Name
+                </td>
+                <td class="taR">
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CompanyName)))
+                </td>
+                <td class="taR">
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.CateName)))
+                </td>
+                <td class="taR w80">
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.Remark)))
+                </td>
+                <td class="taR">
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.OccurDate.ToShortDateString())))
+                </td>
+                <td class="taR">
+                    @Html.Raw(string.Join("<br>", EA.List.Select(o => o.Money)))
+                </td>
+                <td class="taR">
+                    @(EA.List.Sum(o => o.Money))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })

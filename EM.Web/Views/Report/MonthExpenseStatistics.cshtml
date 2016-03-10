@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "MonthExpenseStatistics";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+<div class="wp100 peiField">
+    <div class="peiTitle mb5 wp100 taR p5">
+        <form id="searchChart">
+             @Html.DropDownList("Month", (SelectList)ViewBag.MonthList, "全部",new { id = "Month" })
+            <input type="text" class="datepicker   " id="SDate" name="SDate" value="@Request.Form["SDate"]" placeholder="开始日期">
+            <input type="text" class="datepicker   " id="EDate" name="EDate" value="@Request.Form["EDate"]" placeholder="结束日期">
+            <button type="button"  onclick="SubmitForm()">查询</button>
+        </form>
+    </div>
+    <div class="lineContent ">
+        <div id="lineChart" class=" hp100">
+
+        </div>
+    </div>
+</div>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="~/Js/Program/MonthExpenseStatistics.js"></script>
+<script>
+    $(function () {
+        SubmitForm();
+        $("#Month").change(function () {
+            var val = $("option:selected", this).val();
+            if (val != "")
+            {
+                $("#SDate").val(val + "/1");
+                $("#EDate").val(val + "/31");
+            }
+            else
+            {
+                //全部
+                $("#SDate").val("");
+                $("#EDate").val("");
+            }
+            SubmitForm();
+        })
+    })
+    var SubmitForm = function () {
+        $.ajax({
+            url: "@Url.Action("MonthExpenseStatistics")",
+            data: $("#searchChart").serialize(),
+            success: function (model) {
+                model.title = "月度费用统计"
+                model.subtitle = "按月为单位呈现费用的使用情况"
+                var columnChart = new ColumnChart($("#lineChart"), model);
+                columnChart.Init();
+            }
+        })
+    }
+</script>

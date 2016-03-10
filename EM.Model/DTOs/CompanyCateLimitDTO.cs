@@ -13,6 +13,7 @@ namespace EM.Model.DTOs
 
     public class CompanyCateLimitDTO
     {
+        public int CateId { get; set; }
         public decimal TotalCost { get; set; }
         public decimal ExpectTotalCost { get; set; }
         public decimal TotalLimit { get; set; }

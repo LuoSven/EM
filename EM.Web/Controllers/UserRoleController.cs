@@ -106,13 +106,13 @@ namespace EM.Web.Controllers
                 switch (result)
                 {
                     case 1:
-                        message += "已新增\r\n";
+                        message += "新增成功\r\n";
                         break;
                     case 2:
                         message += "新增失败\r\n";
                         break;
                     case 3:
-                        message += "已更新\r\n";
+                        message += "更新成功\r\n";
                         break;
                     case 4:
                         message += "更新失败\r\n";
@@ -127,7 +127,7 @@ namespace EM.Web.Controllers
         private void InitSelect(int roleType = 0, string CompanyIds = "")
         {
             var List=CompanyRepo.GetList();
-            if (CompanyIds != "")
+            if (!string.IsNullOrEmpty(CompanyIds))
             {
                 var  ids = CompanyIds.Split(',');
                 var ListTemp =new List<KeyValueVM>();
@@ -147,7 +147,7 @@ namespace EM.Web.Controllers
 
         private void InitBody(int Id=0,string CompanyIds="")
         {
-            if(CompanyIds!="")
+            if (!string.IsNullOrEmpty(CompanyIds))
             {
                 List<int> ids = CompanyIds.Split(',').Select(o => Convert.ToInt32(o)).ToList();
                 var CompanyList = CompanyRepo.GetMany(o => ids.Contains(o.Id)).ToList();

@@ -7,7 +7,9 @@
 @using EM.Common;
 @using EM;
 @{
-   
+    var StatusMessage = Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription() + " " + (string.IsNullOrEmpty(Model.RefusedMessage) ? "" : ":" + Model.RefusedMessage);
+    StatusMessage += Model.IsPublic.HasValue && Model.IsPublic.Value ? "(对公)" : "(对私)";
+    StatusMessage += Model.IsNotAccount.HasValue && Model.IsNotAccount.Value ? "(不计入费用)" : "(已计入费用)";
 }
 @model EM_ExpenseAccount
 <form class="basic-grey">
@@ -19,9 +21,8 @@
     @Html.HiddenFor(o => o.Id)
     <label>
         <span>当前状态 :</span>
-        <span class="view">@Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription() ： @Model.RefusedMessage</span>
-        <a class="checkTitle">对公</a> @Html.CheckBox("IsPublic", Model.IsPublic.HasValue && Model.IsPublic.Value ? true : false, new { id = "IsPublic",@readonly="readonly" })
-    </label>
+        <span class="view">@StatusMessage</span>
+     </label>
     <label>
         <span>报销单号 :</span>
         <span class="view">@Model.EANumber</span>

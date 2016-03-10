@@ -1,0 +1,22 @@
+﻿@using EM.Model.Entities;
+@model List<EM_System_Feedback>
+<div class="feedback-content pAbs p10 wp100 h500 ">
+    <div class="feedback-history h240">
+       @{
+           if(Model.Count>0)
+           {
+               
+    @Html.Partial("_ListFeedbacks", Model)
+           }else
+           {
+               <ul><li class="h50 taC size20">暂无吐槽</li></ul>
+           }
+       } 
+    </div>
+    <div class="feedback-title mb5 wp100">
+        <textarea name="feedbackMessage" id="feedbackMessage" placeholder="在这里写下你的问题，吐槽，及反馈等" class="wp100 size14 h50 p5"></textarea>
+    </div>
+    <div class="feedback-button">
+        <button type="button"   class="btn btn-primary" onclick="Global.feedback.submit($('.feedback-content'))">提交</button>
+    </div>
+</div>

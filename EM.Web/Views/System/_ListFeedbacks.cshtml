@@ -1,0 +1,22 @@
+﻿@using EM.Model.Entities;
+@model List<EM_System_Feedback>
+<ul>
+    @foreach (var feedback in Model)
+    {
+        <li class="pb5">
+            <div class="size14 p5 ">
+                <span class="mr10 c999">反馈时间：</span><span class="mr30 ">@feedback.CreateDate.ToString("yyyy年M月d日")</span>
+                @if (feedback.ReplyDate.HasValue)
+                {
+                    <span class="mr10 c999">回复时间：</span><span>@feedback.ReplyDate.Value.ToString("yyyy年M月d日")</span>
+                }
+            </div>
+            <div class="p5 historyMessage">@feedback.Message</div>
+            @if (!string.IsNullOrEmpty(feedback.ReplyMessage))
+            {
+                <div class="p5 historyReply">@feedback.ReplyMessage</div>
+            }
+        </li>
+    }
+
+</ul>

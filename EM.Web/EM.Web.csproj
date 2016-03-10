@@ -203,6 +203,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExpenseAccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Controllers\SystemUserController.cs" />
@@ -237,12 +238,16 @@
     <Content Include="Css\Third\dtree\img\plusbottom.gif" />
     <Content Include="Css\Third\dtree\img\question.gif" />
     <Content Include="Css\Third\dtree\img\trash.gif" />
+    <Content Include="Images\close.png" />
     <Content Include="Images\Icons\Logo-Small.JPG" />
     <Content Include="Images\Icons\Logo.JPG" />
     <Content Include="Images\Icons\select_close.png" />
     <Content Include="Images\Icons\select_open.png" />
     <Content Include="Images\Icons\tab_close.png" />
+    <Content Include="Images\UcChrome.png" />
+    <Content Include="Images\UcIeIcon.png" />
     <Content Include="Js\ajaxPager.js" />
+    <Content Include="Js\feedback.js" />
     <Content Include="Js\Program\MonthExpenseStatistics.js" />
     <Content Include="Js\table.js" />
     <Content Include="Js\jquery.validate.messages_cn.js" />
@@ -532,6 +537,14 @@
     <Content Include="Views\Home\_List.cshtml" />
     <Content Include="Views\ExpenseAccount\_SM.cshtml" />
     <Content Include="Views\Report\MonthExpenseStatistics.cshtml" />
+    <Content Include="Views\System\GetFeedBack.cshtml" />
+    <Content Include="Views\System\_ListFeedbacks.cshtml" />
+    <Content Include="Views\Report\CompanyLimitDetail.cshtml" />
+    <Content Include="Views\Report\_CompanyLimitDetailList.cshtml" />
+    <Content Include="Views\System\LoginManage.cshtml" />
+    <Content Include="Views\System\_ListLoginManage.cshtml" />
+    <Content Include="Views\System\_ListFeedbackManage.cshtml" />
+    <Content Include="Views\System\FeedbackManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

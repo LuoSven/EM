@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="DTOs\CompanyCateLimitDateDTO.cs" />
+    <Compile Include="DTOs\CompanyLimitDetailDTO.cs" />
     <Compile Include="DTOs\CompanyPerformanceSumDTO.cs" />
     <Compile Include="DTOs\CompanyLimitDTO.cs" />
     <Compile Include="DTOs\CompanyPerformanceDTO.cs" />
@@ -59,6 +60,9 @@
     <Compile Include="DTOs\ExpenseAccountDetailListDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountExcelDTO.cs" />
     <Compile Include="DTOs\ExpenseAccountMonthCateDTO.cs" />
+    <Compile Include="DTOs\SystemAlertMessageDTO.cs" />
+    <Compile Include="DTOs\SystemFeedbackDTO.cs" />
+    <Compile Include="DTOs\UserLoginRecordDTO.cs" />
     <Compile Include="DTOs\UserRoleListDTO.cs" />
     <Compile Include="DTOs\CompanyCateLimitDTO.cs" />
     <Compile Include="Entities\EM_Charge_Cate.cs">
@@ -88,6 +92,12 @@
     <Compile Include="Entities\EM_System_ActionLog.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EM_System_AlertMessage.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EM_System_Feedback.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\EM_System_Program.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
@@ -103,10 +113,17 @@
     <Compile Include="Entities\EM_User_Role.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FC_GetParentCateInfo_Result.cs">
+      <DependentUpon>EMDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMs\SystemUserSM.cs" />
+    <Compile Include="SMs\SystemFeedbackSM.cs" />
+    <Compile Include="SMs\LoginManageSM.cs" />
     <Compile Include="SMs\AdminWelcomeSM.cs" />
     <Compile Include="SMs\CompanyCateLimitSM.cs" />
     <Compile Include="SMs\CompanyLimitSM.cs" />
     <Compile Include="SMs\CompanyPerformanceSM.cs" />
+    <Compile Include="SMs\CompanyLimitDetailSM.cs" />
     <Compile Include="SMs\MouthExpenseStatisticsSM.cs" />
     <Compile Include="VMs\CompanyCateLimitVM.cs" />
     <Compile Include="VMs\CompanyManagerWelcomeVM.cs" />
@@ -143,7 +160,10 @@
     <Compile Include="VMs\ExpenseAccountMonthCateVM.cs" />
     <Compile Include="VMs\ExpenseAccountVM.cs" />
     <Compile Include="VMs\KeyValueVM.cs" />
+    <Compile Include="VMs\SystemFeedbackVM.cs" />
+    <Compile Include="VMs\UserLoginRecordVM.cs" />
     <Compile Include="VMs\UserRoleListVM.cs" />
+    <Compile Include="VMs\SystemAlertMessageVM.cs" />
     <Compile Include="VMs\UserRoleTreeVM.cs" />
     <Compile Include="VMs\MenuVM.cs" />
     <Compile Include="VMs\UserRoleProgramVM.cs" />

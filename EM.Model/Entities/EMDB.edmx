@@ -141,6 +141,36 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“EMDB.dbo.EM_System_AlertMessage”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="EM_System_AlertMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Sender" />
+            <PropertyRef Name="Receiver" />
+            <PropertyRef Name="Message" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sender" Type="int" Nullable="false" />
+          <Property Name="Receiver" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AlertedTime" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EM_System_Feedback">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="Url" Type="nvarchar" MaxLength="500" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="ReplyDate" Type="datetime" />
+          <Property Name="ReplyMessage" Type="nvarchar" MaxLength="3000" />
+          <Property Name="Creater" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ModefyDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="EM_System_Program">
           <Key>
             <PropertyRef Name="Id" />
@@ -216,6 +246,82 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="FC_GetChildCateIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CateId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="FC_GetParentCateId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CateId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="FC_GetParentCateInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CateId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+                <Property Name="CateName" Type="nvarchar" MaxLength="500" />
+                <Property Name="CateType" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="FC_GetRoleAllCateIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleType" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="FC_GetRoleChildrenCateIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleType" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="FC_GetRoleParentCateIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleType" Type="varchar" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Id" Type="int" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="SP_CreateCompanyManange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyName" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_CreateCompanyStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyName" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="Moible" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_GetRoleCateIds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RoleType" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="EMDBModelStoreContainer">
           <EntitySet Name="EM_Charge_Cate" EntityType="Self.EM_Charge_Cate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_Company" EntityType="Self.EM_Company" Schema="dbo" store:Type="Tables" />
@@ -225,6 +331,7 @@
           <EntitySet Name="EM_ExpenseAccount_ApproveHistory" EntityType="Self.EM_ExpenseAccount_ApproveHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount_Detail" EntityType="Self.EM_ExpenseAccount_Detail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount_File" EntityType="Self.EM_ExpenseAccount_File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_System_Feedback" EntityType="Self.EM_System_Feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Login_Record" EntityType="Self.EM_User_Login_Record" Schema="dbo" store:Type="Tables" />
@@ -241,6 +348,16 @@
     [EM_System_ActionLog].[Remark] AS [Remark], 
     [EM_System_ActionLog].[CreateDate] AS [CreateDate]
     FROM [dbo].[EM_System_ActionLog] AS [EM_System_ActionLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="EM_System_AlertMessage" EntityType="Self.EM_System_AlertMessage" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EM_System_AlertMessage].[Id] AS [Id], 
+    [EM_System_AlertMessage].[Sender] AS [Sender], 
+    [EM_System_AlertMessage].[Receiver] AS [Receiver], 
+    [EM_System_AlertMessage].[Message] AS [Message], 
+    [EM_System_AlertMessage].[AlertedTime] AS [AlertedTime], 
+    [EM_System_AlertMessage].[CreateTime] AS [CreateTime]
+    FROM [dbo].[EM_System_AlertMessage] AS [EM_System_AlertMessage]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
@@ -295,6 +412,40 @@
             <End Role="EM_User_Right" EntitySet="EM_User_Right" />
           </AssociationSet>
           <EntitySet Name="EM_Company" EntityType="EMDBModel.EM_Company" />
+          <EntitySet Name="EM_System_Feedback" EntityType="EMDBModel.EM_System_Feedback" />
+          <FunctionImport Name="FC_GetChildCateIds" IsComposable="true" ReturnType="Collection(Int32)">
+          <Parameter Name="CateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FC_GetParentCateId" IsComposable="true" ReturnType="Collection(Int32)">
+          <Parameter Name="CateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FC_GetParentCateInfo" IsComposable="true" ReturnType="Collection(EMDBModel.FC_GetParentCateInfo_Result)">
+          <Parameter Name="CateId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="FC_GetRoleAllCateIds" IsComposable="true" ReturnType="Collection(Int32)">
+          <Parameter Name="RoleType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FC_GetRoleChildrenCateIds" IsComposable="true" ReturnType="Collection(Int32)">
+          <Parameter Name="RoleType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="FC_GetRoleParentCateIds" IsComposable="true" ReturnType="Collection(Int32)">
+          <Parameter Name="RoleType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_CreateCompanyManange" ReturnType="Collection(Decimal)">
+            <Parameter Name="CompanyName" Mode="In" Type="String" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_CreateCompanyStaff" ReturnType="Collection(Decimal)">
+            <Parameter Name="CompanyName" Mode="In" Type="String" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Moible" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetRoleCateIds" ReturnType="Collection(Int32)">
+          <Parameter Name="RoleType" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="EM_System_AlertMessage" EntityType="EMDBModel.EM_System_AlertMessage" />
         </EntityContainer>
         <EntityType Name="EM_System_Program">
           <Key>
@@ -481,6 +632,39 @@
           <Property Name="InformUserId" Type="Int32" />
           <Property Name="CompanyType" Type="Int32" />
           <Property Name="ParentCompanyId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EM_System_Feedback">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="ReplyDate" Type="DateTime" Precision="3" />
+          <Property Name="ReplyMessage" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <Property Name="Creater" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModefyDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <ComplexType Name="FC_GetParentCateInfo_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CateName" Nullable="true" MaxLength="500" />
+          <Property Type="Int32" Name="CateType" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="EM_System_AlertMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Sender" />
+            <PropertyRef Name="Receiver" />
+            <PropertyRef Name="Message" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sender" Type="Int32" Nullable="false" />
+          <Property Name="Receiver" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AlertedTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -693,6 +877,50 @@
                 <ScalarProperty Name="KPIValue" ColumnName="KPIValue" />
                 <ScalarProperty Name="KPIPercent" ColumnName="KPIPercent" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EM_System_Feedback">
+            <EntityTypeMapping TypeName="EMDBModel.EM_System_Feedback">
+              <MappingFragment StoreEntitySet="EM_System_Feedback">
+                <ScalarProperty Name="ModefyDate" ColumnName="ModefyDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Creater" ColumnName="Creater" />
+                <ScalarProperty Name="ReplyMessage" ColumnName="ReplyMessage" />
+                <ScalarProperty Name="ReplyDate" ColumnName="ReplyDate" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FC_GetChildCateIds" FunctionName="EMDBModel.Store.FC_GetChildCateIds" />
+          <FunctionImportMapping FunctionImportName="FC_GetParentCateId" FunctionName="EMDBModel.Store.FC_GetParentCateId" />
+          <FunctionImportMapping FunctionImportName="FC_GetParentCateInfo" FunctionName="EMDBModel.Store.FC_GetParentCateInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMDBModel.FC_GetParentCateInfo_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CateName" ColumnName="CateName" />
+                <ScalarProperty Name="CateType" ColumnName="CateType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="FC_GetRoleAllCateIds" FunctionName="EMDBModel.Store.FC_GetRoleAllCateIds" />
+          <FunctionImportMapping FunctionImportName="FC_GetRoleChildrenCateIds" FunctionName="EMDBModel.Store.FC_GetRoleChildrenCateIds" />
+          <FunctionImportMapping FunctionImportName="FC_GetRoleParentCateIds" FunctionName="EMDBModel.Store.FC_GetRoleParentCateIds" />
+          <FunctionImportMapping FunctionImportName="SP_CreateCompanyManange" FunctionName="EMDBModel.Store.SP_CreateCompanyManange" />
+          <FunctionImportMapping FunctionImportName="SP_CreateCompanyStaff" FunctionName="EMDBModel.Store.SP_CreateCompanyStaff" />
+          <FunctionImportMapping FunctionImportName="SP_GetRoleCateIds" FunctionName="EMDBModel.Store.SP_GetRoleCateIds" />
+          <EntitySetMapping Name="EM_System_AlertMessage">
+            <EntityTypeMapping TypeName="EMDBModel.EM_System_AlertMessage">
+              <MappingFragment StoreEntitySet="EM_System_AlertMessage">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AlertedTime" ColumnName="AlertedTime" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

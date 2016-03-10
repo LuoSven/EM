@@ -3,11 +3,21 @@
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 @using EM.Model.VMs;
+@using EM.Common;
 @model List<MenuVM>
 <div class="message  h35 ">
     <div class="fl pl10 pt10 hidden  ">当前作业：<span id="breadcrumb"></span></div>
+    @if (BrowserHelper.IsIE8())
+    {
+        <div class="fl pl10  cRed  pt5">
+            当前浏览器是Ie8或以下内核，如果是Ie浏览器，请点击<a href="http://139.196.52.240/Download/UC.exe"> 这里 </a>下载Uc浏览器，
+            如果是Uc浏览器，点击地址栏右方<a onclick="Global.Menu.ShowUcTip()"><img src="~/Images/UcIeIcon.png">兼容模式按钮</a>，切换到极速模式 <a onclick="Global.Menu.ShowUcTip()">图解</a>
+        </div>
+
+        <div id="UcTip" style="display:none"><img src="~/Images/UcChrome.png" /></div>
+    }
     <div class="iframeButton w100 fr hp100 pt5 pb5">
-        <button class=" fr" id="refreshIframe" type="button"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>刷新页面</button>
+        <button class="fontYaHei fr" id="refreshIframe" type="button"><span class="glyphicon glyphicon-repeat mr5 ml5 size12" aria-hidden="true"></span>刷新当前页面</button>
     </div>
 </div>
 <div class="menu  p0  col-xs-1">
@@ -16,10 +26,10 @@
         {
             <li>
                 <a class="wp100 fl size18 fL40 pl25">@Menu.Name</a>
-                <ul class="hidden">
+                <ul >
                     @foreach (var program in Menu.Items)
                     {
-                        <li>
+                        <li >
                             <a class="wp100 pl30" data-name="@program.Name" id="@program.ProgramId" data-url="@program.Url">
                                 @program.Name
                                 @if (program.Count != 0)

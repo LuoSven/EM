@@ -42,7 +42,6 @@
         <input type="submit" class="button" value="保存" />
         <p class="mlp20 cCCC mt10 fwN"><input name="ApproveStatus" type="checkbox" value="@((int)ExpenseAccountApproveStatus.WaitingApprove)" /> 同时提交报销单(提交后不能进行编辑，请慎重提交)</p>
 
-        <input type="hidden" name="ApproveStatus" value="@((int)ExpenseAccountApproveStatus.Created)" />
     </label>
 </form>
 @Html.Partial("_UploadField")

@@ -28,6 +28,10 @@
             <tr data-id="@EA.Id" data-status="@EA.ApproveStatus">
                 <td class="w20 taL"><input type="checkbox" /></td>
                 <td>
+                    @if (EA.IsPublic.HasValue && EA.IsPublic.Value)
+                {
+                    <span class="glyphicon glyphicon-flag cRed" aria-hidden="true"></span>
+                }
                     @EA.EANumber
                 </td>
                 <td class="taR">

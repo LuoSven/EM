@@ -7,20 +7,23 @@
 @using EM;
 @using EM.Common;
 @{
-   
+    var StatusMessage = Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription() + " " + (string.IsNullOrEmpty(Model.RefusedMessage) ? "" : ":" + Model.RefusedMessage);
+    StatusMessage += Model.IsPublic.HasValue && Model.IsPublic.Value ? "(对公)" : "(对私)";
+    StatusMessage += Model.IsNotAccount.HasValue && Model.IsNotAccount.Value ? "(不计入费用)" : "(已计入费用)";
 }
 @model EM_ExpenseAccount
 <form class="basic-grey">
     <h1>
         查看报销单
         <button class="btn btn-info btn fr" data-name="我的报销单" data-url="expenseaccount/index" data-role="returnBtn">返回列表</button>
-        <button class="btn btn-info btn fr" data-name="编辑报销单" data-url="expenseaccount/AddOrEdit/@Model.Id" data-role="returnBtn">编辑</button>
+        @*<button class="btn btn-info btn fr" data-name="编辑报销单" data-url="expenseaccount/AddOrEdit/@Model.Id" data-role="returnBtn">编辑</button>*@
         <span></span>
     </h1>
     @Html.HiddenFor(o => o.Id)
     <label>
         <span>当前状态 :</span>
-        <span class="view">@Enum.ToObject(ExpenseAccountApproveStatus.FailApproved.GetType(), Model.ApproveStatus).GetEnumDescription()： @Model.RefusedMessage</span>
+        <span class="view">@StatusMessage</span>
+      
     </label>
     <label>
         <span>报销单号 :</span>

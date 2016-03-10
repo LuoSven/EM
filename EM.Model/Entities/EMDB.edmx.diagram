@@ -20,6 +20,8 @@
         <EntityTypeShape EntityType="EMDBModel.EM_User_Role" Width="1.5" PointX="0.75" PointY="4.5" />
         <AssociationConnector Association="EMDBModel.FK_EM_System_Program_EM_User_Right" />
         <EntityTypeShape EntityType="EMDBModel.EM_Company" Width="1.5" PointX="10.375" PointY="4.75" />
+        <EntityTypeShape EntityType="EMDBModel.EM_System_Feedback" Width="1.5" PointX="11.375" PointY="8.75" />
+        <EntityTypeShape EntityType="EMDBModel.EM_System_AlertMessage" Width="1.5" PointX="12.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

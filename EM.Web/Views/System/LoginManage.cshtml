@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCommon.cshtml";
+}
+@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@model PagedResult<UserLoginRecordVM>
+<div class="SearchForm">
+    <form id="SearchForm" action="@Url.Action("LoginManage", "System")">
+        @Html.DropDownList("UserId", (SelectList)ViewBag.userList, "登陆用户")
+        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
+        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+        <button class="searchButton" type="submit">搜索</button>
+    </form>
+
+</div>
+
+<div id="List">
+    @Html.Partial("_ListLoginManage", Model)
+</div>
+

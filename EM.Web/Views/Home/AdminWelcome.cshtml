@@ -6,6 +6,10 @@
 @using EM.Common;
 @using EM.Data.Infrastructure;
 @model PagedResult<CompanyCateLimitVM>
+<style>
+    .clicking {background:#E7EDFF}
+</style>
+
 <div class="SearchForm">
     <form id="SearchForm" action="@Url.Action("AdminWelcome", "Home")">
         @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
@@ -21,7 +25,12 @@
 
 @section Js{
     <script>
-        
+        var ShowRestDetailList = function (ob, companyId, CateId) {
+            $(".clicking", "#List").removeClass("clicking");
+            $(ob).parent().addClass("clicking");
+            Global.Form.NewIframe('额度使用明细', 'report_companylimitdetail', '/report/companylimitdetail?CompanyId=' + companyId + '&CateId=' + CateId)
+        }
+
         var ShowRestDetail = function (ob) {
             $(ob).next().removeClass('hidden',200)
         }

@@ -21,10 +21,13 @@ namespace EM.Data.Repositories
         {
         }
 
+
+        private static readonly decimal totalSale = 1900000;
+        private static readonly decimal totalSaleExpenseAccount = 700000;
         public List<CompanyLimitDTO> GetList(CompanyLimitSM sm)
         {
 
-            var sql = @"select a.Id,b.CompanyName,c.CateName,a.LimitSum,a.ModifyDate,a.Modifier from EM_Company_Limit a
+            var sql = @"select a.Id,b.CompanyName,c.CateName,a.LimitSum,a.ModifyDate,a.Modifier,a.SeasonType from EM_Company_Limit a
 join EM_Company b on a.CompanyId=b.Id
 join EM_Charge_Cate c on a.CateId=c.Id
  where 1=1 ";
@@ -60,14 +63,16 @@ join EM_Charge_Cate c on a.CateId=c.Id
                 SDate = SDate.HasValue?SDate.Value:DateTime.Now.AddYears(-10),
                 EDate = EDate.HasValue?EDate.Value:DateTime.Now.AddYears(10),
             };
+            var costList = GetCostList(CompanyId, CateId, SDate, EDate);
             //根据每个日期合计金额,下方报表用
-            var DateCostList = DapperHelper.SqlQuery<CompanyCateLimitDateDTO>(@"select case when SUM(Money) is null then 0 else SUM(Money) end  as Money  ,a.OccurDate 
-from EM_ExpenseAccount_Detail a
-join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
-where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select * from dbo.FC_GetChildCateIds(@CateId) )
-and a.OccurDate >@SDate and a.OccurDate<@EDate
-and b.ApproveStatus=4 and b.IsNotAccount <>1
-group by a.OccurDate", SM).ToList();
+            var DatelyCostList = from cost in costList
+                               group cost by new { cost.OccurDate } into m
+                               select new CompanyCateLimitDateDTO()
+                               {
+                                   OccurDate = m.First().OccurDate,
+                                   Money = m.Sum(o => o.Money)
+
+                               };
 
 
             //根据每个日期预计合计金额,下方报表用
@@ -76,69 +81,52 @@ from EM_ExpenseAccount_Detail a
 join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
 where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select * from dbo.FC_GetChildCateIds(@CateId) )
 and a.OccurDate >@SDate and a.OccurDate<@EDate
-and b.ApproveStatus<>4 and b.IsNotAccount <>1
+and b.ApproveStatus<>4
+and( b.IsNotAccount is null or b.IsNotAccount =0)
 group by a.OccurDate", SM).ToList();
             //获取公司类型，获取绩效额度的时候不一样
-            var NowCompanyType = DapperHelper.SqlQuery<int?>("select a.CompanyType from EM_Company a where a.Id=@CompanyId", SM).FirstOrDefault();
 
 
-            var TotalCost = DateCostList.Sum(o => o.Money);
+            var TotalCost = DatelyCostList.Sum(o => o.Money);
             var ExpectTotalCost = DateExpectCostList.Sum(o => o.Money);
+
+
             //获取大类的额度类型和名称
             var MainCate = DapperHelper.SqlQuery<EM_Charge_Cate>(@"select * from dbo.FC_GetParentCateInfo(@CateId)", SM).FirstOrDefault();
-            decimal TotalLimit = 0;
-            //根据大类类型不同获取不同的额度
-            var cateType = (CateTypeEnum)Enum.ToObject(CateTypeEnum.KPIAbout.GetType(), MainCate.CateType);
-            switch (cateType)
-            {
-                case CateTypeEnum.KPIAbout:
-                    switch (NowCompanyType) {
-                        case null:
-                        case (int)CompanyType.Other:  //汇总KPI额度
-                            var KpiSum = GetPerformance(SM.CompanyId.ToString());
-                            //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
-                            TotalLimit = Math.Round((KpiSum.FinishPerformance / (decimal)1900000) * 700000, 2); ;
-                            break;
-                        case (int)CompanyType.City:  //汇总KPI额度
-                            //获取城市公司的子公司
-                            var ChildrenCompanyIdList = DapperHelper.SqlQuery<int>("select a.Id from EM_Company a where a.ParentCompanyId=@CompanyId", SM);
-                            var KpiSumChildren = (decimal)0;
-                            //汇总kpi
-                            foreach (var ChildrenCompanyId in ChildrenCompanyIdList)
-                            {
-                                KpiSumChildren += GetPerformance(ChildrenCompanyId.ToString()).FinishPerformance;
-                            }
-                            //得出报销额/10
-                            //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
-                            TotalLimit = Math.Round((KpiSumChildren / (decimal)2010000) * 400000, 2) / 10;
-                            break;
-                    }
-                  
-                    break;
-                case CateTypeEnum.YearlyLimit:
-                    //年度额度=当前公司，当前大类，所有季度额度的汇总，因为上季度用不掉的会延续到下季度，所以不需要判断时间
-                    TotalLimit = DapperHelper.SqlQuery<int>(" select  case when  SUM(LimitSum) is null then 0 else SUM(LimitSum) end from EM_Company_Limit where CateId=@CateId and SeasonType =0 and CompanyId=@CompanyId ", new { CateId = MainCate.Id, CompanyId = CompanyId }).FirstOrDefault();
-                    break;
-                case CateTypeEnum.SeasonlyLimit:
-                    //季度额度=当前公司，当前大类，所有季度额度的汇总，因为上季度用不掉的会延续到下季度，所以不需要判断时间
-                    TotalLimit = DapperHelper.SqlQuery<int>(" select  case when  SUM(LimitSum) is null then 0 else SUM(LimitSum) end from EM_Company_Limit where CateId=@CateId and SeasonType in (1,2,3,4) and CompanyId=@CompanyId ", new { CateId = MainCate.Id, CompanyId = CompanyId }).FirstOrDefault();
-                    break;
 
-            }
+            //获取额度
+            var TotalLimit = GetLimit(CompanyId,CateId);
+       
+          
+            
           
 
             var result = new CompanyCateLimitDTO()
             {
+                CateId=CateId,
                 CateName=MainCate.CateName,
                 TotalCost = TotalCost,
                 TotalLimit = TotalLimit,
                 ExpectTotalCost=ExpectTotalCost,
-                DateDetails = DateCostList,
+                DateDetails = DatelyCostList.ToList(),
                 ExpectDateDetails = DateExpectCostList,
             };
             return result;
             
         }
+        public List<EM_ExpenseAccount_Detail>  GetCostList(int CompanyId, int CateId, DateTime? SDate = null, DateTime? EDate = null)
+        {
+             SDate = SDate.HasValue?SDate.Value:DateTime.Now.AddYears(-10);
+             EDate = EDate.HasValue ? EDate.Value : DateTime.Now.AddYears(10);
+             var GetCostList = DapperHelper.SqlQuery<EM_ExpenseAccount_Detail>(@"select a.* from EM_ExpenseAccount_Detail a
+join EM_ExpenseAccount b on a.ExpenseAccountId=b.Id
+where a.CompanyId=@CompanyId and a.ExpenseAccountId<>0 and a.CateId in ( select * from dbo.FC_GetChildCateIds(@CateId) )
+and a.OccurDate >@SDate and a.OccurDate<@EDate
+and b.ApproveStatus=4 
+and ( b.IsNotAccount is null or b.IsNotAccount =0)", new { CompanyId, CateId, SDate , EDate }).ToList();
+             return GetCostList;
+        }
+
 
         public  CompanyCateLimitDTO GetCompanysLimit(string CompanyIds, int CateId, DateTime? SDate = null, DateTime? EDate = null)
         {
@@ -181,6 +169,69 @@ group by a.OccurDate", SM).ToList();
 
             return result;
         }
+        /// <summary>
+        /// 获取额度
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <param name="CateId"></param>
+        /// <param name="SDate"></param>
+        /// <param name="EDate"></param>
+        /// <returns></returns>
+        private decimal GetLimit(int CompanyId, int CateId)
+        {
+            decimal TotalLimit = 0;
+            //根据大类类型不同获取不同的额度
+            //获取大类的额度类型和名称
+            var parentCateType = DapperHelper.SqlQuery<int>(@"select CateType from dbo.FC_GetParentCateInfo(@CateId)", new { CateId }).FirstOrDefault();
+            var parentCateId = DapperHelper.SqlQuery<int>(@"select Id from dbo.FC_GetParentCateInfo(@CateId)", new { CateId }).FirstOrDefault();
+
+            var cateType = (CateTypeEnum)Enum.ToObject(CateTypeEnum.KPIAbout.GetType(), parentCateType);
+
+            var NowCompanyType = DapperHelper.SqlQuery<int?>("select a.CompanyType from EM_Company a where a.Id=@CompanyId", new { CompanyId }).FirstOrDefault();
+
+
+            //城市分公司所有额度都是子公司和10%
+            if (NowCompanyType == (int)CompanyType.City)
+            {
+
+                var ChildrenCompanyIdList = DapperHelper.SqlQuery<int>("select a.Id from EM_Company a where a.ParentCompanyId=@CompanyId", new { CompanyId });
+                foreach (var ChildrenCompanyId in ChildrenCompanyIdList)
+                {
+                    //嵌套把所有子公司的和起来
+                    var ChildreLimit = GetLimit(ChildrenCompanyId, CateId);
+                    TotalLimit += ChildreLimit;
+                }
+                TotalLimit = TotalLimit / 10;
+            }
+            else
+            {
+                switch (cateType)
+                {
+                    case CateTypeEnum.KPIAbout:
+                        var KpiSum = GetPerformance(CompanyId.ToString());
+                        //绩效有关额度计算=（公司目前绩效/所有全部目标绩效）*全部报销额
+                        TotalLimit = Math.Round((KpiSum.FinishPerformance / totalSale) * totalSaleExpenseAccount, 2); ;
+                        break;
+                    case CateTypeEnum.YearlyLimit:
+                        //年度额度=当前公司，当前大类，所有季度额度的汇总，因为上季度用不掉的会延续到下季度，所以不需要判断时间
+                        TotalLimit = DapperHelper.SqlQuery<int>(" select  case when  SUM(LimitSum) is null then 0 else SUM(LimitSum) end from EM_Company_Limit where CateId=@CateId and SeasonType =0 and CompanyId=@CompanyId ", new { CateId = parentCateId, CompanyId = CompanyId }).FirstOrDefault();
+                        break;
+                    case CateTypeEnum.SeasonlyLimit:
+                        //季度额度=当前公司，当前大类，所有季度额度的汇总，因为上季度用不掉的会延续到下季度，所以不需要判断时间
+                        TotalLimit = DapperHelper.SqlQuery<int>(" select  case when  SUM(LimitSum) is null then 0 else SUM(LimitSum) end from EM_Company_Limit where CateId=@CateId and SeasonType in (1,2,3,4) and CompanyId=@CompanyId ", new { CateId = parentCateId, CompanyId = CompanyId }).FirstOrDefault();
+                        break;
+                    case CateTypeEnum.Other:
+                    case CateTypeEnum.None:
+                    default:
+                        //默认，其他和无类型都只要把目前的都和起来就可以了
+                        TotalLimit = DapperHelper.SqlQuery<int>(" select  case when  SUM(LimitSum) is null then 0 else SUM(LimitSum) end from EM_Company_Limit where CateId=@CateId  and CompanyId=@CompanyId ", new { CateId = parentCateId, CompanyId = CompanyId }).FirstOrDefault();
+                        break;
+
+
+                }
+            }
+            return TotalLimit;
+        }
 
     }
 
@@ -200,6 +251,8 @@ group by a.OccurDate", SM).ToList();
          CompanyCateLimitDTO GetCompanysLimit(string CompanyIds, int CateId, DateTime? SDate = null, DateTime? EDate = null);
 
          CompanyPerformanceSumDTO GetPerformance(string CompanyIds);
+
+         List<EM_ExpenseAccount_Detail> GetCostList(int CompanyId, int CateId, DateTime? SDate = null, DateTime? EDate = null);
 
     }
 }

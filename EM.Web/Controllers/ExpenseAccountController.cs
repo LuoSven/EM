@@ -40,7 +40,6 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> Index(ExpenseAccountSM Sm,int Page=1,int PageSize=20)
         {
-            Sm.CompanyIds = ViewHelp.GetCompanyIds();
             var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
             var Vms = new PagedResult<ExpenseAccountListVM>()
             {
@@ -60,7 +59,6 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> FailApproved(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
         {
-            Sm.CompanyIds = ViewHelp.GetCompanyIds();
             if (!Request.IsAjaxRequest())
             Sm.ApproveStatus =(int)ExpenseAccountApproveStatus.FailApproved;
             var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
@@ -84,7 +82,6 @@ namespace EM.Web.Controllers
         {
             if (!Request.IsAjaxRequest())
                 Sm.ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove;
-            Sm.CompanyIds = ViewHelp.GetCompanyIds();
             var Dtos =  expenseAccountRepo.GetListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize,true);
             var Vms = new PagedResult<ExpenseAccountListVM>()
             {
@@ -127,7 +124,7 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
             }
-
+            model.ApproveStatus = (int)ExpenseAccountApproveStatus.Created;
             model.CreateDate = DateTime.Now;
             model.Creater = ViewHelp.GetUserName();
             model.ModifyDate = DateTime.Now;
@@ -172,6 +169,10 @@ namespace EM.Web.Controllers
             if (string.IsNullOrEmpty(DetailIds))
             {
                 return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
+            }
+            if (entity.ApproveStatus != (int)ExpenseAccountApproveStatus.WaitingApprove || entity.ApproveStatus != (int)ExpenseAccountApproveStatus.PassApproved)
+            {
+                entity.ApproveStatus = (int)ExpenseAccountApproveStatus.Created;
             }
             entity = Mapper.Map<EM_ExpenseAccount, EM_ExpenseAccount>(model, entity);
             entity.ModifyDate = DateTime.Now;
@@ -293,7 +294,6 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> ToExcel(ExpenseAccountSM Sm)
         {
-            Sm.CompanyIds = ViewHelp.GetCompanyIds();
             var Dtos = expenseAccountRepo.GetExcelListByDto(Sm, ViewHelp.UserInfo());
             var Vms = Mapper.Map<List<ExpenseAccountExcelVM>>(Dtos);
             var FilePath = ExpenseAccountManager.Instance.ToExcel(Vms);
@@ -309,6 +309,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> Delete(int Id)
         {
+            if (!expenseAccountRepo.IsCreater(Id.ToString(), ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var model = expenseAccountRepo.GetById(Id);
             if (model == null)
             {
@@ -337,7 +341,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> SumbitExpenseAccount(int Id)
         {
-
+            if (!expenseAccountRepo.IsCreater(Id.ToString(), ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var result = expenseAccountRepo.UpdataApproveStatus(Id, (int)ExpenseAccountApproveStatus.WaitingApprove, "", ViewHelp.GetUserName());
             return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
@@ -346,7 +353,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> CancelExpenseAccount(int Id)
         {
-
+            if (!expenseAccountRepo.IsCreater(Id.ToString(), ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var result = expenseAccountRepo.UpdataApproveStatus(Id,(int) ExpenseAccountApproveStatus.Created, "", ViewHelp.GetUserName());
             return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
@@ -357,6 +367,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> Deletes(string  Ids)
         {
+            if(!expenseAccountRepo.IsCreater(Ids,ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var IdsInt = Ids.ToInts();
             foreach (var Id in IdsInt)
             {
@@ -379,6 +393,7 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "ApproveIndex")]
         public async Task<ActionResult> UpdataApproveStatuss(string Ids, int ApproveStatus, string Message)
         {
+           
             var IdsInt = Ids.ToInts();
             foreach (var Id in IdsInt)
             { 
@@ -392,6 +407,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> SumbitExpenseAccounts(string Ids)
         {
+            if (!expenseAccountRepo.IsCreater(Ids, ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var IdsInt = Ids.ToInts();
             foreach (var Id in IdsInt)
             {
@@ -404,6 +423,10 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form, "Index")]
         public async Task<ActionResult> CancelExpenseAccounts(string Ids)
         {
+            if (!expenseAccountRepo.IsCreater(Ids, ViewHelp.GetUserName()))
+            {
+                return Json(new { code = 0, message = "选中的项目中包含不是本人新增的报销单，请重新选择" }, JsonRequestBehavior.AllowGet);
+            }
             var IdsInt = Ids.ToInts();
             foreach (var Id in IdsInt)
             {

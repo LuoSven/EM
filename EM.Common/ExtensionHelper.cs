@@ -69,6 +69,15 @@ namespace EM
             int.TryParse(e, out Id);
             return Id;
         }
+
+        public static Decimal ToDecimal(this string e)
+        {
+            if (string.IsNullOrEmpty(e))
+                return 0;
+            Decimal Id = 0;
+            Decimal.TryParse(e, out Id);
+            return Id;
+        }
         /// <summary>
         /// 获取月份名称，碰到1月就会返回年，主要是下拉和报表用
         /// </summary>
