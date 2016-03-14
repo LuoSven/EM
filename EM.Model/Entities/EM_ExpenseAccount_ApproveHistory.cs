@@ -22,5 +22,6 @@ namespace EM.Model.Entities
         public string Modifier { get; set; }
         public System.DateTime CreateDate { get; set; }
         public System.DateTime ModifyDate { get; set; }
+        public string Note { get; set; }
     }
 }

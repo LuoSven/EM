@@ -126,13 +126,14 @@ namespace EM.Web.Controllers
             }
             model.ApproveStatus = (int)ExpenseAccountApproveStatus.Created;
             model.CreateDate = DateTime.Now;
+            model.ApplyDate = DateTime.Now;
             model.Creater = ViewHelp.GetUserName();
             model.ModifyDate = DateTime.Now;
             model.Modifier = ViewHelp.GetUserName();
             expenseAccountRepo.Add(model);
             var result = expenseAccountRepo.SaveChanges();
                 //添加状态变更记录
-            expenseAccountRepo.AddApproveHistory(model.Id,model.ApproveStatus,"",ViewHelp.GetUserName());
+            expenseAccountRepo.AddApproveHistory(model.Id,model.ApproveStatus,"",ViewHelp.GetUserName(),"");
             if (result > 0)
             {
                 //更新单身
@@ -170,16 +171,14 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
             }
-            if (entity.ApproveStatus != (int)ExpenseAccountApproveStatus.WaitingApprove || entity.ApproveStatus != (int)ExpenseAccountApproveStatus.PassApproved)
-            {
-                entity.ApproveStatus = (int)ExpenseAccountApproveStatus.Created;
-            }
+
             entity = Mapper.Map<EM_ExpenseAccount, EM_ExpenseAccount>(model, entity);
+            entity.ApproveStatus = entity.ApproveStatus == 0 ? (int)ExpenseAccountApproveStatus.Created : entity.ApproveStatus;
             entity.ModifyDate = DateTime.Now;
             entity.Modifier = ViewHelp.GetUserName();
             var result = expenseAccountRepo.SaveChanges();
             //添加状态变更记录
-            expenseAccountRepo.AddApproveHistory(model.Id, model.ApproveStatus, "", ViewHelp.GetUserName());
+            expenseAccountRepo.AddApproveHistory(model.Id, model.ApproveStatus, "", ViewHelp.GetUserName(),"");
             if (result > 0)
             {
                 //更新单身
@@ -327,12 +326,27 @@ namespace EM.Web.Controllers
             return Json(new { code = 0, message = "删除失败，请重试" }, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 获取审核失败原因的界面
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> GetFailApproveView(int Id)
+        {
+            var model = new UpdataApproveStatusVM()
+            {
+                Id = Id,
+                ApproveStatus =(int) ExpenseAccountApproveStatus.FailApproved,
+            };
+            return View("_FailApprove", model);
+        }
+
         [Description("审核报销单")]
         [ActionType(RightType.Form, "ApproveIndex")]
-        public async Task<ActionResult> UpdataApproveStatus(int Id, int ApproveStatus, string Message)
+        public async Task<ActionResult> UpdataApproveStatus(UpdataApproveStatusVM model)
         {
 
-            var result = expenseAccountRepo.UpdataApproveStatus(Id, ApproveStatus, Message, ViewHelp.GetUserName());
+            var result = expenseAccountRepo.UpdataApproveStatus(model.Id, model.ApproveStatus, model.Message, ViewHelp.GetUserName(), model.Note);
             //发送
             return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
@@ -442,7 +456,9 @@ namespace EM.Web.Controllers
         private void InitSelect(int CateId=0,int CompanyId=0)
         {
             var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Form);
-          ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
+            ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
+            var CateGroupList = changeCateRepo.GetGroupList(ViewHelp.GetRoleType(), CateDropType.Form);
+            ViewBag.CateGroupList = new KeyValueGroupVM(CateGroupList, CateId);
           //录入人和amdin在录入的时候可以录入所有人的公司，
           //也只有录入人和admin可以编辑和新增，所以目前都是可以选所有的
           var CompanyList = companyRepo.GetList();

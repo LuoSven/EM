@@ -10,6 +10,10 @@
 .approveHistory li{
 
 }
-
+.messageContent{   border: 1px solid #CBCBCB;
+  background: #F8F8F8;
+  left: -300px;
+  z-index: 9999;
+  border-radius: 5px;}
 
 

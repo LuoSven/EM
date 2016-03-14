@@ -19,6 +19,8 @@ namespace EM.Model.Entities
         public int Receiver { get; set; }
         public string Message { get; set; }
         public Nullable<System.DateTime> AlertedTime { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
+        public System.DateTime CreateTime { get; set; }
+        public int MessagType { get; set; }
+        public Nullable<System.DateTime> AlertTime { get; set; }
     }
 }

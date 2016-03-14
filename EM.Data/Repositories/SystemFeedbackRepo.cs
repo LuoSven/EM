@@ -38,7 +38,7 @@ join EM_User_Account b on b.UserId=a.Creater
 join EM_User_Role c on b.RoleId=c.Id
 where 1=1   ";
                 if(sm.UserId.HasValue)
-                    sql += " and a.Creater=@Creater ";
+                    sql += " and a.Creater=@UserId ";
                 if (sm.IsRepert.HasValue)
                 {
                     if(sm.IsRepert.Value==1)

@@ -16,7 +16,7 @@
             <th class="taR w80">报销日期</th>
             <th class="taR w100">金额</th>
             <th class="taR w100">总金额</th>
-            <th class="w80 taR">录入日期</th>
+            <th class="w80 taR">申请日期</th>
             <th class="w80 taR">更新日期</th>
             <th class="taR w80">当前状态</th>
             <th class="taR">操作</th>
@@ -63,7 +63,7 @@
                     @EA.ApplyDate.ToShortDateString()
                 </td>
                 <td class="taR">
-                    @EA.ModifyDate.ToShortDateString()
+                    @EA.ModifyDate
                 </td>
                 <td class="taR">
                     @EA.ApproveStatusName

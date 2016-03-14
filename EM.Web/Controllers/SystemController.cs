@@ -62,9 +62,9 @@ namespace EM.Web.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> AlertMessage()
+        public  ActionResult AlertMessage()
         {
-            var alertMessage =await systemAlertMessageRepo.GetAlertMessages(ViewHelp.GetUserId());
+            var alertMessage = systemAlertMessageRepo.GetAlertMessages(ViewHelp.GetUserId());
             return Json(new { messages = alertMessage }, JsonRequestBehavior.AllowGet);
         }
 

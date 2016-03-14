@@ -42,7 +42,7 @@ where 1=1 ";
             var NewNo="对公"+( MaxNo + 1).ToString();
             return NewNo;
         }
-        public  int UpdataApproveStatus(int Id, int ApproveStatus, string Message,string UserName)
+        public int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName, string Note = "")
         {
             var sql = "update EM_ExpenseAccount set ApproveStatus=@ApproveStatus ";
             if (ApproveStatus==(int)ExpenseAccountApproveStatus.FailApproved)
@@ -53,12 +53,12 @@ where 1=1 ";
            var result= DapperHelper.SqlExecute(sql, new {Id,ApproveStatus,Message });
            if (result>0)
            {
-               AddApproveHistory(Id, ApproveStatus, Message, UserName);
+               AddApproveHistory(Id, ApproveStatus, Message, UserName, Note);
            }
            return result;
         }
 
-        public void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName)
+        public void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName, string Note )
         {
             var ApproveHistory = new EM_ExpenseAccount_ApproveHistory()
             {
@@ -68,7 +68,8 @@ where 1=1 ";
                 Creater = UserName,
                 Modifier = UserName,
                 CreateDate = DateTime.Now,
-                ModifyDate = DateTime.Now
+                ModifyDate = DateTime.Now,
+                Note=Note,
             };
             ApproveHistory.FailReason = ApproveHistory.FailReason ?? "";
             DapperHelper.SqlExecute(@"INSERT INTO EM_ExpenseAccount_ApproveHistory
@@ -78,7 +79,8 @@ where 1=1 ";
            ,Creater
            ,Modifier
            ,CreateDate
-           ,ModifyDate)
+           ,ModifyDate
+           ,Note)
      VALUES
            (@ExpenseAccountId
            ,@Status
@@ -86,7 +88,8 @@ where 1=1 ";
            ,@Creater
            ,@Modifier
            ,@CreateDate
-           ,@ModifyDate)", ApproveHistory);
+           ,@ModifyDate
+           ,@Note)", ApproveHistory);
         }
 
         public List<ExpenseAccountMonthCateDTO> GetMonthCateList(MonthExpenseStatisticsSM sm)
@@ -189,7 +192,16 @@ where 1=1 ";
 
         bool IsCreater(string Ids, string userName);
 
-        int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName);
+        /// <summary>
+        /// 更新表单状态
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="ApproveStatus"></param>
+        /// <param name="Message"></param>
+        /// <param name="UserName"></param>
+        /// <param name="Note"></param>
+        /// <returns></returns>
+        int UpdataApproveStatus(int Id, int ApproveStatus, string Message, string UserName,string Note="");
         /// <summary>
         /// 添加变更记录
         /// </summary>
@@ -197,7 +209,7 @@ where 1=1 ";
         /// <param name="ApproveStatus"></param>
         /// <param name="Message"></param>
         /// <param name="UserName"></param>
-        void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName);
+        void AddApproveHistory(int Id, int ApproveStatus, string Message, string UserName, string Note);
 
         /// <summary>
         /// 

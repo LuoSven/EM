@@ -95,6 +95,7 @@
           <Property Name="Modifier" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="ModifyDate" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="3000" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_Detail">
           <Key>
@@ -148,14 +149,18 @@
             <PropertyRef Name="Id" />
             <PropertyRef Name="Sender" />
             <PropertyRef Name="Receiver" />
+            <PropertyRef Name="MessagType" />
             <PropertyRef Name="Message" />
+            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Sender" Type="int" Nullable="false" />
           <Property Name="Receiver" Type="int" Nullable="false" />
+          <Property Name="MessagType" Type="int" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AlertedTime" Type="datetime" />
-          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="AlertTime" Type="datetime" />
         </EntityType>
         <EntityType Name="EM_System_Feedback">
           <Key>
@@ -354,9 +359,11 @@
     [EM_System_AlertMessage].[Id] AS [Id], 
     [EM_System_AlertMessage].[Sender] AS [Sender], 
     [EM_System_AlertMessage].[Receiver] AS [Receiver], 
+    [EM_System_AlertMessage].[MessagType] AS [MessagType], 
     [EM_System_AlertMessage].[Message] AS [Message], 
     [EM_System_AlertMessage].[AlertedTime] AS [AlertedTime], 
-    [EM_System_AlertMessage].[CreateTime] AS [CreateTime]
+    [EM_System_AlertMessage].[CreateTime] AS [CreateTime], 
+    [EM_System_AlertMessage].[AlertTime] AS [AlertTime]
     FROM [dbo].[EM_System_AlertMessage] AS [EM_System_AlertMessage]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
@@ -549,6 +556,7 @@
           <Property Name="Modifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_Detail">
           <Key>
@@ -658,13 +666,16 @@
             <PropertyRef Name="Sender" />
             <PropertyRef Name="Receiver" />
             <PropertyRef Name="Message" />
+            <PropertyRef Name="MessagType" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Sender" Type="Int32" Nullable="false" />
           <Property Name="Receiver" Type="Int32" Nullable="false" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AlertedTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="MessagType" Type="Int32" Nullable="false" />
+          <Property Name="AlertTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -797,6 +808,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount_ApproveHistory">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount_ApproveHistory">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount_ApproveHistory">
+                <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Modifier" ColumnName="Modifier" />
@@ -916,6 +928,8 @@
           <EntitySetMapping Name="EM_System_AlertMessage">
             <EntityTypeMapping TypeName="EMDBModel.EM_System_AlertMessage">
               <MappingFragment StoreEntitySet="EM_System_AlertMessage">
+                <ScalarProperty Name="AlertTime" ColumnName="AlertTime" />
+                <ScalarProperty Name="MessagType" ColumnName="MessagType" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="AlertedTime" ColumnName="AlertedTime" />
                 <ScalarProperty Name="Message" ColumnName="Message" />

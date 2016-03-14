@@ -43,6 +43,8 @@ ol,ul{padding:0;margin:0 0 9px 25px}
 .commonBody{background-image:url(../Images/Icons/Logo.JPG)}
 .searchButtons{width:100%;float:right}
 .adminCompanyLimit{width:150%;position:absolute;top:-5px;left:100%;padding:5px;background:#FFF;z-index:999;border-radius:2px;border:1px solid #D7D7D7;color:#AAA;float:left;text-align:left}
-
+#List .table td{
+      word-break: break-all;
+}
 /*#loading{width:150px;height:25px;border:1px solid #000;border-top:none;background-color:#FFC;position:absolute;top:0;left:50%;margin-left:-75px;text-align:center;line-height:25px;font-size:12px;font-weight:700;color:red}*/
 

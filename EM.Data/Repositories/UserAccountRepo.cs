@@ -150,8 +150,9 @@ left join EM_User_Role b on a.RoleId=b.id ";
 
         public List<KeyValueVM> GetSelectList()
         {
-            var Sql = @"select a.UserId as [Key], a.UserName+'('+a.LoginEmail+')' as Value from EM_User_Account a ";
-            Sql += " order by  a.UserId ";
+            var Sql = @"select a.UserId as [Key], a.UserName+'('+b.Name+')' as Value from EM_User_Account a 
+join  EM_User_Role b on a.RoleId=b.Id 
+           order by  a.UserId ";
             var result =  DapperHelper.SqlQuery<KeyValueVM>(Sql).ToList();
             return result;
         }

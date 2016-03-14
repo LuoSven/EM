@@ -1,4 +1,7 @@
-﻿@using EM.Model.Entities
+﻿
+@using EM.Model.VMs;
+@using EM.Web;
+@using EM.Model.Entities;
 @model EM_ExpenseAccount_Detail
 @{
    
@@ -27,7 +30,7 @@
             <tr>
                 <td class="size14">费用明细：</td>
                 <td class="p5">
-                    @Html.DropDownListFor(o => o.CateId, (SelectList)ViewBag.CateList, "-请选择-", new { @class = "required" })
+                    @Html.DropDownGroupListFor(o => o.CateId, (KeyValueGroupVM)ViewBag.CateGroupList, new { @class = "required" })
                 </td>
             </tr>
             <tr>

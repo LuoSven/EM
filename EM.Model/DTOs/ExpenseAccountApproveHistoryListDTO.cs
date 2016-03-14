@@ -62,6 +62,8 @@ namespace EM.Model.DTOs
         }
         public System.DateTime CreateDate { get; set; }
         public string FailReason { get; set; }
+        public string Note { get; set; }
         public string Creater { get; set; }
+
     }
 }

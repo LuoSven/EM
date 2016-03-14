@@ -74,7 +74,11 @@
                                         <span class="c000 mr5">@item.Creater</span>在<span class="ml5 mr5">@item.CreateDateName</span><span class="@item.StatusClass mr5">@item.StatusName</span>
                                         @if (!string.IsNullOrEmpty(item.FailReason))
                                         {
-                                            <br><span class="fl ">@item.FailReason</span>
+                                            <br><span class="cRed fl">原因：</span><span class="fl ">@item.FailReason</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.Note))
+                                        {
+                                            <br><span class="cRed fl">备注：</span><span class="fl ">@item.Note</span>
                                         }
                                     </li>
                                 }
@@ -82,7 +86,7 @@
                         </div>
                     }
                 </td>
-                <td class="taR">
+                <td class="taR pRel">
                     <a data-commond="browse" onclick="Global.Form.NewIframe('查看报销单','browseexpenseaccount_@(EA.Id)','@Url.Action("Browse", new { id = EA.Id, IsApprove=true })')">查看</a>
                     @if (EA.ApproveStatus != (int)ExpenseAccountApproveStatus.PassApproved)
                     {
@@ -90,11 +94,47 @@
                     }
                     @if (EA.ApproveStatus != (int)ExpenseAccountApproveStatus.FailApproved)
                     {
-                        <a data-commond="updataapprovestatus" onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.FailApproved })',this,false,'不通过')">不通过</a>
+                        <a data-commond="updataapprovestatus" onclick="Global.Form.Confirm('@Url.Action("UpdataApproveStatus", new { Id = EA.Id, ApproveStatus = (int)ExpenseAccountApproveStatus.FailApproved })',this,false,'不通过','FailApprove.Show')">不通过</a>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })
+<div class="messageContent w200 hidden  p5 pFx ">
+    <form>
+        <input type="hidden" id="ApproveStatus" value="@((int)ExpenseAccountApproveStatus.FailApproved)" name="ApproveStatus" />
+        <input type="hidden" id="Id" name="Id" />
+        <table class="wp100">
+            <tbody>
+                <tr>
+                    <td class="w40 taC">
+                        原因
+                    </td>
+                    <td>
+                        <textarea name="Message" id="Message" class="wp100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" taC">
+                        备注
+                    </td>
+                    <td>
+                        <textarea name="Note" id="Note" class="wp100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" taC"></td>
+                    <td>
+                        <button type="button"  class="btn btn-primary btn-xs">
+                            确认
+                        </button>
+                        <button type="button" class="btn btn-cancel  btn-xs">
+                            取消
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })

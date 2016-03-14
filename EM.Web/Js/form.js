@@ -226,7 +226,7 @@ Global.Form.AjaxBodyForm = function (FormJqOb, Url,sf) {
                         if (Url != undefined) {
                             if (Url != "")
                                 Global.Form.CloseIframe();
-                            else
+                            else 
                                 location.href = location.href;
 
                         }
@@ -290,22 +290,27 @@ Global.Form.Delete=function(url,ob,isComfirm)
                     a=JSON.parse(a)
                 if (!a.code) 
                   alert(a.message)
-                $("form").submit();
+                $("form[id=SearchForm]").submit();
             }
 
         })
     }
 }
 Global.Form.ConfirmFlag = 0;
-Global.Form.Confirm = function (url, ob, isComfirm,message) {
+Global.Form.Confirm = function (url, ob, isComfirm,message,process) {
     var alert = Global.Utils.ShowMessage
     if (!isComfirm) {
         $(ob).html("确认？")//  $(ob).html("确认" + message + "？")
-        $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, true,"' + message + '")')
+        $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, true,"' + message + '","' + process + '")')
         setTimeout(function () {
             if (Global.Form.ConfirmFlag == 0) {
                 $(ob).html(message)
-                $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, false,"' + message + '")')
+                if(process != undefined)
+                {
+                    $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, false,"' + message + '","' + process + '")')
+                } else {
+                    $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, false,"' + message + '")');
+                }
             }
         }, 1500)
     }
@@ -314,19 +319,31 @@ Global.Form.Confirm = function (url, ob, isComfirm,message) {
         if (Global.Form.ConfirmFlag)
             $(ob).focus();
         Global.Form.ConfirmFlag = 1;
-        $(ob).html("正在" + message + "中")
-        $.ajax({
-            url: url,
-            success: function (a) {
-                Global.Form.ConfirmFlag = 0
-                if (typeof a == "string")
-                    a = JSON.parse(a)
-                if (!a.code)
-                    alert(a.message)
-                $("form").submit();
-            }
 
-        })
+
+        if (process != undefined && process.isFunction())
+        {
+            $(ob).html(message)
+            $(ob).attr("onclick", 'Global.Form.Confirm("' + url + '",this, false,"' + message + '","' + process + '")')
+            BeforeResult = eval(process)(ob);
+        }else
+        {
+
+            $(ob).html("正在" + message + "中")
+            $.ajax({
+                url: url,
+                success: function (a) {
+                    Global.Form.ConfirmFlag = 0
+                    if (typeof a == "string")
+                        a = JSON.parse(a)
+                    if (!a.code)
+                        alert(a.message)
+                    $("form[id=SearchForm]").submit();
+                }
+
+            })
+        }
+
     }
 }
 Global.Form.Confirms = function (url, tableJqOb, message,beforeCheck) {
@@ -364,7 +381,7 @@ Global.Form.Confirms = function (url, tableJqOb, message,beforeCheck) {
                     a = JSON.parse(a)
                 if (!a.code)
                     alert(a.message)
-                $("form").submit();
+                $("form[id=SearchForm]").submit();
             }
         }
         Global.Log(ajaxConfig);
