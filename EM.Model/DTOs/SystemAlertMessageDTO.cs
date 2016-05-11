@@ -13,6 +13,7 @@ namespace EM.Model.DTOs
 
         public int MessagType { get; set; }
         public string Sender { get; set; }
+        public string Receiver { get; set; }
         public string CreateTime { get; set; }
          
     }

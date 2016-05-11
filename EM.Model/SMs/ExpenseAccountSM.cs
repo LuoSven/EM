@@ -76,6 +76,9 @@ namespace EM.Model.SMs
                     case ExpenseAccountDateType.ModifyDate:
                         sql += string.Format(dateSqla, "ModifyDate");
                         break;
+                    case ExpenseAccountDateType.ApproveDate:
+                        sql += string.Format(dateSqla, "ApproveDate");
+                        break;
                 }
                 return sql;
             }

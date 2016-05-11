@@ -6,14 +6,14 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th class="w40 taR">反馈人</th>
+            <th class="w30 taR">反馈人</th>
             <th class="w60 taR">反馈时间</th>
             <th class="w120 taR">反馈信息</th>
             <th class="w90 taR">Url</th>
             <th class="w30 taR">是否回复</th>
-            <th class="w60 taR">回复时间</th>
+            <th class="w40 taR">回复时间</th>
             <th class="w80 taR">回复内容</th>
-            <th class="w20 taR">操作</th>
+            <th class="w30 taR">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
         }
         @foreach (var Fd in Model.Results)
         {
-            <tr>
+            <tr data-id="@Fd.Id">
                 <td class="taR">@Fd.UserName</td>
                 <td class="taR">@Fd.CreateDate</td>
                 <td class="taR">@Fd.Message</td>
@@ -31,10 +31,40 @@
                 <td class="taR">@(Fd.IsReply?"已回复":"待回复")</td>
                 <td class="taR">@Fd.ReplyDate</td>
                 <td class="taR">@Html.Raw(Fd.ReplyMessage)</td>
-                <td><a>回复</a></td>
+                <td>
+                    <a onclick="Global.Form.Confirm('@Url.Action("AddFeedBack")',this,false,'回复','Feedback.Show')">回复</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="messageContent w200 hidden  p5 pFx ">
+    <form>
+        <input type="hidden" id="Id" name="id" />
+        <table class="wp100">
+            <tbody>
+                <tr>
+                    <td class="w40 taC">
+                        回复
+                    </td>
+                    <td>
+                        <textarea name="message" id="message" class="wp100"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class=" taC"></td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-xs">
+                            确认
+                        </button>
+                        <button type="button" class="btn btn-cancel  btn-xs">
+                            取消
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
 @Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })
 

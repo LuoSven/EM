@@ -19,5 +19,6 @@ namespace EM.Model.Entities
         public string Description { get; set; }
         public string CompanyIds { get; set; }
         public int RoleType { get; set; }
+        public string CateIds { get; set; }
     }
 }

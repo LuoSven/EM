@@ -101,8 +101,8 @@ namespace EM.Web.Core
          }
          public static bool IsAdmin()
          {
-             int[] AdminRoleIds={1};
-             return AdminRoleIds.Contains(GetRoleId());
+
+             return StaticKey.AdminRoleIds.Contains(GetRoleId());
          }
 
          public static int GetRoleId()
@@ -121,6 +121,11 @@ namespace EM.Web.Core
          public static string GetUserMoBile()
          {
              return GetAccountInfoFromCookie().Mobile;
+         }
+
+         public static string GetCateIds()
+         {
+             return GetAccountInfoFromCookie().CateIds;
          }
 
          public static bool HasRight(string ControllerName, string ActionName)

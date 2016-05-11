@@ -113,7 +113,9 @@ namespace EM.Common
         [Description("创建日期")]
         CreateDate,
         [Description("更新日期")]
-        ModifyDate 
+        ModifyDate,
+        [Description("通过日期")]
+        ApproveDate 
     }
 
     public enum ExpenseAccountFileStatus
@@ -151,7 +153,9 @@ namespace EM.Common
         [Description("分公司录入员")]
         Staff,
         [Description("区域录入员")]
-        Area
+        Area,
+        [Description("业绩录入员")]
+        Performance
     }
     /// <summary>
     /// 分类列表的使用来源
@@ -205,8 +209,10 @@ namespace EM.Common
         L4,
         L5,
     }
-
-    public enum MessagType
+    /// <summary>
+    /// 消息类型
+    /// </summary>
+    public enum MessageType
     {
         [Description("提示信息")]
         Alert = 1,
@@ -220,7 +226,7 @@ namespace EM.Common
     public enum SelectType
     {
         [Description("用户下拉")]
-        User,
+        User,   
         [Description("分类下拉")]
         Cate,
         [Description("公司下拉")]
@@ -230,7 +236,41 @@ namespace EM.Common
         
     }
 
+    /// <summary>
+    /// 用来前端显示信息状态
+    /// </summary>
+    public enum AlertedStstusType
+    {
+        [Description("已发送")]
+        Alerted,
+        [Description("待发送")]
+        Waiting,
 
+    }
+
+
+    public enum SystemMessageDateTimeType
+    {
+        [Description("创建日期")]
+        CreateDate,
+        [Description("发送日期")]
+        AlertedDate,
+        [Description("提醒日期")]
+        AlertDate,
+    }
+
+    /// <summary>
+    /// 数据查看权限
+    /// </summary>
+    public enum RoleViewRightType
+    {
+        [Description("查看自己创建的")]
+        Owner,
+        [Description("查看自己创建的和同一公司的")]
+        OwnerAndCompany,
+        [Description("查看所有数据")]
+        All=99,
+    }
 
 
 

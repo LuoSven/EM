@@ -22,23 +22,17 @@ namespace EM.Model.VMs
                 UserId = 0;
             else
             {
-
                 CookieValue = DESEncrypt.Decrypt(CookieValue);
                 var account = CookieValue.Split(StaticKey.SplitChar);
-                UserId = Convert.ToInt32(account[0]);
+                UserId = account[0].ToInt();
                 UserName = account[1];
                 Mobile = account[2];
-                var Ids = account[3].Split(',');
-                SystemIds = new List<int>();
-                foreach (var item in Ids)
-                {
-                    SystemIds.Add(Convert.ToInt32(item));
-                }
-                UserRole = Convert.ToInt32(account[4]);
+                SystemIds = account[3].ToInts();
+                UserRole = account[4].ToInt();
                 CompanyIds = account[5];
-                
-                RoleType =Convert.ToInt32( account[6]);
-
+                RoleType = account[6].ToInt();
+                CateIds = account[7];
+                ViewRightType = account[8].ToInt();
             }
 
 
@@ -47,7 +41,7 @@ namespace EM.Model.VMs
 
         public string SetCookie()
         {
-            string[] acconutCookie = { UserId.ToString(), UserName, Mobile, string.Join(",", SystemIds), UserRole.ToString(), CompanyIds, RoleType.ToString() };
+            string[] acconutCookie = { UserId.ToString(), UserName, Mobile, string.Join(",", SystemIds), UserRole.ToString(), CompanyIds, RoleType.ToString(), CateIds, ViewRightType.ToString() };
             return DESEncrypt.Encrypt(string.Join(StaticKey.Split, acconutCookie));
         }
         public int UserId { get; set; }
@@ -62,5 +56,7 @@ namespace EM.Model.VMs
 
         public string CompanyIds { get; set; }
         public int RoleType { get; set; }
+        public string CateIds { get; set; }
+        public int ViewRightType { get; set; }
     }
 }

@@ -95,6 +95,68 @@ namespace EM.Web.Controllers
             return View(result);
         }
 
+        [Description("回复反馈信息")]
+        [ActionType(RightType.Form)]
+        public ActionResult UpdateFeedback(int id,string message)
+        {
+            var feedback = systemFeedbackRepo.GetById(id);
+            feedback.ReplyDate = DateTime.Now;
+            feedback.ReplyMessage = message;
+            systemFeedbackRepo.SaveChanges();
+            var ReplyMessage="管理员回复了你的反馈:{0}<br>{1}";
+            ReplyMessage=string.Format(ReplyMessage,feedback.Message.Omit(),message);
+            var systemAlertMessage = new EM_System_AlertMessage()
+            {
+                Message = ReplyMessage,
+                MessageType = (int)MessageType.Alert,
+                Receiver = feedback.Creater,
+                Sender = ViewHelp.GetUserId(),
+                CreateTime = DateTime.Now,
+                 
+            };
+            systemAlertMessageRepo.Add(systemAlertMessage);
+            systemAlertMessageRepo.SaveChanges();
+            return Json(new { code = 1 });
+        }
+
+
+        [Description("系统信息管理")]
+        [ActionType(RightType.View)]
+        public ActionResult SystemMessageManage(SystemAlertMessageSM sm, int Page = 1, int PageSize = 20)
+        {
+            var list = systemAlertMessageRepo.GetPagedList(sm, Page, PageSize);
+            var vms = Mapper.Map<IList<SystemAlertMessageVM>>(list.Results);
+            var result = new PagedResult<SystemAlertMessageVM>(vms, Page, PageSize, list.RowCount);
+            if (Request.IsAjaxRequest())
+                return PartialView("_ListSystemMessageManage", result);
+            ViewBag.userList = SelectHelper.GetUserList();
+            ViewBag.messageTypeList = SelectHelper.GetEnumList(MessageType.Notification);
+            ViewBag.alertDateTypeList = SelectHelper.GetEnumList(SystemMessageDateTimeType.CreateDate);
+            ViewBag.alertTypeList = SelectHelper.GetEnumList(AlertedStstusType.Alerted);  
+            return View(result);
+        }
+
+        [Description("删除系统消息")]
+        [ActionType(RightType.Form)]
+        public ActionResult DeleteSystemMessageManage(int Id)
+        {
+            var entity = systemAlertMessageRepo.GetById(Id);
+            Log(entity);
+            systemAlertMessageRepo.Delete(entity);
+            systemAlertMessageRepo.SaveChanges();
+            return Json(new {code=1 },JsonRequestBehavior.AllowGet);
+        }
+
+        [Description("重新发送系统消息")]
+        [ActionType(RightType.Form)]
+        public ActionResult ResendSystemMessageManage(int Id)
+        {
+            var entity = systemAlertMessageRepo.GetById(Id);
+            Log(entity);
+            entity.AlertedTime=null;
+            systemAlertMessageRepo.SaveChanges();
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
+        }
 
 
 

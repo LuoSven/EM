@@ -22,7 +22,7 @@ Global.Form.FileUploader = function () {
     var b_version = navigator.appVersion
     var version = b_version.split(";")
     var browser = navigator.appName;
-    var trim_Version = version[1].replace(/[ ]/g, "");
+    var trim_Version =version.length>1? version[1].replace(/[ ]/g, ""):'';
     //批次把上传按钮的样式改掉，并且绑定事件
     $(".file").each(function () {
         //生成控件和样式
@@ -155,6 +155,7 @@ Global.Form.AjaxSearchForm = function (FormJqOb, TargetJqOb) {
             data: FormJqOb.serialize(),
             success: function (a) {
                 TargetJqOb.html(a)
+                Global.Form.FilterAction(action);
                 //要重新绑定全选事件
                 Global.Table.Init();
             },

@@ -17,6 +17,7 @@ namespace EM.Web
             var builder = new TagBuilder("select");
             builder.MergeAttributes(new RouteValueDictionary(htmlAttributes));
             string optionFormat = "<option value=\"{0}\">{1}</option>";
+            string optionSelectedFormat = "<option selected=\"selected\" value=\"{0}\">{1}</option>";
             string optionGroupFormat = "<optgroup label=\"{0}\">{1}</optgroup>";
             var selectFormat = "<select name=\"{0}\" >{1}</select>";
             ModelMetadata modelMetadata = ModelMetadata.FromLambdaExpression<TModel, TProperty>(expression, htmlHelper.ViewData);
@@ -27,7 +28,16 @@ namespace EM.Web
                 var optionSb = new StringBuilder();
                 foreach (var option in selectList.Value)
                 {
-                    optionSb.AppendFormat(optionFormat, option.Value, option.Text);
+                    if (option.Selected)
+                    {
+
+                        optionSb.AppendFormat(optionSelectedFormat, option.Value, option.Text);
+                    }
+                    else
+                    {
+
+                        optionSb.AppendFormat(optionFormat, option.Value, option.Text);
+                    }
                 }
                 groupSb.AppendFormat(optionGroupFormat, selectList.Key, optionSb.ToString());
             }

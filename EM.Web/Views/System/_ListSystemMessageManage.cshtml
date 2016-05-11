@@ -1,0 +1,46 @@
+﻿@using EM.Model.VMs;
+@using EM.Data.Infrastructure;
+@using EM.Web.Core;
+@using EM.Common;
+@using EM;
+@model PagedResult<SystemAlertMessageVM>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="w30 taR">发送人</th>
+            <th class="w60 taR">接收人</th>
+            <th class="w120 taR">消息类型</th>
+            <th class="w90 taR">消息内容</th>
+            <th class="w30 taR">状态</th>
+            <th class="w30 taR">接收时间</th>
+            <th class="w40 taR">创建时间</th>
+            <th class="w80 taR">提醒时间</th>
+            <th class="w30 taR">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Results.Count == 0)
+        {
+            <tr><td colspan="9" class="size18 taC fL20">暂无数据</td></tr>
+        }
+        @foreach (var Fd in Model.Results)
+        {
+            <tr data-id="@Fd.Id">
+                <td class="taR">@Fd.SenderName</td>
+                <td class="taR">@Fd.ReceiverName</td>
+                <td class="taR">@Fd.MessageTypeName</td>
+                <td class="taR">@Fd.Message</td>
+                <td class="taR">@(Fd.AlertedTime.HasValue?"已收到":"未收到")</td>
+                <td class="taR">@(Fd.AlertedTime.ToYMdHms())</td>
+                <td class="taR">@(Fd.CreateTime.ToYMdHms())</td>
+                <td class="taR">@(Fd.AlertTime.ToYMdHms())</td>
+                <td>
+                    <a onclick="Global.Form.Delete('@Url.Action("DeleteSystemMessageManage", new { Id=Fd.Id})',this,false)">删除</a>
+                    <a onclick="Global.Form.Confirm('@Url.Action("ResendSystemMessageManage", new { Id=Fd.Id}))',this,false,'重发')">重发</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })
+

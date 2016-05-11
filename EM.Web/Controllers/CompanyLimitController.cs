@@ -116,7 +116,7 @@ namespace EM.Web.Controllers
 
         private void InitSelect(int CateId = 0, int CompanyId = 0,int SeasonType =0)
         {
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(),CateDropType.Report);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
             ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
             var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
             ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);

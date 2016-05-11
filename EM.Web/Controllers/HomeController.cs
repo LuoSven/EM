@@ -77,7 +77,7 @@ namespace EM.Web.Controllers
                 Companys = Companys.Where(o => o.Id == SM.CompanyId).ToList();
             }
             //分类列表
-            var Cates = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            var Cates = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
             if (SM.CateId.HasValue)
             {
                 Cates = Cates.Where(o => o.Key == SM.CateId.ToString()).ToList();
@@ -119,7 +119,7 @@ namespace EM.Web.Controllers
         {
             var model = new CompanyManagerWelcomeVM();
             model.CompanyCateLimits = new List<CompanyCateLimitDTO>();
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
             foreach (var Cate in CateList)
             {
                 var Limit = companyLimitRepo.GetCompanysLimit(ViewHelp.GetCompanyIds(), Cate.Key.ToInt(), SDate, EDate);
@@ -158,7 +158,7 @@ namespace EM.Web.Controllers
         {
             var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
             ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value");
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
             ViewBag.CateList = new SelectList(CateList, "Key", "Value");
         }
 

@@ -31,5 +31,6 @@ namespace EM.Model.Entities
         public string RefusedMessage { get; set; }
         public Nullable<bool> IsPublic { get; set; }
         public Nullable<bool> IsNotAccount { get; set; }
+        public Nullable<System.DateTime> ApproveDate { get; set; }
     }
 }

@@ -29,9 +29,13 @@
                 <td class="w20 taL"><input type="checkbox" /></td>
                 <td>
                     @if (EA.IsPublic.HasValue && EA.IsPublic.Value)
-                {
-                    <span class="glyphicon glyphicon-flag cRed" aria-hidden="true"></span>
-                }
+                    {
+                        <span class="glyphicon glyphicon-flag cRed" aria-hidden="true"></span>
+                    }
+                    @if (EA.IsNotAccount.HasValue && EA.IsNotAccount.Value)
+                    {
+                        <span class="glyphicon glyphicon-remove-sign cRed" aria-hidden="true"></span>
+                    }
                     @EA.EANumber
                 </td>
                 <td class="taR">
@@ -137,4 +141,5 @@
             </tbody>
         </table>
     </form>
-</div>@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })
+</div>
+@Html.Partial("_Pager", new PagerModel(Model.RowCount, Model.PageSize, Model.CurrentPage) { AjaxOptions = new PagerAjaxOptions() { HttpMethod = "Post", UpdateTargetId = "List", SearchFormId = "SearchForm" } })

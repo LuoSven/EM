@@ -47,7 +47,7 @@ namespace EM.Web.Controllers
                 {
                     sm.EDate = DateTime.Now;
                 }
-                var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+                var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
                 sm.CompanyIds = ViewHelp.GetCompanyIds();
                 sm.RoleType = ViewHelp.GetRoleType();
                 var Dtos = expenseAccountRepo.GetMonthCateList(sm);
@@ -108,7 +108,7 @@ namespace EM.Web.Controllers
             }
             if (!Sm.CateId.HasValue)
             {
-                var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Search);
+                var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Search, ViewHelp.GetCateIds());
                 Sm.CateId = CateList.FirstOrDefault().Key.ToInt();
             }
             Sm.IsNotAccount = 0;
@@ -131,7 +131,7 @@ namespace EM.Web.Controllers
         }
         private void CompanyLimitInitSearchSelect()
         {
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
             ViewBag.CateList = new SelectList(CateList, "Key", "Value");
             var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
             ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value");

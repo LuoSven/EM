@@ -120,6 +120,7 @@
     <Compile Include="Entities\FC_GetParentCateInfo_Result.cs">
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="SMs\SystemAlertMessageSM.cs" />
     <Compile Include="SMs\SystemUserSM.cs" />
     <Compile Include="SMs\SystemFeedbackSM.cs" />
     <Compile Include="SMs\LoginManageSM.cs" />

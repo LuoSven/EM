@@ -87,7 +87,7 @@ namespace EM.Data.Dapper
             using (var conn = DapperHelper.GetConnection())
             {
                 string sql = Sql;
-                var result = conn.Execute(sql, param);
+                var result = conn.Execute(sql, param,null,conn.ConnectionTimeout);
                 return result;
             }
         }

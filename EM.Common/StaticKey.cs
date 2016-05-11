@@ -17,6 +17,15 @@ namespace EM.Common
         public const char SplitChar = '‖';
 
          public const string CookieAccountKey = "asd";
+
+         public static int[] AdminRoleIds
+         {
+             get
+             {
+                 int[] roleIds=  { 1 };
+                 return roleIds;
+             }
+         }
  
     }
 }

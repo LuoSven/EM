@@ -11,22 +11,21 @@
     <script src="~/Js/Program/Feedback.js"></script>
 }
 <div class="SearchForm">
-    <form id="SearchForm" action="@Url.Action("FeedbackManage", "System")">
-        @Html.DropDownList("UserId", (SelectList)ViewBag.userList, "登陆用户")
+    <form id="SearchForm" action="@Url.Action("SystemMessageManage", "System")">
+        @Html.DropDownList("Sender", (SelectList)ViewBag.userList, "发送者")
+        @Html.DropDownList("Receiver", (SelectList)ViewBag.userList, "接受者")
+        @Html.DropDownList("MessageType", (SelectList)ViewBag.messageTypeList, "类型")
+        @Html.DropDownList("AlertedStstus", (SelectList)ViewBag.alertTypeList, "状态")
+        @Html.DropDownList("DateTimeType", (SelectList)ViewBag.alertDateTypeList, "时间查询")
         <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
         <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
-        <select name="IsRepert">
-            <option>回复状态</option>
-            <option value="1">已回复</option>
-            <option value="0">待回复</option>
-        </select>
         <button class="searchButton" type="submit">搜索</button>
     </form>
 
 </div>
 
 <div id="List">
-    @Html.Partial("_ListFeedbackManage", Model)
+    @Html.Partial("_ListSystemMessageManage", Model)
 </div>
 
 

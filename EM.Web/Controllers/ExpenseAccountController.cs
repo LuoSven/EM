@@ -124,7 +124,7 @@ namespace EM.Web.Controllers
             {
                 return Json(new { code = 0, message = "报销单明细上传失败，请重试" }, JsonRequestBehavior.AllowGet);
             }
-            model.ApproveStatus = (int)ExpenseAccountApproveStatus.Created;
+            model.ApproveStatus = model.ApproveStatus == 0 ? (int)ExpenseAccountApproveStatus.Created : model.ApproveStatus;
             model.CreateDate = DateTime.Now;
             model.ApplyDate = DateTime.Now;
             model.Creater = ViewHelp.GetUserName();
@@ -455,13 +455,13 @@ namespace EM.Web.Controllers
 
         private void InitSelect(int CateId=0,int CompanyId=0)
         {
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Form);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Form, ViewHelp.GetCateIds());
             ViewBag.CateList = new SelectList(CateList, "Key", "Value", CateId);
-            var CateGroupList = changeCateRepo.GetGroupList(ViewHelp.GetRoleType(), CateDropType.Form);
+            var CateGroupList = changeCateRepo.GetGroupList(ViewHelp.GetRoleType(), CateDropType.Form, ViewHelp.GetCateIds());
             ViewBag.CateGroupList = new KeyValueGroupVM(CateGroupList, CateId);
           //录入人和amdin在录入的时候可以录入所有人的公司，
           //也只有录入人和admin可以编辑和新增，所以目前都是可以选所有的
-          var CompanyList = companyRepo.GetList();
+          var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
           ViewBag.CompanyList = new SelectList(CompanyList, "Key", "Value", CompanyId);
         }
 
@@ -470,7 +470,7 @@ namespace EM.Web.Controllers
         {
             var DateTypeList = ExpenseAccountDateType.OccurDate.GetEnumList();
             ViewBag.DateTypeList = new SelectList(DateTypeList, "Key", "Value");
-            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(),CateDropType.Search);
+            var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Search, ViewHelp.GetCateIds());
             ViewBag.CateList = new SelectList(CateList, "Key", "Value");
             var ApproveStatusList = ExpenseAccountApproveStatus.Created.GetEnumList();
             if (IsFromApprove)

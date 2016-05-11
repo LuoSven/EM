@@ -113,10 +113,14 @@
             @{
                 if (ViewHelp.GetRoleType() == (int)RoleType.Staff || ViewHelp.GetRoleType() == (int)RoleType.Area)
                 {
-            @: Global.Iframe.OpenIframe("我的报销单", "expenseaccount_index", "expenseaccount/index", false, false);
-                }else
+                  @: Global.Iframe.OpenIframe("我的报销单", "expenseaccount_index", "expenseaccount/index", false, false);
+                }
+                else if (ViewHelp.GetRoleType() == (int)RoleType.CompanyManager || ViewHelp.GetRoleType() == (int)RoleType.Admin)
                 {
                      @:Global.Iframe.OpenIframe("首页", "home", "home/welcome", false, false);
+                } else if (ViewHelp.GetRoleType() == (int)RoleType.Performance)
+                {
+                     @:Global.Iframe.OpenIframe("业绩列表", "companyperformance_index", "companyperformance/index", false, false);
                 }
             }
         }

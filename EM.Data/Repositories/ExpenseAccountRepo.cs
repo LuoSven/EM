@@ -25,7 +25,7 @@ namespace EM.Data.Repositories
         {
 
 
-            var sql = @" select    distinct  case when @CompanyId is null then null else @CompanyId end as SearchCompanyId,a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate,a.Creater ,a.IsNotAccount,a.IsPublic from EM_ExpenseAccount a
+            var sql = @" select    distinct    @CompanyId   SearchCompanyId,a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate,a.Creater ,a.IsNotAccount,a.IsPublic from EM_ExpenseAccount a
 left join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
 where 1=1 ";
             sql += GetWhere(sm, UserInfo, IsFromApprove);
@@ -48,9 +48,14 @@ where 1=1 ";
             if (ApproveStatus==(int)ExpenseAccountApproveStatus.FailApproved)
             {
                 sql += " ,RefusedMessage=@Message ";
+                sql += " ,ApproveDate=null ";
             }
-            sql += "where Id=@Id ";
-           var result= DapperHelper.SqlExecute(sql, new {Id,ApproveStatus,Message });
+            if (ApproveStatus == (int)ExpenseAccountApproveStatus.PassApproved)
+            {
+                sql += " ,ApproveDate=@Now ";
+            }
+            sql += " where Id=@Id ";
+           var result= DapperHelper.SqlExecute(sql, new {Id,ApproveStatus,Message,Now=DateTime.Now });
            if (result>0)
            {
                AddApproveHistory(Id, ApproveStatus, Message, UserName, Note);
@@ -124,40 +129,62 @@ left join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
 left join EM_Charge_Cate c on b.CateId=c.Id
 where 1=1 ";
             sql += GetWhere(sm, UserInfo, false);
-            sql += " order by a.EANumber,b.Id   ";
+            sql += " order by a.ModifyDate desc  ";
             var list = DapperHelper.SqlQuery<ExpenseAccountExcelDTO>(sql, sm).ToList();
             return list;
         }
         /// <summary>
         /// 生成报销单的where条件
         /// </summary>
-        /// <param name="UserInfo"></param>
+        /// <param name="userInfo"></param>
         /// <returns></returns>
-        private string GetWhere(ExpenseAccountSM sm, AccountVM UserInfo, bool IsFromApprove)
+        private string GetWhere(ExpenseAccountSM sm, AccountVM userInfo, bool isFromApprove)
         {
             var sql = "";
             //根据不同的角色类型看到报销单也是不一样的
-            switch ((RoleType)Enum.ToObject(typeof(RoleType), UserInfo.RoleType))
+            switch ((RoleType)Enum.ToObject(typeof(RoleType), userInfo.RoleType))
             {
                 case RoleType.Admin:
                     break;
                 case RoleType.CompanyManager:
-                    sql += string.Format("and ( b.CompanyId is null or b.CompanyId in ({0})  )", UserInfo.CompanyIds);
+                    sql += string.Format("and ( b.CompanyId is null or b.CompanyId in ({0})  )", userInfo.CompanyIds);
                     break;
                 case RoleType.Area:
-                    sql += " and  a.Creater='" + UserInfo.UserName + "'";
+                    sql += " and  a.Creater='" + userInfo.UserName + "'";
                     break;
                 case RoleType.Staff:
-                    sql += " and ( b.CompanyId in (" + UserInfo.CompanyIds + ") or a.Creater='" + UserInfo.UserName + "' ) ";
+                    sql += " and ( b.CompanyId in (" + userInfo.CompanyIds + ") or a.Creater='" + userInfo.UserName + "' ) ";
                     break;
             }
+
+
+            //根据不同的角色类型看到报销单也是不一样的
+            switch ((RoleViewRightType)Enum.ToObject(typeof(RoleViewRightType), userInfo.ViewRightType))
+            {
+                case RoleViewRightType.All:
+                    break;
+                case RoleViewRightType.Owner:
+                    sql += " and  a.Creater='" + userInfo.UserName + "'  ";
+                    break;
+                case RoleViewRightType.OwnerAndCompany:
+                    sql += " and ( b.CompanyId in (" + userInfo.CompanyIds + ") or a.Creater='" + userInfo.UserName + "' ) ";
+                    break;
+            }
+
+
 
             //根据角色进行分类的过滤
             //老板只能看5大类汇总
             //录入人和admin能看所有(admin是拥有父类的权限，录入人只有子类的权限，父类可以同时查看报表)
-            sql += @" and  (b.CateId is null or b.CateId in (select * from dbo.FC_GetRoleChildrenCateIds('" + UserInfo.RoleType + "'))) ";
+            sql += @" and  (b.CateId is null or b.CateId in (select * from dbo.FC_GetRoleChildrenCateIds('" + userInfo.RoleType + "')))   ";
+
+            //添加部分特殊分类的逻辑
+            if(!string.IsNullOrEmpty(userInfo.CateIds))
+            {
+                sql += @" and  b.CateId in("+userInfo.CateIds+")   ";  
+            }
             //审核的是不能看到草稿箱的
-            if (IsFromApprove)
+            if (isFromApprove)
             {
                 sql += " and a.ApproveStatus != " + (int)ExpenseAccountApproveStatus.Created;
             }
@@ -166,7 +193,10 @@ where 1=1 ";
         }
         public bool IsCreater(string Ids,string userName)
         {
-            return !DapperHelper.SqlQuery<int>(string.Format("select* from EM_ExpenseAccount where Creater <>@userName and Id in ({0})", Ids), new { userName }).Any();
+            var roleId = DapperHelper.SqlQuery<int>("select  RoleId from EM_User_Account where UserName=@userName", new { userName }).FirstOrDefault();
+            if (StaticKey.AdminRoleIds.Contains(roleId))
+                return true;
+            return !DapperHelper.SqlQuery<int>(string.Format("select 1 from EM_ExpenseAccount where Creater <>@userName and Id in ({0})", Ids), new { userName }).Any();
         }
 
         public string GetEANumber(int Id)
@@ -189,7 +219,12 @@ where 1=1 ";
         List<ExpenseAccountExcelDTO> GetExcelListByDto(ExpenseAccountSM sm, AccountVM UserInfo);
 
         Task<string> GetNewPublicId();
-
+        /// <summary>
+        /// 判断是否是创建者，管理员默认就是创建者
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         bool IsCreater(string Ids, string userName);
 
         /// <summary>

@@ -145,5 +145,46 @@ namespace EM
             ddl.Items.Insert(0, new ListItem("日", "0"));
             ddl.SelectedIndex = 0;
         }
+        /// <summary>
+        /// 多于5个字自动省略
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="maxLength"></param>
+        /// <returns></returns>
+        public static string Omit(this string e, int maxLength = 5)
+        {
+            if (string.IsNullOrWhiteSpace(e))
+                return string.Empty;
+            var str = e;
+            str = str.Length > maxLength ? str.Substring(0, maxLength) + "..." : str;
+            return e;
+        }
+
+        /// <summary>
+        /// 自动格式化
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="maxLength"></param>
+        /// <returns></returns>
+        public static string ToYMdHms(this DateTime? e)
+        {
+            if (e.HasValue)
+            {
+                return e.Value.ToString("yyyy/MM/dd HH:mm:ss");
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 自动格式化
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="maxLength"></param>
+        /// <returns></returns>
+        public static string ToYMdHms(this DateTime e)
+        {
+          
+                return e.ToString("yyyy/MM/dd HH:mm:ss");
+        }
     }
 }

@@ -57,12 +57,14 @@ join EM_User_Role b on a.RoleId=b.Id
 join EM_User_Right c on b.id=c.RoleId and c.Permit=1
 join EM_System_Program d on d.Id=c.ProgramId
 where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
-                var CompanyIdsAndRoleType = DapperHelper.SqlQuery<AccountVM>(@"select CompanyIds  ,RoleType   from EM_User_Role where Id=@RoleId ", new { RoleId = account.RoleId.Value }).FirstOrDefault();
+                var RoleInfo = DapperHelper.SqlQuery<AccountVM>(@"select CompanyIds  ,RoleType,CateIds ,ViewRightType  from EM_User_Role where Id=@RoleId ", new { RoleId = account.RoleId.Value }).FirstOrDefault();
 
                 result.SystemIds = SystemType;
                 result.UserRole = account.RoleId.Value;
-                result.CompanyIds = CompanyIdsAndRoleType.CompanyIds ?? "0";
-                result.RoleType = CompanyIdsAndRoleType.RoleType;
+                result.CompanyIds = RoleInfo.CompanyIds ?? "0";
+                result.RoleType = RoleInfo.RoleType;
+                result.CateIds = RoleInfo.CateIds;
+                result.ViewRightType = RoleInfo.ViewRightType;
                 LoginRecord.IsLogin = true;
                 LoginRecord.UserId = account == null ? 0 : account.UserId;
             }
@@ -156,6 +158,20 @@ join  EM_User_Role b on a.RoleId=b.Id
             var result =  DapperHelper.SqlQuery<KeyValueVM>(Sql).ToList();
             return result;
         }
+
+        public string GetName(int userId)
+        {
+            var user = DapperHelper.SqlQuery<string>("select UserName from EM_User_Account where UserId=@userId", new {  userId }).FirstOrDefault();
+            return user;
+        }
+
+
+        public string GetNameAndRole(int userId)
+        {
+            var user = DapperHelper.SqlQuery<string>(@"select a.UserName+'（'+b.Name+'）' from EM_User_Account  a
+join EM_User_Role b on a.RoleId=b.Id  where a.UserId=@userId", new { userId }).FirstOrDefault();
+            return user;
+        }
     }
     public interface IUserAccountRepo : IRepository<EM_User_Account>
     {
@@ -182,5 +198,8 @@ join  EM_User_Role b on a.RoleId=b.Id
         bool IsMobileRepeat(string Mobile, int UserId);
 
         List<KeyValueVM> GetSelectList();
+
+        string GetName(int UserId);
+        string GetNameAndRole(int UserId);
     }
 }

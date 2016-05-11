@@ -82,6 +82,7 @@
           <Property Name="RefusedMessage" Type="nvarchar" MaxLength="500" />
           <Property Name="IsPublic" Type="bit" />
           <Property Name="IsNotAccount" Type="bit" />
+          <Property Name="ApproveDate" Type="datetime" />
         </EntityType>
         <EntityType Name="EM_ExpenseAccount_ApproveHistory">
           <Key>
@@ -142,21 +143,14 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“EMDB.dbo.EM_System_AlertMessage”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="EM_System_AlertMessage">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Sender" />
-            <PropertyRef Name="Receiver" />
-            <PropertyRef Name="MessagType" />
-            <PropertyRef Name="Message" />
-            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Sender" Type="int" Nullable="false" />
           <Property Name="Receiver" Type="int" Nullable="false" />
-          <Property Name="MessagType" Type="int" Nullable="false" />
+          <Property Name="MessageType" Type="int" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="AlertedTime" Type="datetime" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
@@ -236,6 +230,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="512" />
           <Property Name="CompanyIds" Type="nvarchar" MaxLength="500" />
           <Property Name="RoleType" Type="int" Nullable="false" />
+          <Property Name="CateIds" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
@@ -336,6 +331,7 @@
           <EntitySet Name="EM_ExpenseAccount_ApproveHistory" EntityType="Self.EM_ExpenseAccount_ApproveHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount_Detail" EntityType="Self.EM_ExpenseAccount_Detail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_ExpenseAccount_File" EntityType="Self.EM_ExpenseAccount_File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EM_System_AlertMessage" EntityType="Self.EM_System_AlertMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_System_Feedback" EntityType="Self.EM_System_Feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_System_Program" EntityType="Self.EM_System_Program" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EM_User_Account" EntityType="Self.EM_User_Account" Schema="dbo" store:Type="Tables" />
@@ -353,18 +349,6 @@
     [EM_System_ActionLog].[Remark] AS [Remark], 
     [EM_System_ActionLog].[CreateDate] AS [CreateDate]
     FROM [dbo].[EM_System_ActionLog] AS [EM_System_ActionLog]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="EM_System_AlertMessage" EntityType="Self.EM_System_AlertMessage" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [EM_System_AlertMessage].[Id] AS [Id], 
-    [EM_System_AlertMessage].[Sender] AS [Sender], 
-    [EM_System_AlertMessage].[Receiver] AS [Receiver], 
-    [EM_System_AlertMessage].[MessagType] AS [MessagType], 
-    [EM_System_AlertMessage].[Message] AS [Message], 
-    [EM_System_AlertMessage].[AlertedTime] AS [AlertedTime], 
-    [EM_System_AlertMessage].[CreateTime] AS [CreateTime], 
-    [EM_System_AlertMessage].[AlertTime] AS [AlertTime]
-    FROM [dbo].[EM_System_AlertMessage] AS [EM_System_AlertMessage]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_EM_System_Program_EM_User_Right" Association="Self.FK_EM_System_Program_EM_User_Right">
             <End Role="EM_System_Program" EntitySet="EM_System_Program" />
@@ -516,6 +500,7 @@
           <Property Name="RefusedMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsPublic" Type="Boolean" />
           <Property Name="IsNotAccount" Type="Boolean" />
+          <Property Name="ApproveDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="EM_System_ActionLog">
           <Key>
@@ -609,6 +594,7 @@
           <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="CompanyIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="RoleType" Type="Int32" Nullable="false" />
+          <Property Name="CateIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
@@ -663,18 +649,14 @@
         <EntityType Name="EM_System_AlertMessage">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="Sender" />
-            <PropertyRef Name="Receiver" />
-            <PropertyRef Name="Message" />
-            <PropertyRef Name="MessagType" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Sender" Type="Int32" Nullable="false" />
           <Property Name="Receiver" Type="Int32" Nullable="false" />
+          <Property Name="MessageType" Type="Int32" Nullable="false" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AlertedTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="MessagType" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AlertTime" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -756,6 +738,7 @@
           <EntitySetMapping Name="EM_ExpenseAccount">
             <EntityTypeMapping TypeName="EMDBModel.EM_ExpenseAccount">
               <MappingFragment StoreEntitySet="EM_ExpenseAccount">
+                <ScalarProperty Name="ApproveDate" ColumnName="ApproveDate" />
                 <ScalarProperty Name="IsNotAccount" ColumnName="IsNotAccount" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="RefusedMessage" ColumnName="RefusedMessage" />
@@ -867,6 +850,7 @@
           <EntitySetMapping Name="EM_User_Role">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
               <MappingFragment StoreEntitySet="EM_User_Role">
+                <ScalarProperty Name="CateIds" ColumnName="CateIds" />
                 <ScalarProperty Name="RoleType" ColumnName="RoleType" />
                 <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -929,10 +913,10 @@
             <EntityTypeMapping TypeName="EMDBModel.EM_System_AlertMessage">
               <MappingFragment StoreEntitySet="EM_System_AlertMessage">
                 <ScalarProperty Name="AlertTime" ColumnName="AlertTime" />
-                <ScalarProperty Name="MessagType" ColumnName="MessagType" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="AlertedTime" ColumnName="AlertedTime" />
                 <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MessageType" ColumnName="MessageType" />
                 <ScalarProperty Name="Receiver" ColumnName="Receiver" />
                 <ScalarProperty Name="Sender" ColumnName="Sender" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

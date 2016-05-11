@@ -125,6 +125,24 @@ namespace EM.Web.Core
         }
     }
 
+    public class UserNameResolver : ValueResolver<int, string>
+    {
+        protected override string ResolveCore(int source)
+        {
+            var userAccountRepo = new UserAccountRepo(new DatabaseFactory());
+            var UserName = userAccountRepo.GetNameAndRole(source);
+            return UserName;
+        }
+    }
+
+    public class MessageTypeResolver : ValueResolver<int, string>
+    {
+        protected override string ResolveCore(int source)
+        {
+            return Enum.ToObject(typeof(MessageType), source).GetEnumDescription();
+        }
+    }
+
 
 
 }

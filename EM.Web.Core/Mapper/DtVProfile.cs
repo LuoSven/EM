@@ -99,6 +99,15 @@ namespace EM.Web.Core
             Mapper.CreateMap<SystemFeedbackDTO, SystemFeedbackVM>()
                 .ForMember(o => o.IsReply, s => s.MapFrom(sm =>sm.ReplyDate.HasValue || !string.IsNullOrEmpty(sm.ReplyMessage)?true:false));
 
+
+
+            Mapper.CreateMap<EM_System_AlertMessage, SystemAlertMessageVM>()
+                .ForMember(d => d.SenderName, source => source.ResolveUsing<UserNameResolver>().FromMember(s => s.Sender))
+                .ForMember(d => d.ReceiverName, source => source.ResolveUsing<UserNameResolver>().FromMember(s => s.Receiver))
+                .ForMember(d => d.MessageTypeName, source => source.ResolveUsing<MessageTypeResolver>().FromMember(s => s.MessageType));
+                
+
+
         }
     }
 }

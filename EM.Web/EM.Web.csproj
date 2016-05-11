@@ -73,7 +73,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-   
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -258,6 +257,7 @@
     <Content Include="Images\UcIeIcon.png" />
     <Content Include="Js\ajaxPager.js" />
     <Content Include="Js\feedback.js" />
+    <Content Include="Js\Program\Feedback.js" />
     <Content Include="Js\Program\MonthExpenseStatistics.js" />
     <Content Include="Js\table.js" />
     <Content Include="Js\jquery.validate.messages_cn.js" />
@@ -466,7 +466,9 @@
     <Content Include="Scripts\Third\bootstrap\bootstrap.min.js" />
     <Content Include="Views\ExpenseAccount\_UploadField.cshtml" />
     <Content Include="Views\Home\CompanyManagerWelcome.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -556,6 +558,8 @@
     <Content Include="Views\System\_ListLoginManage.cshtml" />
     <Content Include="Views\System\_ListFeedbackManage.cshtml" />
     <Content Include="Views\System\FeedbackManage.cshtml" />
+    <Content Include="Views\System\SystemMessageManage.cshtml" />
+    <Content Include="Views\System\_ListSystemMessageManage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

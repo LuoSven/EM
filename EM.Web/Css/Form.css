@@ -46,5 +46,7 @@ ol,ul{padding:0;margin:0 0 9px 25px}
 #List .table td{
       word-break: break-all;
 }
+
+.messageContent{border:1px solid #CBCBCB;background:#F8F8F8;left:-300px;z-index:9999;border-radius:5px}
 /*#loading{width:150px;height:25px;border:1px solid #000;border-top:none;background-color:#FFC;position:absolute;top:0;left:50%;margin-left:-75px;text-align:center;line-height:25px;font-size:12px;font-weight:700;color:red}*/
 

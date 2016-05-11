@@ -92,12 +92,17 @@ Global.GetBrowser = function () {
     }
     return Sys;
 }
+//系统提示
 Global.Utils.AlertMessage = function () {
+    if (Global.Utils.AlertFlag)
+        return;
     var messageFormat = '<div id="systemAlertMessage_{Id}" class="alertMessage p5 w300 pFx"><div class="alertMessage-title taC size14 wp100 fl fwB mb5"><span class="glyphicon glyphicon-info-sign pr5" aria-hidden="true"></span>消息<span class="glyphicon glyphicon-remove-circle fr size18 fL18 curp" aria-hidden="true"></span></div><div class="alertMessage-sender">{Sender}</div><div class="alertMessage-content size14">{Message}</div></div>';
+    Global.Utils.AlertFlag=1,
     $.ajax({
         url: "/system/alertmessage?t=" + new Date().getTime(),
         success:function(a)
         {
+
             if (a.messages.length > 0)
             {
                 for (var i = 0; i < a.messages.length; i++) {
@@ -121,6 +126,7 @@ Global.Utils.AlertMessage = function () {
                     }
                 }
             }
+            Global.Utils.AlertFlag = 0;
             
         }
     })

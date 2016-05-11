@@ -26,7 +26,16 @@ namespace EM.Data.Repositories
 
         public void SystemBackUp()
         {
+            try
+            {
+                
             DapperHelper.SqlExecute("exec SystemBackup");
+            }
+            catch (Exception EX)
+            {
+                
+                throw EX;
+            }
         }
 
 

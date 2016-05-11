@@ -50,7 +50,7 @@
 .loading{width:150px;height:25px;border: 1px solid #C5C5C5;border-top:none;background-color: #EBEBEB;position:absolute;top:0;left:50%;margin-left:-75px;text-align:center;line-height:25px;font-size:12px;font-weight:700;color: rgb(168, 143, 86);}
 .loadingCover{top: 0px;background: #FEFEFE;}
 
-.feedback {bottom: 30px;border-radius: 5px;background-color: #FFFFFF;left: 10px;border: 1px solid #959595;}
+.feedback {bottom: 30px;border-radius: 5px;background-color: #FFFFFF;left: 10px;border: 1px solid #959595;height: 40px;/* top: 10px; */}
 .feedback span{color: #F9AC00;}
 .feedback-content .feedback-history{overflow:auto;border:1px solid #EEE;border-width:0 0 2px 0}
 .feedback-content .feedback-history .replyed{background:#dfdfdf}
@@ -63,6 +63,3 @@
 .alertMessage .alertMessage-title{margin-bottom:5px;padding:2px;border-radius:2px;background:#A58D57;color:#fff;text-align:center;font-weight:800;font-size:14px;width: 100%;}
 .alertMessage .alertMessage-sender{padding:2px;color:#999}
 .alertMessage .alertMessage-content{padding:3px;color: #000000;font-size:14px}
-
-
-

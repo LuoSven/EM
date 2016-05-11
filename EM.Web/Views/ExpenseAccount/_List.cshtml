@@ -36,6 +36,10 @@
                     {
                         <span class="glyphicon glyphicon-flag cRed" aria-hidden="true"></span>
                     }
+                    @if (EA.IsNotAccount.HasValue && EA.IsNotAccount.Value)
+                    {
+                        <span class="glyphicon glyphicon-remove-sign cRed" aria-hidden="true"></span>
+                    }
                     @EA.EANumber
                 </td>
                 <td class="taR">

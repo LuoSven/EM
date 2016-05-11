@@ -30,5 +30,18 @@ namespace EM.Web.Core.Helper
          {
              return GetSelectList(SelectType.User);
          }
+
+         public static SelectList GetEnumList(Enum em)
+         {
+             var Type = em.GetType();
+             var list = new List<KeyValuePair<int, string>>();
+             foreach (int key in Enum.GetValues(Type))
+             {
+                 string strName = Enum.ToObject(Type, key).GetEnumDescription();//获取名称
+                 list.Add(new KeyValuePair<int, string>(key, strName));//添加到DropDownList控件
+             }
+
+            return new SelectList(list, "Key", "Value");
+         } 
     }
 }

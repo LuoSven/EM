@@ -35,10 +35,11 @@
     <script src="~/Js/jquery.validate.messages_cn.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        var  action=@ViewBag.actionOb;
         var alert = Global.Utils.ShowMessage;
         Global.Init = function () {
             Global.Form.Init();
-            Global.Form.FilterAction(@ViewBag.actionOb);
+            Global.Form.FilterAction(action);
             Global.Table.Init();
         }
 
