@@ -122,7 +122,7 @@ where a.UserId=@UserId", new { UserId = account.UserId }).ToList();
         public async Task<List<AccountDetailDTO>> GetUserList(SystemUserSM sm)
         {
             var sql = @"select a.UserId, a.UserName,a.LoginEmail,a.Mobile,b.Name as RoleName,a.Status,a.ModifyTime from EM_User_Account a
-left join EM_User_Role b on a.RoleId=b.id ";
+left join EM_User_Role b on a.RoleId=b.id where 1=1  ";
             sql += string.IsNullOrEmpty(sm.UserName) ? "" : " and a.UserName like '%'+@UserName+'%' ";
             sql += string.IsNullOrEmpty(sm.LoginEmail) ? "" : " and a.LoginEmail like '%'+@LoginEmail+'%' ";
             sql += string.IsNullOrEmpty(sm.RoleId) ? "" : " and a.RoleId =@RoleId ";

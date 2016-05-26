@@ -121,6 +121,7 @@
       <DependentUpon>EMDB.tt</DependentUpon>
     </Compile>
     <Compile Include="SMs\SystemAlertMessageSM.cs" />
+    <Compile Include="SMs\SystemUserRoleSM.cs" />
     <Compile Include="SMs\SystemUserSM.cs" />
     <Compile Include="SMs\SystemFeedbackSM.cs" />
     <Compile Include="SMs\LoginManageSM.cs" />

@@ -21,10 +21,10 @@ namespace EM.Data.Repositories
         {
         }
 
-        public List<KeyValueVM> GetList(int roleId = 0, CompanyType CompanyTypeValue = CompanyType.Other)
+        public List<KeyValueVM> GetList(int roleId = 0, CompanyType companyTypeValue = CompanyType.Other)
         {
             var companyList = DataContext.EM_User_Role.Where(o => o.Id == roleId).Select(o => o.CompanyIds).FirstOrDefault().ToInts();
-            var result = DataContext.EM_Company.Where(o => roleId == 0 || companyList.Contains(o.Id) && o.CompanyType == (int)CompanyTypeValue).Select(o => new KeyValueVM() { Key = o.Id.ToString(), Value = o.CompanyName }).ToList();
+            var result = DataContext.EM_Company.Where(o => roleId == 0 || companyList.Contains(o.Id) && o.CompanyType == (int)companyTypeValue).Select(o => new KeyValueVM() { Key = o.Id.ToString(), Value = o.CompanyName }).ToList();
             return result;
         }
 

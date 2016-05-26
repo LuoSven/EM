@@ -10,6 +10,7 @@ using EM.Utils;
 using EM.Common;
 using EM.Model.DTOs;
 using EM.Data.Dapper;
+using EM.Model.SMs;
 
 namespace EM.Data.Repositories
 {
@@ -41,9 +42,14 @@ join EM_System_Program c on c.Id=b.ProgramId  where a.id=@RoleId";
           return list.ToList();
         }
 
-        public List<UserRoleListDTO> GetListDto()
+        public List<UserRoleListDTO> GetListDto(SystemUserRoleSM sm)
         {
-            var query = DapperHelper.SqlQuery<UserRoleListDTO>("select * from EM_User_Role").ToList();
+            var sql = "select * from EM_User_Role where 1=1  ";
+            if(!string.IsNullOrEmpty(sm.UserName))
+            {
+                sql += " and ( Name like '%'+@UserName+'%' or Description like '%'+@UserName+'%' )";
+            }
+            var query = DapperHelper.SqlQuery<UserRoleListDTO>(sql, sm).ToList();
             return query;
         }
         public void UpdateRightByIdAndProgromId(int Id, string ProgromIds)
@@ -57,7 +63,7 @@ join EM_System_Program c on c.Id=b.ProgramId  where a.id=@RoleId";
     {
 
         List<KeyValueVM> GetList();
-        List<UserRoleListDTO> GetListDto();
+        List<UserRoleListDTO> GetListDto(SystemUserRoleSM sm);
 
       List<UserRoleProgramDTO> GetPrograms(int RoleId=0);
 

@@ -231,6 +231,7 @@
           <Property Name="CompanyIds" Type="nvarchar" MaxLength="500" />
           <Property Name="RoleType" Type="int" Nullable="false" />
           <Property Name="CateIds" Type="nvarchar" MaxLength="500" />
+          <Property Name="ViewRightType" Type="int" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Role="EM_System_Program" Type="Self.EM_System_Program" Multiplicity="1">
@@ -595,6 +596,7 @@
           <Property Name="CompanyIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="RoleType" Type="Int32" Nullable="false" />
           <Property Name="CateIds" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ViewRightType" Type="Int32" />
         </EntityType>
         <Association Name="FK_EM_System_Program_EM_User_Right">
           <End Type="EMDBModel.EM_System_Program" Role="EM_System_Program" Multiplicity="1">
@@ -850,6 +852,7 @@
           <EntitySetMapping Name="EM_User_Role">
             <EntityTypeMapping TypeName="EMDBModel.EM_User_Role">
               <MappingFragment StoreEntitySet="EM_User_Role">
+                <ScalarProperty Name="ViewRightType" ColumnName="ViewRightType" />
                 <ScalarProperty Name="CateIds" ColumnName="CateIds" />
                 <ScalarProperty Name="RoleType" ColumnName="RoleType" />
                 <ScalarProperty Name="CompanyIds" ColumnName="CompanyIds" />

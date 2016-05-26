@@ -14,6 +14,7 @@ using EM.Model.VMs;
 using EM.Model.DTOs;
 using System.Threading.Tasks;
 using EM.Model.Entities;
+using EM.Model.SMs;
 
 namespace EM.Web.Controllers
 {
@@ -27,9 +28,9 @@ namespace EM.Web.Controllers
         private readonly ICompanyRepo CompanyRepo = new CompanyRepo(new DatabaseFactory());
         [Description("角色列表")]
         [ActionType(RightType.View)]
-        public async Task< ActionResult> Index()
+        public async Task< ActionResult> Index(SystemUserRoleSM sm)
         {
-            var Dtos = userRoleRepo.GetListDto();
+            var Dtos = userRoleRepo.GetListDto(sm);
             var Vms = Mapper.Map<List<UserRoleListVM>>(Dtos);
             if (Request.IsAjaxRequest())
                 return PartialView("_List", Vms);
@@ -63,7 +64,7 @@ namespace EM.Web.Controllers
         public async Task<ActionResult> Edit(int Id)
         {
             var model = userRoleRepo.GetById(Id);
-            InitSelect(model.RoleType, model.CompanyIds);
+            InitSelect(model.RoleType, model.CompanyIds,model.ViewRightType);
             InitBody(Id,model.CompanyIds);
             return View("AddOrEdit", model);
         }
@@ -124,14 +125,14 @@ namespace EM.Web.Controllers
             return Json(new { code = 1, message = messageAll }, JsonRequestBehavior.AllowGet);
         }
 
-        private void InitSelect(int roleType = 0, string CompanyIds = "")
+        private void InitSelect(int roleType = 0, string companyIds = "", int? viewRightType=0)
         {
             var List=CompanyRepo.GetList();
-            if (!string.IsNullOrEmpty(CompanyIds))
+            if (!string.IsNullOrEmpty(companyIds))
             {
-                var  ids = CompanyIds.Split(',');
+                var  ids = companyIds.Split(',');
                 var ListTemp =new List<KeyValueVM>();
-                foreach (var CompanyId in  List.Where(o => !CompanyIds.Contains(o.Key)))
+                foreach (var CompanyId in  List.Where(o => !companyIds.Contains(o.Key)))
                 {
                     ListTemp.Add(CompanyId);
                 }
@@ -139,6 +140,7 @@ namespace EM.Web.Controllers
             }
             ViewBag.CompanySelect = new SelectList(List, "Key", "Value");
             ViewBag.RoleTypeList = new SelectList(RoleType.Admin.GetEnumList(), "Key", "Value", roleType);
+            ViewBag.ViewRightTypeList = new SelectList(new RoleViewRightType().GetEnumList(), "Key", "Value", viewRightType);
 
             
         }

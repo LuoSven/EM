@@ -20,5 +20,6 @@ namespace EM.Model.Entities
         public string CompanyIds { get; set; }
         public int RoleType { get; set; }
         public string CateIds { get; set; }
+        public Nullable<int> ViewRightType { get; set; }
     }
 }

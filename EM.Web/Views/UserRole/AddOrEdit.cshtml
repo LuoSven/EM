@@ -26,6 +26,10 @@
     </label>
 
     <label>
+        <span>角色查看权限 :</span>
+        @Html.DropDownListFor(o => o.ViewRightType, (SelectList)ViewBag.ViewRightTypeList, "请选择", new { @class = "required" })
+    </label>
+    <label>
         <span>角色类型 :</span>
         @Html.DropDownListFor(o => o.RoleType, (SelectList)ViewBag.RoleTypeList, "请选择", new { @class = "required" })
     </label>
