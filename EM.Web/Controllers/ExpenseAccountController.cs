@@ -231,7 +231,11 @@ namespace EM.Web.Controllers
             }
             return Json(new { code = result }, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 获得明细
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ActionResult GetDetail(int Id)
         {
             var model = new EM_ExpenseAccount_Detail();
@@ -242,7 +246,11 @@ namespace EM.Web.Controllers
             InitSelect(model.CateId, model.CompanyId);
             return PartialView("_AddOrEditDetail", model);
         }
-
+        /// <summary>
+        /// 浏览明细
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ActionResult BrowseDetail(int Id)
         {
             var model = new EM_ExpenseAccount_Detail();

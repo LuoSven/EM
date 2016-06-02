@@ -24,7 +24,7 @@ namespace EM.Data.Repositories
         public List<KeyValueVM> GetList(int roleId = 0, CompanyType companyTypeValue = CompanyType.Other)
         {
             var companyList = DataContext.EM_User_Role.Where(o => o.Id == roleId).Select(o => o.CompanyIds).FirstOrDefault().ToInts();
-            var result = DataContext.EM_Company.Where(o => roleId == 0 || companyList.Contains(o.Id) && o.CompanyType == (int)companyTypeValue).Select(o => new KeyValueVM() { Key = o.Id.ToString(), Value = o.CompanyName }).ToList();
+            var result = DataContext.EM_Company.Where(o => roleId == 0  || o.CompanyType == (int)companyTypeValue).OrderBy(o=>o.CompanyName).Select(o => new KeyValueVM() { Key = o.Id.ToString(), Value = o.CompanyName }).ToList();
             return result;
         }
 
@@ -59,7 +59,12 @@ namespace EM.Data.Repositories
     public interface ICompanyRepo : IRepository<EM_Company>
     {
         List<EM_Company> GetListDto(string Name="");
-
+        /// <summary>
+        /// 下拉使用的公司类型
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="CompanyTypeValue"></param>
+        /// <returns></returns>
         List<KeyValueVM> GetList(int roleId = 0, CompanyType CompanyTypeValue = CompanyType.Other);
 
         string GetCompanyName(int id);
