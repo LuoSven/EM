@@ -20,7 +20,7 @@
                     @company.Id
                 </td>
                 <td class="taR">
-                    @company.CompanyName
+                    <a target="_blank" href="/home/CompanyManagerWelcome?companyIds=@company.Id">@company.CompanyName</a> 
                 </td>
                 <td class="taR">
                      @((company.KPIPercent.Value*100).ToString("f2"))%

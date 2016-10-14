@@ -204,12 +204,38 @@ where 1=1 ";
             return DapperHelper.SqlQuery<string>("select EANumber from EM_ExpenseAccount where   Id  =@Id", new { Id }).FirstOrDefault();
        
         }
+
+        public PagedResult<ExpenseAccountListDTO> GetLostAccountListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize)
+        {
+            var sql = @" select    distinct    @CompanyId   SearchCompanyId,a.EANumber, a.Id,a.ApproveStatus,a.ModifyDate,a.Name,a.SumMoney ,a.ApplyDate,a.Creater ,a.IsNotAccount,a.IsPublic from EM_ExpenseAccount a
+left join EM_ExpenseAccount_Detail b on a.Id=b.ExpenseAccountId
+where  b.id is null ";
+            if (UserInfo.RoleType !=(int) RoleType.Admin)
+            {
+                sql += string.Format("  and a.Creater='{0}'" + UserInfo.UserName);
+            }
+            var list = DapperHelper.QueryWithPage<ExpenseAccountListDTO>(sql, sm, " ModifyDate desc ", Page, PageSize);
+            return list;
+        }
+         
     }
 
 
     public interface IExpenseAccountRepo : IRepository<EM_ExpenseAccount>
     {
         PagedResult<ExpenseAccountListDTO> GetListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize, bool IsFromApprove = false);
+
+
+   
+        /// <summary>
+        /// 丢单找回
+        /// </summary>
+        /// <param name="sm"></param>
+        /// <param name="UserInfo"></param>
+        /// <param name="Page"></param>
+        /// <param name="PageSize"></param>
+        /// <returns></returns>
+        PagedResult<ExpenseAccountListDTO> GetLostAccountListByDto(ExpenseAccountSM sm, AccountVM UserInfo, int Page, int PageSize);
         /// <summary>
         /// 获取当前报表的导出excel对象
         /// </summary>

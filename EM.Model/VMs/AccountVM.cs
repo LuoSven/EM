@@ -56,6 +56,9 @@ namespace EM.Model.VMs
 
         public string CompanyIds { get; set; }
         public int RoleType { get; set; }
+        /// <summary>
+        /// 能查看的类，设定了的话会根据这个来判断
+        /// </summary>
         public string CateIds { get; set; }
         public int ViewRightType { get; set; }
     }

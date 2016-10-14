@@ -95,11 +95,11 @@ namespace EM.Web.Controllers
         [ActionType(RightType.Form)]
         public ActionResult UpdateSystemPrograms()
         {
-            var Programs = ViewHelp.GetAllActionByAssembly(AppDomain.CurrentDomain.BaseDirectory+"\\bin");
+            var programs = ViewHelp.GetAllActionByAssembly(AppDomain.CurrentDomain.BaseDirectory+"\\bin");
             var messageAll = "";
             ISystemProgromRepo systemProgromRepo = new SystemProgromRepo(new DatabaseFactory());
-            messageAll+=string.Format("共发现{0}个作业\r\n", Programs.Count);
-            foreach (var item in Programs)
+            messageAll+=string.Format("共发现{0}个作业\r\n", programs.Count);
+            foreach (var item in programs)
             {
 
                 var result = systemProgromRepo.AddOrUpdateProgram(item);

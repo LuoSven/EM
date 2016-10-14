@@ -95,7 +95,6 @@
     <Compile Include="SmsHelper.cs" />
     <Compile Include="TopucDate.cs" />
     <Compile Include="UpLoadHelper.cs" />
-    <Compile Include="ResourceHelper.cs" />
     <Compile Include="ValidateCode.cs" />
     <Compile Include="ValidationResult.cs" />
     <Compile Include="WarterMarkHelper.cs" />

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EM.Model.DTOs
 {
-    public class ExpenseAccountListDTO
+    public class    ExpenseAccountListDTO
     {
         public int Id { get; set; }
         public string EANumber { get; set; }

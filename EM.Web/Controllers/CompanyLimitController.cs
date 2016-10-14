@@ -32,7 +32,7 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task< ActionResult> Index(CompanyLimitSM sm)
         {
-            var Dtos = companyLimitRepo.GetList(sm);
+            var Dtos = companyLimitRepo.GetList(sm,ViewHelp.GetCompanyIds(),ViewHelp.GetCateIds());
             var models = Mapper.Map<List<CompanyLimitVM>>(Dtos);
             if (Request.IsAjaxRequest())
                 return PartialView("_List", models);

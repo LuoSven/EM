@@ -97,6 +97,28 @@ namespace EM.Web.Controllers
             InitSearchSelect(true, Sm.ApproveStatus.Value);
             return View(Vms);
         }
+
+        [Description("丢单找回")]
+        [ActionType(RightType.View)]
+        public async Task<ActionResult> FindLostAccountIndex(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
+        {
+            if (!Request.IsAjaxRequest())
+                Sm.ApproveStatus = (int)ExpenseAccountApproveStatus.WaitingApprove;
+            var Dtos = expenseAccountRepo.GetLostAccountListByDto(Sm, ViewHelp.UserInfo(), Page, PageSize);
+            var Vms = new PagedResult<ExpenseAccountListVM>()
+            {
+                CurrentPage = Dtos.CurrentPage,
+                PageSize = Dtos.PageSize,
+                RowCount = Dtos.RowCount,
+                Stats = Dtos.Stats
+
+            };
+            Vms.Results = Mapper.Map<IList<ExpenseAccountListDTO>, IList<ExpenseAccountListVM>>(Dtos.Results);
+            if (Request.IsAjaxRequest())
+                return PartialView("_ApproveList", Vms);
+            InitSearchSelect(true, Sm.ApproveStatus.Value);
+            return View(Vms);
+        }
         [Description("新增报销单")]
         [ActionType(RightType.View)]
         public async Task<ActionResult> Add()

@@ -4,6 +4,7 @@ body{font-size:12px; font-family:microsoft yahei, "Lucida Grande",Arial,Lucida,V
 table{border-collapse:collapse;border-spacing:0; table-layout:fixed; }
 div,a,input{outline:none;}
 input{}
+#List{display: inline-block;}
 textarea{ border:1px solid #ddd; overflow:auto; resize:none;}
 a,input[type=button],input[type=submit],input[type=checkbox]{cursor:pointer;}
 fieldset,img{border:none;}

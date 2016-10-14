@@ -24,7 +24,7 @@ namespace EM.Data.Repositories
 
         private static readonly decimal totalSale = 1900000;
         private static readonly decimal totalSaleExpenseAccount = 700000;
-        public List<CompanyLimitDTO> GetList(CompanyLimitSM sm)
+        public List<CompanyLimitDTO> GetList(CompanyLimitSM sm, string companyIds, string cateIds)
         {
 
             var sql = @"select a.Id,b.CompanyName,c.CateName,a.LimitSum,a.ModifyDate,a.Modifier,a.SeasonType from EM_Company_Limit a
@@ -49,6 +49,15 @@ join EM_Charge_Cate c on a.CateId=c.Id
             if (sm.EDate.HasValue)
             {
                 sql += " and a.ModifyDate<=@EDate";
+            }
+
+            if (!string.IsNullOrEmpty(companyIds))
+            {
+                sql += "  and a.CompanyId in ("+companyIds+")";
+            } 
+            if (!string.IsNullOrEmpty(cateIds))
+            {
+                sql += "  and a.CateId in (" + cateIds + ")";
             }
             var result = DapperHelper.SqlQuery<CompanyLimitDTO>(sql, sm).ToList();
             return result;
@@ -238,7 +247,7 @@ and ( b.IsNotAccount is null or b.IsNotAccount =0)", new { CompanyId, CateId, SD
 
     public interface ICompanyLimitRepo : IRepository<EM_Company_Limit>
     {
-         List<CompanyLimitDTO> GetList(CompanyLimitSM sm);
+         List<CompanyLimitDTO> GetList(CompanyLimitSM sm,string companyIds,string cateIds);
 
         /// <summary>
         /// 根据公司和分类Id获取公司的额度，只计算大类

@@ -449,6 +449,7 @@
     <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
     <Content Include="Js\Third\My97DatePicker\开发包\skin\whyGreen\img.gif" />
     <Content Include="Js\Third\pdf\pdfobject.js" />
+    <Content Include="Js\util.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -560,6 +561,8 @@
     <Content Include="Views\System\FeedbackManage.cshtml" />
     <Content Include="Views\System\SystemMessageManage.cshtml" />
     <Content Include="Views\System\_ListSystemMessageManage.cshtml" />
+    <Content Include="Views\ExpenseAccount\FindLostAccountIndex.cshtml" />
+    <Content Include="Views\ExpenseAccount\_FindLostAccountList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
