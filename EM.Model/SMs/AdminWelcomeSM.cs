@@ -10,5 +10,6 @@ namespace EM.Model.SMs
     {
         public int? CompanyId { get; set; }
         public int? CateId { get; set; }
+        public int? Year { get; set; }
     }
 }

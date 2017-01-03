@@ -13,8 +13,8 @@
     <form id="SearchForm" action="@Url.Action("CompanyLimitDetail", "Report")">
         @Html.DropDownList("CateId", (SelectList)ViewBag.CateList)
         @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList)
-        <input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
-        <input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+
+        <select name="Year"><option value="2016">2016年</option><option selected="selected" value="2017">2017年</option></select>
 
         <button class="searchButton" type="submit">搜索</button>
     </form>

@@ -14,6 +14,7 @@
     <form id="SearchForm" action="@Url.Action("AdminWelcome", "Home")">
         @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
         @Html.DropDownList("CateId", (SelectList)ViewBag.CateList, "分类")
+        <select id="Year" name="Year"><option value="2016">2016年</option><option selected="selected" value="2017">2017年</option></select>
         <button class="searchButton" type="submit">搜索</button>
     </form>
 
@@ -25,17 +26,18 @@
 
 @section Js{
     <script>
-        var ShowRestDetailList = function (ob, companyId, CateId) {
+        var ShowRestDetailList = function (ob, companyId, cateId) {
             $(".clicking", "#List").removeClass("clicking");
             $(ob).parent().addClass("clicking");
-            Global.Form.NewIframe('额度使用明细', 'report_companylimitdetail', '/report/companylimitdetail?CompanyId=' + companyId + '&CateId=' + CateId)
+            var year = $("#Year option:selected").val();
+            Global.Form.NewIframe('额度使用明细', 'report_companylimitdetail', '/report/companylimitdetail?CompanyId=' + companyId + '&CateId=' + cateId + '&Year=' + year);
         }
 
         var ShowRestDetail = function (ob) {
-            $(ob).next().removeClass('hidden',200)
+            $(ob).next().removeClass('hidden', 200);
         }
         var HiddenRestDetail = function (ob) {
-            $(ob).next().addClass('hidden')
+            $(ob).next().addClass('hidden');
         }
     </script>
     }

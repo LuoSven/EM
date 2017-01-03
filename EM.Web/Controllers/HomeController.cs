@@ -54,47 +54,52 @@ namespace EM.Web.Controllers
             return View();
         }
 
-        public ActionResult AdminWelcome(AdminWelcomeSM SM, int Page = 1, int PageSize = 40)
+        public ActionResult AdminWelcome(AdminWelcomeSM sm, int page = 1, int pageSize = 40)
         {
-            var CompanyLimits = new List<CompanyCateLimitVM>();
+         
+            sm.Year = sm.Year.HasValue ? sm.Year.Value : 2017;
+           
+              
+
+            var companyLimits = new List<CompanyCateLimitVM>();
             //公司列表
-            var Companys = companyRepo.GetListDto();
-            if(SM.CompanyId.HasValue)
+            var companys = companyRepo.GetListDto();
+            if(sm.CompanyId.HasValue)
             {
-                Companys = Companys.Where(o => o.Id == SM.CompanyId).ToList();
+                companys = companys.Where(o => o.Id == sm.CompanyId).ToList();
             }
             //分类列表
-            var Cates = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
-            if (SM.CateId.HasValue)
+            var cates = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
+            if (sm.CateId.HasValue)
             {
-                Cates = Cates.Where(o => o.Key == SM.CateId.ToString()).ToList();
+                cates = cates.Where(o => o.Key == sm.CateId.ToString()).ToList();
             }
-            ViewBag.Cates=Cates;
-            foreach (var Company in Companys)
+            ViewBag.Cates=cates;
+            foreach (var company in companys)
             {
-                var CompanyLimit = new CompanyCateLimitVM();
-                CompanyLimit.CompanyId = Company.Id;
-                CompanyLimit.CompanyName = Company.CompanyName;
-                CompanyLimit.CompanyCateLimits = new List<CompanyCateLimitDTO>();
-                foreach (var Cate in Cates)
+                var companyLimit = new CompanyCateLimitVM();
+                companyLimit.CompanyId = company.Id;
+                companyLimit.CompanyName = company.CompanyName;
+                companyLimit.CompanyCateLimits = new List<CompanyCateLimitDTO>();
+                foreach (var cate in cates)
                 {
-                   CompanyLimit.CompanyCateLimits.Add(companyLimitRepo.GetCompanyLimit(Company.Id, Cate.Key.ToInt()));
+                    companyLimit.CompanyCateLimits.Add(companyLimitRepo.GetCompanyLimit(company.Id, cate.Key.ToInt(), sm.Year.Value));
                 }
-                CompanyLimits.Add(CompanyLimit);
+                companyLimits.Add(companyLimit);
             }
 
-            var Vms = new PagedResult<CompanyCateLimitVM>()
+            var vms = new PagedResult<CompanyCateLimitVM>()
             {
-                CurrentPage = Page,
-                PageSize = PageSize,
-                RowCount = CompanyLimits.Count,
-                Results = CompanyLimits.Skip((Page-1)*PageSize).Take(PageSize).ToList()
+                CurrentPage = page,
+                PageSize = pageSize,
+                RowCount = companyLimits.Count,
+                Results = companyLimits.Skip((page-1)*pageSize).Take(pageSize).ToList()
 
             };
             if (Request.IsAjaxRequest())
-                return PartialView("_List", Vms);
+                return PartialView("_List", vms);
             InitSearchSelect();
-            return View(Vms);
+            return View(vms);
         }
         public ActionResult CompanyManagerWelcome(DateTime? SDate=null,DateTime? EDate=null)
         {
@@ -116,7 +121,7 @@ namespace EM.Web.Controllers
             return View();
         }
         [HttpGet]
-        public ActionResult GetCompanyLimit(DateTime? SDate = null, DateTime? EDate = null)
+        public ActionResult GetCompanyLimit(int year)
         {
             var model = new CompanyManagerWelcomeVM();
             var companys = ViewHelp.GetCompanyIds();
@@ -130,18 +135,18 @@ namespace EM.Web.Controllers
                 cateIds = "";
             }
             model.CompanyCateLimits = new List<CompanyCateLimitDTO>();
-            var CateList = changeCateRepo.GetList(roleType, CateDropType.Report, cateIds);
+            var cateList = changeCateRepo.GetList(roleType, CateDropType.Report, cateIds);
             if (!string.IsNullOrEmpty(Request.QueryString["companyIds"]))
             {
-                CateList.Add(new KeyValueVM() { Key = "20", Value = "室内交通费" });
+                cateList.Add(new KeyValueVM() { Key = "20", Value = "室内交通费" });
             }
-            foreach (var Cate in CateList)
+            foreach (var cate in cateList)
             {
-                var Limit = companyLimitRepo.GetCompanysLimit(companys, Cate.Key.ToInt(), SDate, EDate);
-                model.CompanyCateLimits.Add(Limit);
+                var limit = companyLimitRepo.GetCompanysLimit(companys, cate.Key.ToInt(), year);
+                model.CompanyCateLimits.Add(limit);
             }
 
-            model.Performance = companyLimitRepo.GetPerformance(companys);
+            model.Performance = companyLimitRepo.GetPerformance(companys, year);
             return  Json(model,JsonRequestBehavior.AllowGet);
         }
 

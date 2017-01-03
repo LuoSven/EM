@@ -38,7 +38,7 @@ namespace EM.Web.Controllers
           
             if(Request.IsAjaxRequest())
             {
-                var NameList = new List<string>();
+                var nameList = new List<string>();
                 if (!sm.SDate.HasValue)
                 {
                     sm.SDate = DateTime.Now.AddYears(-1);
@@ -47,47 +47,47 @@ namespace EM.Web.Controllers
                 {
                     sm.EDate = DateTime.Now;
                 }
-                var CateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
+                var cateList = changeCateRepo.GetList(ViewHelp.GetRoleType(), CateDropType.Report, ViewHelp.GetCateIds());
                 sm.CompanyIds = ViewHelp.GetCompanyIds();
                 sm.RoleType = ViewHelp.GetRoleType();
-                var Dtos = expenseAccountRepo.GetMonthCateList(sm);
-                var List = new Dictionary<string, List<ExpenseAccountMonthCateDTO>>();
-                if (Dtos.Count > 0)
+                var dtos = expenseAccountRepo.GetMonthCateList(sm);
+                var list = new Dictionary<string, List<ExpenseAccountMonthCateDTO>>();
+                if (dtos.Count > 0)
                 {
                     //补全信息
-                    foreach (var Cate in CateList)
+                    foreach (var cate in cateList)
                     {
                         var BeginDate = new DateTime(sm.SDate.Value.Year, sm.SDate.Value.Month, 1);
                         var EndDate = new DateTime(sm.EDate.Value.Year, sm.EDate.Value.Month, 1);
-                        List.Add(Cate.Value, new List<ExpenseAccountMonthCateDTO>());
+                        list.Add(cate.Value, new List<ExpenseAccountMonthCateDTO>());
                         if (BeginDate != EndDate)
                         {
                             //不是同月的
                             while (BeginDate != EndDate)
                             {
-                                var Dto = new ExpenseAccountMonthCateDTO() { CateName = Cate.Value, ECMonth = BeginDate.Month, ECYear = BeginDate.Year, SumMoney = 0 };
-                                Dto.SumMoney = Dtos.Where(o => o.CateName == Cate.Value && o.ECYear == BeginDate.Year && o.ECMonth == BeginDate.Month).Select(o => o.SumMoney).FirstOrDefault();
+                                var Dto = new ExpenseAccountMonthCateDTO() { CateName = cate.Value, ECMonth = BeginDate.Month, ECYear = BeginDate.Year, SumMoney = 0 };
+                                Dto.SumMoney = dtos.Where(o => o.CateName == cate.Value && o.ECYear == BeginDate.Year && o.ECMonth == BeginDate.Month).Select(o => o.SumMoney).FirstOrDefault();
                                 Dto.SumMoney = Dto.SumMoney ?? 0;
-                                List[Cate.Value].Add(Dto);
-                                NameList.Add(BeginDate.GetMonthName());
+                                list[cate.Value].Add(Dto);
+                                nameList.Add(BeginDate.GetMonthName());
                                 BeginDate = BeginDate.AddMonths(1);
                             }
                         }
                         else
                         {
                             //同月的
-                            var Dto = new ExpenseAccountMonthCateDTO() { CateName = Cate.Value, ECMonth = BeginDate.Month, ECYear = BeginDate.Year, SumMoney = 0 };
-                            Dto.SumMoney = Dtos.Where(o => o.CateName == Cate.Value && o.ECYear == BeginDate.Year && o.ECMonth == BeginDate.Month).Select(o => o.SumMoney).FirstOrDefault();
+                            var Dto = new ExpenseAccountMonthCateDTO() { CateName = cate.Value, ECMonth = BeginDate.Month, ECYear = BeginDate.Year, SumMoney = 0 };
+                            Dto.SumMoney = dtos.Where(o => o.CateName == cate.Value && o.ECYear == BeginDate.Year && o.ECMonth == BeginDate.Month).Select(o => o.SumMoney).FirstOrDefault();
                             Dto.SumMoney = Dto.SumMoney ?? 0;
-                            List[Cate.Value].Add(Dto);
-                            NameList.Add(BeginDate.GetMonthName());
+                            list[cate.Value].Add(Dto);
+                            nameList.Add(BeginDate.GetMonthName());
                             BeginDate = BeginDate.AddMonths(1);
                         }
                         
 
                     }
                 }
-                return Json(new { NameList, List  }, JsonRequestBehavior.AllowGet);
+                return Json(new { NameList = nameList, List = list  }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -101,6 +101,11 @@ namespace EM.Web.Controllers
         [ActionType(RightType.View)]
         public async Task<ActionResult> CompanyLimitDetail(ExpenseAccountSM Sm, int Page = 1, int PageSize = 20)
         {
+
+            DateTime sDate, eDate;
+            Sm.Year.GetDateByYear(out sDate, out eDate);
+            Sm.SDate = sDate;
+            Sm.EDate = eDate;
             if (!Sm.CompanyId.HasValue)
             {
                 var CompanyList = companyRepo.GetList(ViewHelp.GetRoleId());
@@ -122,7 +127,7 @@ namespace EM.Web.Controllers
                 Stats = Dtos.Stats
 
             };
-            ViewBag.limit = companyLimitRepo.GetCompanyLimit(Sm.CompanyId.Value, Sm.CateId.Value, Sm.SDate, Sm.EDate);
+            ViewBag.limit = companyLimitRepo.GetCompanyLimit(Sm.CompanyId.Value, Sm.CateId.Value, Sm.Year);
             Vms.Results = Mapper.Map<IList<ExpenseAccountListDTO>, IList<ExpenseAccountListVM>>(Dtos.Results);
             if (Request.IsAjaxRequest())
                 return PartialView("_CompanyLimitDetailList", Vms);

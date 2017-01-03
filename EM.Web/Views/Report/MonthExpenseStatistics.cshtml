@@ -6,8 +6,8 @@
     <div class="peiTitle mb5 wp100 taR p5">
         <form id="searchChart">
              @Html.DropDownList("Month", (SelectList)ViewBag.MonthList, "全部",new { id = "Month" })
-            <input type="text" class="datepicker   " id="SDate" name="SDate" value="@Request.Form["SDate"]" placeholder="开始日期">
-            <input type="text" class="datepicker   " id="EDate" name="EDate" value="@Request.Form["EDate"]" placeholder="结束日期">
+            <input type="text" class="datepicker   " id="SDate" name="SDate" value="2017/01/01" placeholder="开始日期">
+            <input type="text" class="datepicker   " id="EDate" name="EDate" value="@DateTime.Now.ToString("yyyy/MM/dd")" placeholder="结束日期">
             <button type="button"  onclick="SubmitForm()">查询</button>
         </form>
     </div>

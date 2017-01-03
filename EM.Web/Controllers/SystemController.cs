@@ -28,9 +28,7 @@ namespace EM.Web.Controllers
 
         private readonly ISystemFeedbackRepo systemFeedbackRepo = new SystemFeedbackRepo(new DatabaseFactory());
         private readonly ISystemAlertMessageRepo systemAlertMessageRepo = new SystemAlertMessageRepo(new DatabaseFactory());
-        private readonly IExpenseAccountRepo expenseAccountRepo = new ExpenseAccountRepo(new DatabaseFactory());
-        private readonly IUserLoginRecordRepo userLoginRecordRepo=new UserLoginRecordRepo(new DatabaseFactory());
-        private readonly IUserAccountRepo userAccountRepo = new UserAccountRepo(new DatabaseFactory());
+        private readonly IUserLoginRecordRepo userLoginRecordRepo=new UserLoginRecordRepo(new DatabaseFactory()); 
         public ActionResult Index()
         {
             return View();

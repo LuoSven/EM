@@ -14,8 +14,9 @@ namespace EM.Model.SMs
         public string KeyWord { get; set; }
         public int? CateId { get; set; }
         public int DateType { get; set; }
+        public int Year { get; set; }
         public DateTime? SDate { get; set; }
-        public DateTime? EDate { get; set; }
+        public DateTime? EDate { get; set; } 
         public string Creater { get; set; }
         public string Modifier { get; set; }
         public int? ApproveStatus { get; set; }

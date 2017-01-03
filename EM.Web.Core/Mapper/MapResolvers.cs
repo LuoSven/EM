@@ -109,7 +109,7 @@ namespace EM.Web.Core
         protected override string ResolveCore(EM_ExpenseAccount_Detail source)
         {
             var companyLimitRepo = new CompanyLimitRepo(new DatabaseFactory());
-            var limit=   companyLimitRepo.GetCompanyLimit(source.CompanyId, source.CateId);
+            var limit=   companyLimitRepo.GetCompanyLimit(source.CompanyId, source.CateId,source.OccurDate.Year);
             var result = string.Format("{0}({1}/{2})", limit.CateName, limit.TotalCost, limit.TotalLimit);
             return result;
         }

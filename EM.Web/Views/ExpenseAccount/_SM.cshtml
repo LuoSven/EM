@@ -14,7 +14,7 @@
 @Html.DropDownList("CompanyId", (SelectList)ViewBag.CompanyList, "公司")
 @Html.DropDownList("ApproveStatus", (SelectList)ViewBag.ApproveStatusList, "报销单状态")
 @Html.DropDownList("DateType", (SelectList)ViewBag.DateTypeList, "时间筛选")
-<input type="text" class="datepicker" placeholder="开始时间" name="SDate" />
-<input type="text" class="datepicker" placeholder="结束时间" name="EDate" />
+<input type="text" class="datepicker" placeholder="开始时间" name="SDate" value="2017/01/01" />
+<input type="text" class="datepicker" placeholder="结束时间" name="EDate" value="@DateTime.Now.ToString("yyyy/MM/dd")" />
 
 <button class="searchButton" type="submit">搜索</button>

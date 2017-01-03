@@ -69,7 +69,32 @@ namespace EM
             int.TryParse(e, out Id);
             return Id;
         }
+        public static void GetDateByYear(this int year, out DateTime startTime, out DateTime endTime)
+        { 
+            switch (year)
+            {
+                case 2016:
+                    startTime = DateTime.Now.AddYears(-2);
+                    endTime = new DateTime(2017, 1, 1);
+                    break;
+                case 2017:
+                    startTime = new DateTime(2017, 1, 1);
+                    endTime = new DateTime(2018, 1, 1);
+                    break;
+                default:
+                    startTime = new DateTime(2012, 1, 1);
+                    endTime = new DateTime(2050, 1, 1);
+                    break;
+            } 
+        }
 
+        public static void GetDateByYear(this int year, out DateTime? startTime, out DateTime? endTime)
+        {
+            DateTime sTime, eTime;
+            year.GetDateByYear(out sTime,out  eTime);
+            startTime = sTime;
+            endTime = eTime;
+        }
         public static Decimal ToDecimal(this string e)
         {
             if (string.IsNullOrEmpty(e))
